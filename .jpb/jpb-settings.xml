@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DatabaseMigrationSettings">
+    <database-infos>
+      <database-info>
+        <dbms-id>mysql</dbms-id>
+        <mapping-types>
+          <mapping-type sql-type-parameter="Nothing">
+            <java-class>java.lang.String</java-class>
+            <sql-type>varchar</sql-type>
+          </mapping-type>
+        </mapping-types>
+      </database-info>
+      <database-info>
+        <dbms-id>postgres</dbms-id>
+        <mapping-types>
+          <mapping-type sql-type-parameter="Nothing">
+            <java-class>java.lang.String</java-class>
+            <sql-type>varchar</sql-type>
+          </mapping-type>
+        </mapping-types>
+      </database-info>
+    </database-infos>
+  </component>
+  <component name="JpaPluginProjectSettings">
+    <option name="entityNameTemplate" />
+    <option name="isLombokGetterAndSetter" value="true" />
+    <option name="isLombokToString" value="true" />
+    <option name="isLombokAllArgsConstructor" value="true" />
+    <option name="isLombokNoArgsConstructor" value="true" />
+    <option name="useLazyOnToOneAssociations" value="true" />
+    <option name="scaffoldingLanguage" />
+  </component>
+  <component name="ReverseEngineeringSettings">
+    <database-infos>
+      <database-info dbms-id="mysql">
+        <mapping-types>
+          <mapping-type sql-type="VARCHAR" java-class="java.lang.String" />
+        </mapping-types>
+      </database-info>
+      <database-info dbms-id="postgres">
+        <mapping-types>
+          <mapping-type sql-type="varchar" java-class="java.lang.String" />
+        </mapping-types>
+      </database-info>
+      <database-info dbms-id="mssql">
+        <mapping-types>
+          <mapping-type sql-type="varchar" java-class="java.lang.String" />
+        </mapping-types>
+      </database-info>
+    </database-infos>
+  </component>
+</project>
