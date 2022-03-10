@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.css}">
+</head>
+<body class="text-dark w-100 h-100" style="background-color: #f1f1f1; overflow-y: hidden">
+<nav class="w-100 bg-white shadow-lg d-flex justify-content-start" style="height: 80px">
+    <ul class="navbar nav justify-content-start w-50">
+        <li class="nav-item ">
+            <img class="navbar-brand" th:src="@{/assets/favicon.ico}" width="50px" alt="warehouse-logo" src=""/>
+        </li>
+        <li class="nav-item">
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a href="/users" class="nav-link">Users</a>
+        </li>
+        <li class="nav-item">
+            <a href="/input" class="nav-link">Input</a>
+        </li>
+        <li class="nav-item">
+            <a href="/output" class="nav-link">Output</a>
+        </li>
+        <li class="nav-item">
+            <a href="/data" class="nav-link">Data</a>
+        </li>
+    </ul>
+</nav>
+<main class="d-flex" style="width: 100vw; height: calc(100vh - 80px)">
+    <div class="w-25 h-100 shadow" style="box-sizing: border-box">
+
+    </div>
+    <div class="w-75 h-100">
+        <div class="px-3 pt-3">
+            <h1>Lorem ipsum dolor</h1>
+            <hr>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dolore eaque, ex excepturi facilis molestiae natus nemo nihil repudiandae saepe? At doloribus et itaque necessitatibus neque officiis pariatur provident voluptas.
+            </p>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>
