@@ -43,4 +43,7 @@ public class Output {
     @ToString.Exclude
     private Client client;
 
+    @Column(name = "active", nullable = false)
+    private boolean active=true;
+
 }

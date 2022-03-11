@@ -24,7 +24,8 @@ public class DashboardController {
                 model.addAttribute("expire_date", Integer.parseInt(cookie.getValue()));
             }
         }
-        model.addAttribute("current", "dashboard");
+
+
         return "dashboard/notifications";
     }
 
