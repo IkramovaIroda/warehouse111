@@ -1,0 +1,24 @@
+.link{
+    font-weight: lighter;
+    font-size: 0.8rem!important;
+    transition: all linear 0.5s;
+    height: 40px;
+}
+.link.active{
+    font-weight: bold;
+    font-size: 1.5rem!important;
+    height: 52px;
+}
+.link:hover{
+    font-weight: bold;
+    font-size: 1rem!important;
+}
+.link.active:hover{
+    font-weight: bold;
+    font-size: 1.5rem!important;
+}
+.nav-item .active{
+    color: var(--dark);
+    font-weight: bold;
+    font-size: 1.2rem!important;
+}

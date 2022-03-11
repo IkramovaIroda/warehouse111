@@ -25,19 +25,25 @@ public class Input {
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
+    @Column(name = "active", nullable = false)
+    private boolean active=true;
+
     @Column(name = "facture_number", nullable = false)
     private Integer factureNumber;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "currency_id", nullable = false)
+    @ToString.Exclude
     private Currency currency;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "supplier_id", nullable = false)
+    @ToString.Exclude
     private Supplier supplier;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "warehouse_id", nullable = false)
+    @ToString.Exclude
     private Warehouse warehouse;
 
 }
