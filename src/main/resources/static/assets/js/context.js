@@ -1,9 +1,15 @@
+console.log('context.js')
 const content=document.querySelector('#main')
 const body=document.querySelector('body')
 const main=addClassList(document.createElement('main'), 'd-flex', {
     width: '100vw',
     height: 'calc(100vh - 80px)'
 })
+
+try {
+    console.log(notificationsCount)
+}catch (e) {}
+
 let navbarItems=[
     {url: '/dashboard/most-sold', path: '/dashboard',name: 'Dashboard'},
     {url: '/users/user', path: '/users',name: 'Users'},
@@ -115,6 +121,10 @@ main.appendChild(appendElement(
     content
 ))
 body.appendChild(main)
+const scripts=document.querySelectorAll('script')
+for (let script of scripts) {
+    body.appendChild(script)
+}
 
 
 

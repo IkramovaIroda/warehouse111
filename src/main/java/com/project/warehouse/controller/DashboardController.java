@@ -1,5 +1,7 @@
 package com.project.warehouse.controller;
 
+import com.project.warehouse.service.NotificationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,10 @@ import java.util.Arrays;
 @Controller
 @RequestMapping("/dashboard")
 public class DashboardController {
+    @Autowired
+    NotificationService notificationService;
+
+
     @GetMapping(path = "/most-sold")
     public String getMostSold(Model model){
         model.addAttribute("current", "dashboard");
@@ -19,18 +25,13 @@ public class DashboardController {
     }
     @GetMapping(path = "/notifications")
     public String getNotificationPage(Model model, HttpServletRequest req){
-        for (Cookie cookie : req.getCookies()) {
-            if(cookie.getName().equals("product_expire_period")){
-                model.addAttribute("expire_date", Integer.parseInt(cookie.getValue()));
-            }
-        }
-
-
+        model.addAttribute("expire_date", notificationService.getNotificationsCount(req));
         return "dashboard/notifications";
     }
 
     @GetMapping("/context")
-    public String context(Model model){
+    public String context(Model model, HttpServletRequest req){
+        model.addAttribute("notifications_count",notificationService.getNotificationsCount(req));
         return "context";
     }
 }

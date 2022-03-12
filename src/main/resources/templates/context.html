@@ -10,6 +10,9 @@
 <div id="main">
 <h1>Context</h1>
 </div>
-<script th:src="@{/assets/js/context.js}"></script>
 </body>
+<script th:inline="javascript">
+    let notificationsCount="[[${notifications_count}]]"
+</script>
+<script type="text/javascript" th:src="@{/assets/js/context.js}"></script>
 </html>
