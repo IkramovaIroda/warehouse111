@@ -8,9 +8,9 @@ import java.time.LocalDate;
 
 @Data
 public class InputProductDto implements Serializable {
-    private final Integer productId;
-    private final BigDecimal amount;
-    private final BigDecimal price;
+    private final Long productId;
+    private final Double amount;
+    private final Double price;
     private final LocalDate expireDate;
     private final Long inputId;
 }
