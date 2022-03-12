@@ -29,7 +29,7 @@ public class InputService {
     ProductRepository productRepository;
 
     public void save(InputDto inputDto) {
-        List<InputProductDto> inputProductDtoList = inputDto.getInputProductDtoList();
+        List<InputProductDto> inputProductDtoList = inputDto.getInputProducts();
         LocalDate date = inputDto.getDate();
         Long currencyId = inputDto.getCurrencyId();
         Integer factureNumber = inputDto.getFactureNumber();
@@ -56,7 +56,7 @@ public class InputService {
             //2-variant date backendda beriladi
 //            inputProduct.setInput(saveInput);
             Double amount = dto.getAmount();
-            LocalDate expireDate = dto.getExpireDate();//1-variant date frontenddan
+            LocalDate expireDate = LocalDate.parse(dto.getExpireDate());//1-variant date frontenddan
             //2-variant date backendda beriladi
 //            inputProduct.setExpireDate(LocalDate.now());
             Double price = dto.getPrice();
@@ -68,7 +68,7 @@ public class InputService {
             inputProduct.setProduct(product);
             inputProduct.setPrice(price);
             inputProduct.setAmount(amount);
-            inputProduct.setExpireDate(date);
+            inputProduct.setExpireDate(expireDate);
 //            inputProduct.setExpireDate(LocalDate.now());
             inputProducts.add(inputProduct);
         }

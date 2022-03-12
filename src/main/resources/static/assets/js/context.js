@@ -1,4 +1,3 @@
-console.log('context.js')
 const content=document.querySelector('#main')
 const body=document.querySelector('body')
 const main=addClassList(document.createElement('main'), 'd-flex', {
@@ -68,7 +67,7 @@ for (let classStyle of 'text-dark w-100 h-1000'.split(' ')) {
 }
 body.style.overflowY='hidden'
 body.style.backgroundColor='#f1f1f1'
-const navbar=createElement('nav', 'w-100 bg-white shadow-lg d-flex justify-content-start', {
+const navbar=createElement('nav', 'w-100 bg-white shadow-lg d-flex justify-content-start pl-4', {
     height: '80px'
 })
 let navUl=appendElement(

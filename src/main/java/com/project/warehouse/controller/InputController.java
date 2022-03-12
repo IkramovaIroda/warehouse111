@@ -1,16 +1,20 @@
 package com.project.warehouse.controller;
 
+import com.google.gson.Gson;
 import com.project.warehouse.dto.InputDto;
 import com.project.warehouse.entity.Input;
 import com.project.warehouse.entity.InputProduct;
 import com.project.warehouse.repository.InputProductRepository;
 import com.project.warehouse.repository.InputRepository;
+import com.project.warehouse.repository.ProductRepository;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.project.warehouse.service.InputService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +30,11 @@ public class InputController {
 
     @Autowired
     InputProductRepository inputProductRepository;
+
+    @Autowired
+    ProductRepository productRepository;
+    @Autowired
+    Gson gson;
 
     static Input input = new Input();
 
@@ -50,12 +59,15 @@ public class InputController {
     }
 
     @GetMapping("/addInput")
-    public String add(){
-        return "input/addInput";
+    public String add(Model model){
+        model.addAttribute("productList", productRepository.findAll());
+        return "input/input-add";
     }
 
+    @SneakyThrows
     @PostMapping("/addInput")
     public String saveInput(@ModelAttribute InputDto inputDto){
+        System.out.println(inputDto);
         inputService.save(inputDto);
         return "redirect:/input";
     }
