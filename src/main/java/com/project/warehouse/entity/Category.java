@@ -8,7 +8,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "category")
 public class Category {
@@ -17,15 +16,24 @@ public class Category {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "active")
+    @Column(name = "active", nullable = false)
     private Boolean active;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "parent_category_id")
     @ToString.Exclude
     private Category parentCategory;
 
+    @Override
+    public String toString() {
+        return "{" +
+                "id:" + id +
+                ", active:" + active +
+                ", name:\"" + name + '\"' +
+                ", parentCategory:" + parentCategory +
+                '}';
+    }
 }

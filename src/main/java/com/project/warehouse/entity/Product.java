@@ -1,5 +1,7 @@
 package com.project.warehouse.entity;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,7 +10,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "product")
 public class Product {
@@ -27,12 +28,25 @@ public class Product {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne()
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne()
     @JoinColumn(name = "measurement_id", nullable = false)
     private Measurement measurement;
 
+    @Override
+    public String toString() {
+        return "{" +
+                "id:" + id +
+                ", active:" + active +
+                ", code:" + code +
+                ", name: \"" + name + '\"' +
+                ", category:" + category +
+                ", measurement:" + measurement +
+                '}';
+    }
 }

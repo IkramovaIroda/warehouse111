@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -23,13 +24,16 @@ public class NotificationService {
     InputProductRepository inputProductRepository;
 
     public int getExpirePeriod(HttpServletRequest req){
-        for (Cookie cookie : req.getCookies()) {
-            if(cookie.getName().equals("product_expire_date")){
-                try {
-                    return Integer.parseInt(cookie.getName());
-                }catch (Exception ignore){}
+        if(req.getCookies()!=null){
+            for (Cookie cookie : req.getCookies()) {
+                if(cookie.getName().equals("product_expire_date")){
+                    try {
+                        return Integer.parseInt(cookie.getName());
+                    }catch (Exception ignore){}
+                }
             }
         }
+
         return 3;
     }
 

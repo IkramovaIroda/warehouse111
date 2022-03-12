@@ -1,16 +1,19 @@
 package com.project.warehouse.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-public class InputProductDto implements Serializable {
-    private final Integer productId;
-    private final BigDecimal amount;
-    private final BigDecimal price;
-    private final LocalDate expireDate;
-    private final Long inputId;
+@AllArgsConstructor
+@NoArgsConstructor
+public class InputProductDto {
+    private Long productId;
+    private Double amount;
+    private Double price;
+    private String expireDate;
+    private Long inputId;
 }

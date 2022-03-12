@@ -4,6 +4,11 @@ const main=addClassList(document.createElement('main'), 'd-flex', {
     width: '100vw',
     height: 'calc(100vh - 80px)'
 })
+
+try {
+    console.log(notificationsCount)
+}catch (e) {}
+
 let navbarItems=[
     {url: '/dashboard/most-sold', path: '/dashboard',name: 'Dashboard'},
     {url: '/users/user', path: '/users',name: 'Users'},
@@ -62,7 +67,7 @@ for (let classStyle of 'text-dark w-100 h-1000'.split(' ')) {
 }
 body.style.overflowY='hidden'
 body.style.backgroundColor='#f1f1f1'
-const navbar=createElement('nav', 'w-100 bg-white shadow-lg d-flex justify-content-start', {
+const navbar=createElement('nav', 'w-100 bg-white shadow-lg d-flex justify-content-start pl-4', {
     height: '80px'
 })
 let navUl=appendElement(
@@ -115,6 +120,10 @@ main.appendChild(appendElement(
     content
 ))
 body.appendChild(main)
+const scripts=document.querySelectorAll('script')
+for (let script of scripts) {
+    body.appendChild(script)
+}
 
 
 
