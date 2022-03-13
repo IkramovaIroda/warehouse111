@@ -5,9 +5,15 @@ import com.project.warehouse.dto.InputProductDto;
 import com.project.warehouse.entity.*;
 import com.project.warehouse.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,12 +36,13 @@ public class InputService {
 
     public void save(InputDto inputDto) {
         List<InputProductDto> inputProductDtoList = inputDto.getInputProducts();
-        LocalDate date = inputDto.getDate();
+        LocalDate date = LocalDate.parse(inputDto.getDate());
         Long currencyId = inputDto.getCurrencyId();
         Integer factureNumber = inputDto.getFactureNumber();
         Long supplierId = inputDto.getSupplierId();
         Long warehouseId = inputDto.getWarehouseId();
         Optional<Currency> currencyOptional = currencyRepository.findById(currencyId);
+
         Currency currency = currencyOptional.get();
         Optional<Warehouse> warehouseOptional = warehouseRepository.findById(warehouseId);
         Warehouse warehouse = warehouseOptional.get();
@@ -78,7 +85,7 @@ public class InputService {
     public void edit(Long id, InputDto inputDto) {
         Optional<Input> byId = inputRepository.findById(id);
         Input input = byId.get();
-        LocalDate date = inputDto.getDate();
+        LocalDate date = LocalDate.parse(inputDto.getDate());
         Long currencyId = inputDto.getCurrencyId();
         Integer factureNumber = inputDto.getFactureNumber();
         Long supplierId = inputDto.getSupplierId();

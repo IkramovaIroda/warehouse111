@@ -3,7 +3,6 @@ package com.project.warehouse.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @AllArgsConstructor
@@ -21,6 +20,7 @@ public class InputProduct {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "product_id", nullable = false)
+    @ToString.Exclude
     private Product product;
 
     @Column(name = "amount", nullable = false, precision = 131089)
@@ -34,6 +34,7 @@ public class InputProduct {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "input_id", nullable = false)
+    @ToString.Exclude
     private Input input;
 
 }
