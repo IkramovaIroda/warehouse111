@@ -1,8 +1,9 @@
 const content=document.querySelector('#main')
 const body=document.querySelector('body')
-const main=addClassList(document.createElement('main'), 'd-flex', {
+const main=addClassList(document.createElement('main'), '', {
     width: '100vw',
-    height: 'calc(100vh - 80px)'
+    height: 'calc(100vh - 80px)',
+    overflowX: 'hidden'
 })
 
 try {
@@ -12,7 +13,7 @@ try {
 let navbarItems=[
     {url: '/dashboard/most-sold', path: '/dashboard',name: 'Dashboard'},
     {url: '/users/user', path: '/users',name: 'Users'},
-    {url: '/input/get', path:'/input',name: 'Input'},
+    {url: '/input/all', path:'/input',name: 'Input'},
     {url: '/output', path: '/output',name: 'Output'},
     {url: '/data', path: '/data',name: 'Data'},
 ]
@@ -23,7 +24,7 @@ let leftNavbarItems={
         {url:'/dashboard/context', name:'Context'}
     ],
     'Input': [
-        {url: '/input', name: 'Input list'},
+        {url: '/input/all', name: 'Input list'},
         {url: '/input/addInput', name: 'Input add'}
     ]
 }
@@ -32,6 +33,7 @@ let leftNavbarItems={
 function addClassList(element, classList, style={}){
     let classes=classList.split(' ')
     for(let classH of classes){
+        if(classH==='')continue;
         element.classList.add(classH)
     }
     for (let styleKey in style) {
@@ -64,15 +66,53 @@ function appendElement(element=new Node(), child=new Node()){
     return element
 }
 
+function hideLeftNavbar() {
+    const leftNavbar=document.querySelector('#leftNavbar')
+    const toggleLeftNavbar=document.querySelector('#toggleLeftNavbar')
+    const contentContainer=document.querySelector('#contentContainer')
+    toggleLeftNavbar.classList.remove('rounded-left')
+    toggleLeftNavbar.classList.add('rounded-right')
+    toggleLeftNavbar.children.item(0).textContent='>'
+    toggleLeftNavbar.style.left='0'
+    toggleLeftNavbar.setAttribute('onclick', 'openLeftNavbar()')
+    leftNavbar.style.transform='translateX(-100%)'
+    contentContainer.style.transform='translateX(0)'
+    setTimeout(()=>{
+        contentContainer.style.maxWidth=""
+        contentContainer.style.width="100vw"
+    }, 700)
 
+}
 
-for (let classStyle of 'text-dark w-100 h-1000'.split(' ')) {
+function openLeftNavbar() {
+    const leftNavbar=document.querySelector('#leftNavbar')
+    const toggleLeftNavbar=document.querySelector('#toggleLeftNavbar')
+    const contentContainer=document.querySelector('#contentContainer')
+    toggleLeftNavbar.classList.remove('rounded-right')
+    toggleLeftNavbar.classList.add('rounded-left')
+    toggleLeftNavbar.children.item(0).textContent='<'
+    toggleLeftNavbar.setAttribute('onclick', 'hideLeftNavbar()')
+    leftNavbar.style.transform='translateX(0)'
+    toggleLeftNavbar.style.left='calc(20% - 20px)'
+    contentContainer.style.transform='translateX(20vw)'
+    setTimeout(()=>{
+        contentContainer.style.width="80vw"
+    }, 700)
+}
+
+for (let classStyle of 'text-dark'.split(' ')) {
     body.classList.add(classStyle)
 }
-body.style.overflowY='hidden'
+body.style.overflow='hidden'
 body.style.backgroundColor='#f1f1f1'
+body.style.width='100vw'
+body.style.height='100vh'
 const navbar=createElement('nav', 'w-100 bg-white shadow-lg d-flex justify-content-start pl-4', {
-    height: '80px'
+    height: '80px',
+    position: 'fixed',
+    zIndex: 3,
+    top: 0,
+    left: 0,
 })
 let navUl=appendElement(
     createElement('ul',
@@ -100,7 +140,22 @@ for (let navbarItem of navbarItems) {
 }
 navbar.appendChild(navUl)
 body.appendChild(navbar)
-const leftNavbar=createElement('div', 'w-25 h-100 shadow py-4', {'overflowY': 'auto'})
+const leftNavbar=createElement('div', 'h-100 shadow py-4',
+    {
+        'overflowY': 'hidden',
+        'width': '20%',
+        'maxWidth': "20%",
+        transition: 'transform linear 0.5s',
+        position: 'absolute',
+        left: 0,
+        top: '80px',
+        bottom: 0,
+        zIndex: 1,
+        backgroundColor: '#f1f1f1'
+    }, {
+    id: 'leftNavbar'
+    })
+
 if(activeParentNavbarName===''){
     body.innerHTML='<div class="container text-center my-5"><h1>404</h1></div>'
 }
@@ -115,12 +170,49 @@ for(let obj of leftNavbarItems[activeParentNavbarName]){
         })
     ))
 }
+const hideLeftNavbarBtn=appendElement(
+    createElement('div', 'shadow rounded-left d-flex justify-content-center align-items-center',
+        {
+            position: 'absolute',
+            left: 'calc(20% - 20px)',
+            top: '42vh',
+            width: '20px',
+            height: '70px',
+            cursor: 'pointer',
+            zIndex: '2',
+            transition: 'all linear 0.5s'
+        }, {
+        'id': 'toggleLeftNavbar',
+        'onclick': 'hideLeftNavbar()'
+        }),
+    createElement('span', 'font-weight-bold',  {},
+        {
+            text: '<',
+            fontSize: '1.5rem'
+        }
+    )
+)
+main.appendChild(hideLeftNavbarBtn)
+content.style.overflowY='auto'
+content.style.width='100%'
+content.style.height='calc(100vh - 100px)'
+content.classList.add('container')
 
 main.appendChild(leftNavbar)
-content.classList.add('px-3')
-content.classList.add('pt-3')
 main.appendChild(appendElement(
-    createElement('div', 'w-75 h-100', {overflowY: 'auto'}),
+    createElement('div', 'h-100',
+        {
+            overflowY: 'hidden',
+            width: '80vw',
+            maxWidth: '80vw',
+            height: 'calc(100vh - 100px)',
+            transition: 'transform linear 0.5s, width ease-out 0.5s',
+            position: 'absolute',
+            top: '80px',
+            transform: 'translateX(20vw)',
+            bottom: 0
+        },
+        {id: 'contentContainer'}),
     content
 ))
 body.appendChild(main)
