@@ -21,6 +21,10 @@ let leftNavbarItems={
         {url:'/dashboard/most-sold', name:'Most sold'},
         {url:'/dashboard/notifications', name:'Notifications'},
         {url:'/dashboard/context', name:'Context'}
+    ],
+    'Input': [
+        {url: '/input', name: 'Input list'},
+        {url: '/input/addInput', name: 'Input add'}
     ]
 }
 

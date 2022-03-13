@@ -1,12 +1,9 @@
 package com.project.warehouse.controller;
 
-import com.google.gson.Gson;
 import com.project.warehouse.dto.InputDto;
 import com.project.warehouse.entity.Input;
 import com.project.warehouse.entity.InputProduct;
-import com.project.warehouse.repository.InputProductRepository;
-import com.project.warehouse.repository.InputRepository;
-import com.project.warehouse.repository.ProductRepository;
+import com.project.warehouse.repository.*;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.project.warehouse.service.InputService;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,8 +31,15 @@ public class InputController {
 
     @Autowired
     ProductRepository productRepository;
+
     @Autowired
-    Gson gson;
+    WarehouseRepository warehouseRepository;
+
+    @Autowired
+    SupplierRepository supplierRepository;
+
+    @Autowired
+    CurrencyRepository currencyRepository;
 
     static Input input = new Input();
 
@@ -59,20 +64,25 @@ public class InputController {
     }
 
     @GetMapping("/addInput")
-    public String add(Model model){
-        model.addAttribute("productList", productRepository.findAll());
+    public String add(Model model, InputDto inputDto){
+        model.addAttribute("productList", productRepository.findAllByActiveTrue());
+        model.addAttribute("supplierList", supplierRepository.findAllByActiveTrue());
+        model.addAttribute("warehouseList", warehouseRepository.findAllByActiveTrue());
+        model.addAttribute("currencyList", currencyRepository.findAllByActiveTrue());
+        model.addAttribute("today", LocalDate.now().toString());
+        model.addAttribute("inputDto", inputDto);
         return "input/input-add";
     }
 
     @SneakyThrows
     @PostMapping("/addInput")
-    public String saveInput(@ModelAttribute InputDto inputDto){
+    public String saveInput(@Valid @ModelAttribute InputDto inputDto){
         System.out.println(inputDto);
         inputService.save(inputDto);
         return "redirect:/input";
     }
 
-    @GetMapping("/getInput//delete/{id}")
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id){
         Optional<Input> byId = inputRepository.findById(id);
         Input input = byId.get();

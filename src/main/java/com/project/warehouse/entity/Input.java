@@ -1,9 +1,13 @@
 package com.project.warehouse.entity;
 
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,9 +22,11 @@ public class Input {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "code", nullable = false)
-    private Long code;
+    @Type(type = "org.hibernate.type.PostgresUUIDType")
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "code", unique = true, updatable = false)
+    private UUID code;
 
     @Column(name = "date", nullable = false)
     private LocalDate date;
@@ -31,19 +37,26 @@ public class Input {
     @Column(name = "facture_number", nullable = false)
     private Integer factureNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne()
     @JoinColumn(name = "currency_id", nullable = false)
     @ToString.Exclude
     private Currency currency;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne()
     @JoinColumn(name = "supplier_id", nullable = false)
     @ToString.Exclude
     private Supplier supplier;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne()
     @JoinColumn(name = "warehouse_id", nullable = false)
     @ToString.Exclude
     private Warehouse warehouse;
 
+
+    public String getFormattedDate() {
+        return date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
 }
