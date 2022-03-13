@@ -43,7 +43,7 @@ public class InputController {
 
     static Input input = new Input();
 
-    @GetMapping
+    @GetMapping("/all")
     public String getInputs(Model model){
         model.addAttribute("inputList", inputRepository.findAll());
         return "input/input";
@@ -79,7 +79,7 @@ public class InputController {
     public String saveInput(@Valid @ModelAttribute InputDto inputDto){
         System.out.println(inputDto);
         inputService.save(inputDto);
-        return "redirect:/input";
+        return "redirect:/input/all";
     }
 
     @GetMapping("/delete/{id}")
@@ -87,7 +87,7 @@ public class InputController {
         Optional<Input> byId = inputRepository.findById(id);
         Input input = byId.get();
         input.setActive(false);
-        return "redirect:/input";
+        return "redirect:/input/all";
     }
 
     @GetMapping("/getInput/editInput/{id}")
@@ -99,7 +99,7 @@ public class InputController {
     @PostMapping("/editInputSave/{id}")
     public String editSave(@PathVariable Long id, @ModelAttribute InputDto inputDto){
         inputService.edit(id, inputDto);
-        return "redirect:/input/input";
+        return "redirect:/input/all";
     }
 
     @GetMapping("/getInput/getInputProducts/editInputProducts/{id}")
