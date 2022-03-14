@@ -26,12 +26,14 @@
             position: relative;
             height: 10px;
         }
+
+
     </style>
 </head>
 <body>
 
 
-<div class="px-5" id="main">
+<div class="px-5 " id="main">
     <select hidden required class="form-control" id="productSelect" style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
         <option th:value="${product.id}" th:each="product: ${productList}" th:text="${product.name}"></option>
     </select>
@@ -39,7 +41,7 @@
         <div class="text-right">
             <button type="submit" class="btn btn-success">Submit</button>
         </div>
-        <div class="my-3 rounded row m-0 py-3 px-2 bg-white" style="box-shadow: 3px 3px 3px #d0d0d0">
+        <div class="my-3 rounded row m-0 py-3 px-2 shadow">
             <div class="col-4">
                 <input type="date" required name="date" class="form-control"
                        th:max="${today}" style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
@@ -74,7 +76,7 @@
             </div>
 
         </div>
-        <table class="table table-hover">
+        <table class="table table-hover shadow rounded">
             <thead>
             <tr>
                 <th>№</th>
@@ -93,7 +95,9 @@
                     <div onmousemove="document.getElementsByClassName('add-bg')[0].classList.add('bg-success')"
                          onmouseout="document.getElementsByClassName('add-bg')[0].classList.remove('bg-success')"
                          onclick="addRow()"
-                         class="rounded-circle border p-1 d-flex justify-content-center align-items-center add-btn">
+                         class="rounded-circle border p-1 d-flex justify-content-center align-items-center add-btn"
+                         style="cursor: pointer"
+                    >
                         <p style="font-size: 1.5rem;text-align: center"
                            class="m-0 mb-1 font-weight-bold"
                         >+
@@ -108,6 +112,7 @@
 </div>
 
 <script>
+    let notificationsCount="[[${@notificationService.getNotificationsCount(#httpServletRequest)}]]"??0
     //element qoshish
     function addRow() {
         const table=document.querySelector('#productList')

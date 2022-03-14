@@ -5,11 +5,6 @@
     <title>Context</title>
     <link rel="stylesheet" th:href="@{/assets/css/bootstrap.css}">
     <link rel="stylesheet" th:href="@{/assets/css/main.css}">
-    <style>
-        .leftNavbar{
-            transform: translateX(-100px);
-        }
-    </style>
 </head>
 <body>
 <div class="px-4 " id="main">
@@ -17,7 +12,7 @@
 </div>
 </body>
 <script th:inline="javascript">
-    let notificationsCount="[[${notifications_count}]]"
+    let notificationsCount="[[${@notificationService.getNotificationsCount(#httpServletRequest)}]]"??0
 </script>
 <script type="text/javascript" th:src="@{/assets/js/context.js}"></script>
 </html>

@@ -37,11 +37,10 @@ public class NotificationService {
         return 3;
     }
 
-
     public Integer getNotificationsCount(HttpServletRequest req){
         int finalExpire_period = getExpirePeriod(req);
         LocalDate minDate=LocalDate.now().plusDays(finalExpire_period);
-        return inputProductRepository.findAllByExpireDateBefore(minDate).size();
+        return inputProductRepository.countByExpireDateBefore(minDate);
     }
 
     public boolean checkProduct(InputProduct inputProduct, int expire_period){
