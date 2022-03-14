@@ -25,6 +25,8 @@ public class DataLoader implements CommandLineRunner {
     CurrencyRepository currencyRepository;
     @Autowired
     SupplierRepository supplierRepository;
+    @Autowired
+    ClientRepository clientRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -32,11 +34,12 @@ public class DataLoader implements CommandLineRunner {
             Category category = categoryRepository.save(
                     new Category(1L, true, "Products", null));
             Measurement measurement = measurementRepository.save(
-                    new Measurement(1L, true, "Base"));
+                    new Measurement(1L, true, "ta"));
             productRepository.save(new Product(1L, true, 2L, "Nimadir", category, measurement));
             currencyRepository.save(new Currency(1L, true, "Dollar"));
             warehouseRepository.save(new Warehouse(1L, true, "Omborxona"));
             supplierRepository.save(new Supplier(1L, true, "Umidjon", "+998990472436"));
+            clientRepository.save(new Client(1L, "Umidjon", "+998903723909"));
         }
     }
 }
