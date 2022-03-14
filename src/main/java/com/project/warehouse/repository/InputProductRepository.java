@@ -11,4 +11,5 @@ public interface InputProductRepository extends JpaRepository<InputProduct, Long
     List<InputProduct> findByInput(Input input);
     List<InputProduct> findByInput_Id(Long id);
     List<InputProduct> findAllByExpireDateBefore(LocalDate expireDate);
+    Integer countByExpireDateBefore(LocalDate expireDate);
 }

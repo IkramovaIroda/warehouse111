@@ -26,6 +26,7 @@ public class DashboardController {
     @GetMapping(path = "/notifications")
     public String getNotificationPage(Model model, HttpServletRequest req){
         model.addAttribute("expire_date", notificationService.getNotificationsCount(req));
+        model.addAttribute("notifications_count",notificationService.getNotificationsCount(req));
         return "dashboard/notifications";
     }
 

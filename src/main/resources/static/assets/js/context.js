@@ -3,6 +3,7 @@ const body=document.querySelector('body')
 const main=addClassList(document.createElement('main'), '', {
     width: '100vw',
     height: 'calc(100vh - 80px)',
+    marginTop: '80px',
     overflowX: 'hidden'
 })
 
@@ -132,11 +133,26 @@ for (let navbarItem of navbarItems) {
     if(location.pathname.startsWith(navbarItem.path)){
         activeParentNavbarName=navbarItem.name
     }
-    navUl.append(appendElement(li,
-        createElement('a','nav-link'+(activeParentNavbarName.includes(navbarItem.name)?' active':''), {}, {
-            'href': navbarItem.url,
-            'text': navbarItem.name
-        })))
+    if(navbarItem.name==='Dashboard' && notificationsCount>0){
+        navUl.append(appendElement(li,
+            appendElement(
+                createElement('a','nav-link'+(activeParentNavbarName.includes(navbarItem.name)?' active':''), {}, {
+                    'href': navbarItem.url,
+                    'text': navbarItem.name
+                }),
+                createElement('span', 'badge badge-pill badge-danger', {}, {
+                    text: notificationsCount
+                })
+            )
+           ))
+    }else {
+        navUl.append(appendElement(li,
+            createElement('a','nav-link'+(activeParentNavbarName.includes(navbarItem.name)?' active':''), {}, {
+                'href': navbarItem.url,
+                'text': navbarItem.name
+            })))
+    }
+
 }
 navbar.appendChild(navUl)
 body.appendChild(navbar)
@@ -160,15 +176,33 @@ if(activeParentNavbarName===''){
     body.innerHTML='<div class="container text-center my-5"><h1>404</h1></div>'
 }
 for(let obj of leftNavbarItems[activeParentNavbarName]){
-    leftNavbar.appendChild(appendElement(
-        createElement('div', 'px-5'),
-        createElement('a', 'nav-link text-dark link'+(location.pathname.includes(obj.url)?' active':''),
-            {},
-            {
-                href: obj.url,
-                text: obj.name
-        })
-    ))
+    if(obj.name === "Notifications" && location.pathname!=='/dashboard/notifications' && notificationsCount!==null && notificationsCount>0){
+        leftNavbar.appendChild(appendElement(
+            createElement('div', 'px-5'),
+            appendElement(
+                createElement('a', 'nav-link text-dark link'+(location.pathname.includes(obj.url)?' active':''),
+                    {},
+                    {
+                        href: obj.url,
+                        text: obj.name
+                    }),
+                createElement('span', 'badge badge-danger', {}, {
+                    text: notificationsCount
+                })
+            )
+        ))
+    }else {
+        leftNavbar.appendChild(appendElement(
+            createElement('div', 'px-5'),
+            createElement('a', 'nav-link text-dark link'+(location.pathname.includes(obj.url)?' active':''),
+                {},
+                {
+                    href: obj.url,
+                    text: obj.name
+                })
+        ))
+    }
+
 }
 const hideLeftNavbarBtn=appendElement(
     createElement('div', 'shadow rounded-left d-flex justify-content-center align-items-center',

@@ -10,6 +10,9 @@
 <div id="main">
 
 </div>
+<script th:inline="javascript">
+    let notificationsCount="[[${@notificationService.getNotificationsCount(#httpServletRequest)}]]"??0
+</script>
 <script th:src="@{/assets/js/context.js}"></script>
 </body>
 </html>
