@@ -22,7 +22,8 @@ public class Output {
     @Column(name = "code", nullable = false)
     private Long code;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne()
     @JoinColumn(name = "currency_id", nullable = false)
     @ToString.Exclude
     private Currency currency;
@@ -33,12 +34,14 @@ public class Output {
     @Column(name = "facture_number", nullable = false)
     private Integer factureNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne()
     @JoinColumn(name = "warehouse_id", nullable = false)
     @ToString.Exclude
     private Warehouse warehouse;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne()
     @JoinColumn(name = "client_id", nullable = false)
     @ToString.Exclude
     private Client client;

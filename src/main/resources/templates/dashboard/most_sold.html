@@ -7,11 +7,74 @@
     <link rel="stylesheet" th:href="@{/assets/css/main.css}">
 </head>
 <body>
-<div id="main">
+<div class="px-5 py-3" id="main">
+    <form action="/dashboard/most-sold" class="shadow rounded p-4 my-3">
+        <div class="d-flex">
+            <label for="period" class="col-form-label">Period:</label>
+            <select name="period" id="period" class="form-control col-3 ml-3">
+                <option value="today">Today</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+            </select>
+            <label for="limit" class="ml-3 col-form-label">Limit: </label>
+            <input type="number" name="limit" id="limit" min="1" max="200" required class="form-control ml-3 col-2" placeholder="Limit">
+            <div class="col-2">
+                <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+        </div>
+    </form>
 
+    <table class="table table-hover mt-3 text-center">
+        <thead>
+        <tr>
+            <th>№</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Cash</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${outputProductList.size()==0}">
+            <td colspan="5">Not data yet</td>
+        </tr>
+        <tr th:each="outputProduct, i: ${outputProductList}">
+            <td th:text="${i.index+1}"></td>
+            <td th:text="${outputProduct.product.name}"></td>
+            <td th:text="${outputProduct.product.category.name}"></td>
+            <td th:text="${outputProduct.amount + ' ' + outputProduct.product.measurement.name}"></td>
+            <td th:text="${outputProduct.price+' '+outputProduct.output.currency.name}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <script th:inline="javascript">
     let notificationsCount="[[${@notificationService.getNotificationsCount(#httpServletRequest)}]]"??0
+
+    function getQuery(name) {
+        return new URLSearchParams(location.search).get(name)
+    }
+    function changePeriod(e) {
+        let current_period=getQuery('period')
+        if(current_period!==e.value){
+            window.location='/dashboard/most-sold?period='+e.value+(getQuery('limit')!==null?'&limit='+getQuery('limit'):'')
+        }
+    }
+    function changeLimit(e) {
+        let limit=getQuery('limit')
+        if(limit!==e.value && parseInt(e.value)>=1){
+            window.location='/dashboard/most-sold?limit='+Math.round(parseInt(e.value))
+                +(getQuery('period')!==null?'&period='+getQuery('period'):'')
+        }
+    }
+    window.onload=()=>{
+        if(getQuery('period')){
+            document.getElementById('period').value=getQuery('period')
+        }
+
+        document.getElementById('limit').value=getQuery('limit')??5
+    }
 </script>
 <script th:src="@{/assets/js/context.js}"></script>
 </body>
