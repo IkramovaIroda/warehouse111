@@ -105,6 +105,7 @@ public class InputController {
     @GetMapping("/getInput/getInputProducts/editInputProducts/{id}")
     public String editInputProducts(@PathVariable Long id, Model model){
           model.addAttribute("products", inputProductRepository.findById(id).get());
+          model.addAttribute("productList", )
           return "input/editInputProducts";
     }
     @GetMapping("/getInput/getInputProducts/deleteInputProducts/{id}")
