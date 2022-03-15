@@ -7,9 +7,12 @@
     <link rel="stylesheet" th:href="@{/assets/css/main.css}">
 </head>
 <body>
-<div id="main">
+<div class="px-4 " id="main">
 <h1>Context</h1>
 </div>
-<script th:src="@{/assets/js/context.js}"></script>
 </body>
+<script th:inline="javascript">
+    let notificationsCount="[[${@notificationService.getNotificationsCount(#httpServletRequest)}]]"??0
+</script>
+<script type="text/javascript" th:src="@{/assets/js/context.js}"></script>
 </html>

@@ -2,18 +2,17 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Notifications</title>
+    <title th:text="${'Notifications'+(notifications_count>0?'('+notifications_count+')':'')}"></title>
     <link rel="stylesheet" th:href="@{/assets/css/bootstrap.css}">
     <link rel="stylesheet" th:href="@{/assets/css/main.css}">
 </head>
 <body>
-<div id="main">
-    <h1>Notifications</h1>
-    <hr>
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur cupiditate eius et, excepturi illum itaque laboriosam mollitia officiis quis rerum veritatis, vero voluptate. A dolorum nostrum obcaecati perferendis possimus tenetur!
-    </p>
+<div class="px-5 py-3" id="main">
+
 </div>
+<script th:inline="javascript">
+    let notificationsCount="[[${notifications_count}]]"??0
+</script>
 <script th:src="@{/assets/js/context.js}"></script>
 </body>
 </html>

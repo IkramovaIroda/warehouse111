@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Input add</title>
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}">
+    <style>
+        .bg-danger .remove-btn{
+            color: white;
+        }
+        .add-btn{
+            width: 40px;
+            height: 40px;
+            line-height: 1;
+            position: absolute;
+            right: -20px;
+            top: -15px;
+            background: white;
+        }
+        .add-btn:hover{
+            background: var(--success);
+            color: white!important;
+        }
+        .add-bg{
+            position: relative;
+            height: 10px;
+        }
+
+
+    </style>
+</head>
+<body>
+
+
+<div class="px-5 " id="main">
+    <select hidden required class="form-control" id="productSelect" style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
+        <option th:value="${product.id}" th:each="product: ${productList}" th:text="${product.name}"></option>
+    </select>
+    <form action="/input/addInput" th:object="${inputDto}" class="mt-3 needs-validation" method="post">
+        <div class="text-right">
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+        <div class="my-3 rounded row m-0 py-3 px-2 shadow">
+            <div class="col-4">
+                <input type="date" required name="date" class="form-control"
+                       th:max="${today}" style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
+            </div>
+            <div class="col-4">
+                <input type="number" min="1" placeholder="Facture number" required name="factureNumber"
+                       class="form-control" style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
+            </div>
+            <div class="col-4">
+                <select name="currencyId" required th:field="*{currencyId}" class="form-control "
+                        style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
+                    <option th:each="currency: ${currencyList}"
+                            th:text="${currency.name}" th:value="${currency.id}"
+                    ></option>
+                </select>
+            </div>
+            <div class="col-6 mt-3">
+                <select name="warehouseId" required th:field="*{warehouseId}" class="form-control"
+                        style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
+                    <option th:each="warehouse: ${warehouseList}"
+                            th:text="${warehouse.name}" th:value="${warehouse.id}"
+                    ></option>
+                </select>
+            </div>
+            <div class="col-6 mt-3">
+                <select name="supplierId" required th:field="*{supplierId}" class="form-control "
+                        style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
+                    <option th:each="supplier: ${supplierList}"
+                            th:text="${supplier.name+' '+supplier.phoneNumber}" th:value="${supplier.id}"
+                    ></option>
+                </select>
+            </div>
+
+        </div>
+        <table class="table table-hover shadow rounded">
+            <thead>
+            <tr>
+                <th>№</th>
+                <th>Product</th>
+                <th>Expire date</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th style="width: 20px"></th>
+            </tr>
+            </thead>
+            <tbody id="productList">
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="6" class="text-right add-bg p-0" >
+                    <div onmousemove="document.getElementsByClassName('add-bg')[0].classList.add('bg-success')"
+                         onmouseout="document.getElementsByClassName('add-bg')[0].classList.remove('bg-success')"
+                         onclick="addRow()"
+                         class="rounded-circle border p-1 d-flex justify-content-center align-items-center add-btn"
+                         style="cursor: pointer"
+                    >
+                        <p style="font-size: 1.5rem;text-align: center"
+                           class="m-0 mb-1 font-weight-bold"
+                        >+
+                        </p>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </form>
+
+</div>
+
+<script>
+    let notificationsCount="[[${@notificationService.getNotificationsCount(#httpServletRequest)}]]"??0
+    //element qoshish
+    function addRow() {
+        const table=document.querySelector('#productList')
+        let rowId=table.childElementCount
+        const row=document.createElement('tr')
+        let productSelect=document.getElementById('productSelect'), startName=`inputProducts[${rowId}]`
+        productSelect.setAttribute('name', startName+".productId")
+        productSelect.removeAttribute('hidden')
+        row.innerHTML= `
+                    <td>${rowId+1}</td>
+                    <td>
+                        ${productSelect.outerHTML}
+                    </td>
+                    <td><input class="form-control"
+                        style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)" required type="date" name="${startName}.expireDate"></td>
+                    <td><input class="form-control" required min="1"
+                            style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"
+                            placeholder="Price" type="number" name="${startName}.price"></td>
+                            <td><input class="form-control" required min="1"
+                            style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"
+                            placeholder="Amount" type="number" name="${startName}.amount"></td>
+                    <td><button type="button" ${rowId===0?"disabled=\"true\"":''}
+                                class="btn border-0 bg-transparent remove-btn"
+                                onmousemove="removeBtnMove(${rowId})"
+                                onmouseout="removeBtnOut(${rowId})"
+                                onclick="removeRow(${rowId})">
+                            &times;
+                        </button>
+                    </td>`
+        productSelect.setAttribute('hidden','')
+        table.appendChild(row)
+    }
+    //element ochirish
+    function removeRow(rowId) {
+        const table=document.querySelector('#productList')
+        let childCount=table.childElementCount
+        table.children.item(rowId).remove()
+        if((rowId+1)!==childCount){
+            for (let i = rowId; i < childCount-1; i++) {
+                const tr=table.children.item(i)
+                let startName=`inputProducts[${i}]`
+                tr.children.item(0).innerHTML=(i+1)
+                tr.children.item(1).children.item(0).setAttribute('name', startName+".productId")
+                tr.children.item(2).children.item(0).setAttribute('name', startName+".expireDate")
+                tr.children.item(3).children.item(0).setAttribute('name', startName+".price")
+                tr.children.item(4).children.item(0).setAttribute('name', startName+".amount")
+                const removeBtn=tr.children.item(5).children.item(0)
+                removeBtn.setAttribute('onclick', `removeRow(${i})`)
+                removeBtn.setAttribute('onmousemove', `removeBtnMove(${i})`)
+                removeBtn.setAttribute('onmouseout', `removeBtnOut(${i})`)
+                if(i===0){
+                    tr.children.item(4).children.item(0).setAttribute('disabled', `true`)
+                }
+            }
+        }
+
+    }
+    function removeBtnMove(rowId){
+        const tr=document.querySelector('#productList').children.item(rowId)
+        tr.classList.add('table-danger')
+    }
+    function removeBtnOut(rowId){
+        const tr=document.querySelector('#productList').children.item(rowId)
+        tr.classList.remove('table-danger')
+    }
+    window.onload=() => {addRow()}
+</script>
+<script th:src="@{/assets/js/context.js}"></script>
+</body>
+</html>
