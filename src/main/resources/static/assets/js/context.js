@@ -108,7 +108,7 @@ body.style.overflow='hidden'
 body.style.backgroundColor='#f1f1f1'
 body.style.width='100vw'
 body.style.height='100vh'
-const navbar=createElement('nav', 'w-100 bg-white shadow-lg d-flex justify-content-start pl-4', {
+const navbar=createElement('nav', 'w-100 shadow-lg d-flex justify-content-start pl-4', {
     height: '80px',
     position: 'fixed',
     zIndex: 3,
@@ -136,7 +136,7 @@ for (let navbarItem of navbarItems) {
     if(navbarItem.name==='Dashboard' && notificationsCount>0){
         navUl.append(appendElement(li,
             appendElement(
-                createElement('a','nav-link'+(activeParentNavbarName.includes(navbarItem.name)?' active':''), {}, {
+                createElement('a','text-dark nav-link'+(activeParentNavbarName.includes(navbarItem.name)?' active':''), {}, {
                     'href': navbarItem.url,
                     'text': navbarItem.name
                 }),
@@ -147,7 +147,7 @@ for (let navbarItem of navbarItems) {
            ))
     }else {
         navUl.append(appendElement(li,
-            createElement('a','nav-link'+(activeParentNavbarName.includes(navbarItem.name)?' active':''), {}, {
+            createElement('a','text-dark nav-link'+(activeParentNavbarName.includes(navbarItem.name)?' active':''), {}, {
                 'href': navbarItem.url,
                 'text': navbarItem.name
             })))
