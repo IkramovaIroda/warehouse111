@@ -1,5 +1,6 @@
 package com.project.warehouse.repository;
 
+import com.project.warehouse.entity.Output;
 import com.project.warehouse.entity.OutputProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,6 @@ public interface OutputProductRepository extends JpaRepository<OutputProduct, Lo
             nativeQuery = true
     )
     List<OutputProduct> getOutputProductWithLimit(LocalDate from, LocalDate to, int limit);
+    List<OutputProduct> findAllByOutput_Id(Long id);
+    List<OutputProduct> findAllByOutput_IdAndOutputActive(Long id, boolean output_active);
 }

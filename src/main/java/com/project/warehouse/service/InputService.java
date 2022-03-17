@@ -4,7 +4,7 @@ import com.project.warehouse.dto.InputDto;
 import com.project.warehouse.dto.InputProductDto;
 import com.project.warehouse.entity.*;
 import com.project.warehouse.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Service;
 
@@ -19,19 +19,20 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class InputService {
 
-    @Autowired
+    final
     InputRepository inputRepository;
-    @Autowired
+    final
     InputProductRepository inputProductRepository;
-    @Autowired
+    final
     CurrencyRepository currencyRepository;
-    @Autowired
+    final
     WarehouseRepository warehouseRepository;
-    @Autowired
+    final
     SupplierRepository supplierRepository;
-    @Autowired
+    final
     ProductRepository productRepository;
 
     public void save(InputDto inputDto) {

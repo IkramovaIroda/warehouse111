@@ -81,6 +81,9 @@ public class InputController {
     @GetMapping("/getInput/editInput/{id}")
     public String edit(Model model, @PathVariable Long id){
         model.addAttribute("replaceableInput", inputRepository.findById(id).get());
+        model.addAttribute("supplierList", supplierRepository.findAllByActiveTrue());
+        model.addAttribute("warehouseList", warehouseRepository.findAllByActiveTrue());
+        model.addAttribute("currencyList", currencyRepository.findAllByActiveTrue());
         return "edit";
     }
 
@@ -93,6 +96,7 @@ public class InputController {
     @GetMapping("/getInput/getInputProducts/editInputProducts/{id}")
     public String editInputProducts(@PathVariable Long id, Model model){
           model.addAttribute("products", inputProductRepository.findById(id).get());
+          model.addAttribute("productList", productRepository.findAllByActiveTrue());
           return "input/editInputProducts";
     }
     @GetMapping("/getInput/getInputProducts/deleteInputProducts/{id}")
