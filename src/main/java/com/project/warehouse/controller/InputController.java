@@ -4,8 +4,8 @@ import com.project.warehouse.dto.InputDto;
 import com.project.warehouse.entity.Input;
 import com.project.warehouse.entity.InputProduct;
 import com.project.warehouse.repository.*;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,34 +18,29 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/input")
+@RequiredArgsConstructor
 public class InputController {
 
-    @Autowired
+    final
     InputRepository inputRepository;
-    
-    @Autowired
+    final
     InputService inputService;
-
-    @Autowired
+    final
     InputProductRepository inputProductRepository;
-
-    @Autowired
+    final
     ProductRepository productRepository;
-
-    @Autowired
+    final
     WarehouseRepository warehouseRepository;
-
-    @Autowired
+    final
     SupplierRepository supplierRepository;
-
-    @Autowired
+    final
     CurrencyRepository currencyRepository;
 
-    static Input input = new Input();
+    static Input input;
 
     @GetMapping("/all")
     public String getInputs(Model model){
-        model.addAttribute("inputList", inputRepository.findAll());
+        model.addAttribute("inputList", inputRepository.findAllByActiveTrue());
         return "input/input";
     }
     @GetMapping("/getInput/{id}")
@@ -93,6 +88,9 @@ public class InputController {
     @GetMapping("/getInput/editInput/{id}")
     public String edit(Model model, @PathVariable Long id){
         model.addAttribute("replaceableInput", inputRepository.findById(id).get());
+        model.addAttribute("supplierList", supplierRepository.findAllByActiveTrue());
+        model.addAttribute("warehouseList", warehouseRepository.findAllByActiveTrue());
+        model.addAttribute("currencyList", currencyRepository.findAllByActiveTrue());
         return "edit";
     }
 
@@ -105,7 +103,7 @@ public class InputController {
     @GetMapping("/getInput/getInputProducts/editInputProducts/{id}")
     public String editInputProducts(@PathVariable Long id, Model model){
           model.addAttribute("products", inputProductRepository.findById(id).get());
-          model.addAttribute("productList", )
+          model.addAttribute("productList", productRepository.findAllByActiveTrue());
           return "input/editInputProducts";
     }
     @GetMapping("/getInput/getInputProducts/deleteInputProducts/{id}")
