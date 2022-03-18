@@ -113,4 +113,17 @@ public class InputService {
         inputProductRepository.saveAll(inputProducts);
 
     }
+
+    public void saveEditInputProducts(Long id, InputProductDto inputProductDto) {
+        InputProduct inputProduct = inputProductRepository.findById(id).get();
+        Long productId = inputProductDto.getProductId();
+        Double price = inputProductDto.getPrice();
+        Double amount = inputProductDto.getAmount();
+        LocalDate expireDate = LocalDate.parse(inputProductDto.getExpireDate());
+        inputProduct.setProduct(productRepository.findById(id).get());
+        inputProduct.setAmount(amount);
+        inputProduct.setPrice(price);
+        inputProduct.setExpireDate(expireDate);
+        inputProductRepository.save(inputProduct);
+    }
 }
