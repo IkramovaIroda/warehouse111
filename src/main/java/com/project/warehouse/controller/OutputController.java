@@ -104,6 +104,13 @@ public class OutputController {
         return "output/getOutputProducts";
     }
 
+    @GetMapping("/delete/{id}")
+    public String deleteOutput(@PathVariable Long id){
+        Output output = outputRepository.findById(id).get();
+        output.setActive(false);
+        outputRepository.save(output);
+        return "redirect:/output/all";
+    }
 
 
 

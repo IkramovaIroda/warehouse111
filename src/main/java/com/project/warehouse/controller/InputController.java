@@ -1,6 +1,7 @@
 package com.project.warehouse.controller;
 
 import com.project.warehouse.dto.InputDto;
+import com.project.warehouse.dto.InputProductDto;
 import com.project.warehouse.entity.Input;
 import com.project.warehouse.entity.InputProduct;
 import com.project.warehouse.repository.*;
@@ -98,10 +99,14 @@ public class InputController {
           model.addAttribute("productList", productRepository.findAllByActiveTrue());
           return "input/editInputProducts";
     }
+    @PostMapping("/getInput/getInputProducts/editInputProducts/{id}")
+    public String saveEditInputProducts(@PathVariable Long id, @ModelAttribute InputProductDto inputProduct){
+        inputService.saveEditInputProducts(id, inputProduct);
+        return "redirect:/input/all";
+    }
     @GetMapping("/getInput/getInputProducts/deleteInputProducts/{id}")
     public String deleteInputProducts(@PathVariable Long id){
         inputProductRepository.deleteById(id);
         return "/getInput/getInputProducts";
-
     }
 }
