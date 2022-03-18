@@ -16,7 +16,7 @@ let navbarItems=[
     {url: '/users/user', path: '/users',name: 'Users'},
     {url: '/input/all', path:'/input',name: 'Input'},
     {url: '/output', path: '/output',name: 'Output'},
-    {url: '/data', path: '/data',name: 'Data'},
+    {url: '/data/category', path: '/data',name: 'Data'},
 ]
 let leftNavbarItems={
     'Dashboard': [
@@ -27,6 +27,22 @@ let leftNavbarItems={
     'Input': [
         {url: '/input/all', name: 'Input list'},
         {url: '/input/addInput', name: 'Input add'}
+    ],
+    'Output': [
+        {url: '/output/all', name: 'Output list'},
+        {url: '/output/addInput', name: 'Output add'}
+    ],
+    'Data': [
+        {url: '/data/category', name: 'Category'},
+        {url: '/data/product', name: 'Product'},
+        {url: '/data/currency', name: 'Currency'},
+        {url: '/data/warehouse', name: 'Warehouse'},
+        {url: '/data/measurement', name: 'Measurement'}
+    ],
+    'User': [
+        {url: '/users/user', name: 'User'},
+        {url: '/users/client', name: 'Client'},
+        {url: '/users/supplier', name: 'Supplier'},
     ]
 }
 

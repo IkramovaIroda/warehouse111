@@ -52,13 +52,12 @@ public class InputController {
     }
 
     @GetMapping("/addInput")
-    public String add(Model model, InputDto inputDto){
+    public String add(Model model){
         model.addAttribute("productList", productRepository.findAllByActiveTrue());
         model.addAttribute("supplierList", supplierRepository.findAllByActiveTrue());
         model.addAttribute("warehouseList", warehouseRepository.findAllByActiveTrue());
         model.addAttribute("currencyList", currencyRepository.findAllByActiveTrue());
         model.addAttribute("today", LocalDate.now().toString());
-        model.addAttribute("inputDto", inputDto);
         return "input/input-add";
     }
 

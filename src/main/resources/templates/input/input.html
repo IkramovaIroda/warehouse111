@@ -13,11 +13,11 @@
             <h1>Input</h1>
         </div>
         <div>
-            <a class="btn btn-success" th:href="@{/input/addInput}">Add</a>
+            <a class="btn shadow" style="background-color: #f1f1f1" th:href="@{/input/addInput}">Add</a>
         </div>
     </div>
 
-    <table class="table table-hover text-center">
+    <table class="table table-hover text-center rounded">
         <thead>
         <tr>
             <th>№</th>
@@ -47,7 +47,7 @@
                         <img th:src="@{/assets/icons/three-points-icon-light.png}" width="20" alt="">
                     </button>
                     <div class="dropdown-menu" th:aria-labelledby="${'toolButton'+input.id}">
-                        <a class="dropdown-item" th:href="${'input/edit/'+input.id}">Edit</a>
+                        <a class="dropdown-item" th:href="${'/input/edit/'+input.id}">Edit</a>
                         <a class="dropdown-item" th:href="${'/input/delete/'+input.id}">Delete</a>
                         <a class="dropdown-item" >View products</a>
                     </div>

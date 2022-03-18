@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@ToString
 @Table(name = "category")
 public class Category {
     @Id
@@ -17,7 +18,7 @@ public class Category {
     private Long id;
 
     @Column(name = "active", nullable = false)
-    private Boolean active;
+    private Boolean active=true;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -26,14 +27,4 @@ public class Category {
     @JoinColumn(name = "parent_category_id")
     @ToString.Exclude
     private Category parentCategory;
-
-    @Override
-    public String toString() {
-        return "{" +
-                "id:" + id +
-                ", active:" + active +
-                ", name:\"" + name + '\"' +
-                ", parentCategory:" + parentCategory +
-                '}';
-    }
 }
