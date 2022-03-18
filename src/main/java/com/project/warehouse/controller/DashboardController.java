@@ -4,6 +4,7 @@ import com.project.warehouse.repository.InputProductRepository;
 import com.project.warehouse.repository.OutputProductRepository;
 import com.project.warehouse.repository.ProductRepository;
 import com.project.warehouse.service.NotificationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,14 +16,15 @@ import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/dashboard")
+@RequiredArgsConstructor
 public class DashboardController {
-    @Autowired
+    final
     NotificationService notificationService;
-    @Autowired
+    final
     ProductRepository productRepository;
-    @Autowired
+    final
     InputProductRepository inputProductRepository;
-    @Autowired
+    final
     OutputProductRepository outputProductRepository;
 
 

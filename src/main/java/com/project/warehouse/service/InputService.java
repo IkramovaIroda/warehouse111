@@ -4,7 +4,7 @@ import com.project.warehouse.dto.InputDto;
 import com.project.warehouse.dto.InputProductDto;
 import com.project.warehouse.entity.*;
 import com.project.warehouse.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Service;
 
@@ -19,19 +19,20 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class InputService {
 
-    @Autowired
+    final
     InputRepository inputRepository;
-    @Autowired
+    final
     InputProductRepository inputProductRepository;
-    @Autowired
+    final
     CurrencyRepository currencyRepository;
-    @Autowired
+    final
     WarehouseRepository warehouseRepository;
-    @Autowired
+    final
     SupplierRepository supplierRepository;
-    @Autowired
+    final
     ProductRepository productRepository;
 
     public void save(InputDto inputDto) {
@@ -111,5 +112,18 @@ public class InputService {
         }
         inputProductRepository.saveAll(inputProducts);
 
+    }
+
+    public void saveEditInputProducts(Long id, InputProductDto inputProductDto) {
+        InputProduct inputProduct = inputProductRepository.findById(id).get();
+        Long productId = inputProductDto.getProductId();
+        Double price = inputProductDto.getPrice();
+        Double amount = inputProductDto.getAmount();
+        LocalDate expireDate = LocalDate.parse(inputProductDto.getExpireDate());
+        inputProduct.setProduct(productRepository.findById(id).get());
+        inputProduct.setAmount(amount);
+        inputProduct.setPrice(price);
+        inputProduct.setExpireDate(expireDate);
+        inputProductRepository.save(inputProduct);
     }
 }

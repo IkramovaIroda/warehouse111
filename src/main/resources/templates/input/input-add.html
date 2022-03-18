@@ -16,18 +16,16 @@
             position: absolute;
             right: -20px;
             top: -15px;
-            background: white;
+            background: #f1f1f1;
         }
         .add-btn:hover{
             background: var(--success);
-            color: white!important;
+            color: #f1f1f1!important;
         }
         .add-bg{
             position: relative;
             height: 10px;
         }
-
-
     </style>
 </head>
 <body>
@@ -37,9 +35,9 @@
     <select hidden required class="form-control" id="productSelect" style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
         <option th:value="${product.id}" th:each="product: ${productList}" th:text="${product.name}"></option>
     </select>
-    <form action="/input/addInput" th:object="${inputDto}" class="mt-3 needs-validation" method="post">
+    <form action="/input/addInput" class="mt-3 needs-validation" method="post">
         <div class="text-right">
-            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="submit" class="btn shadow" style="background:#f1f1f1">Submit</button>
         </div>
         <div class="my-3 rounded row m-0 py-3 px-2 shadow">
             <div class="col-4">
@@ -51,7 +49,7 @@
                        class="form-control" style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
             </div>
             <div class="col-4">
-                <select name="currencyId" required th:field="*{currencyId}" class="form-control "
+                <select name="currencyId" required class="form-control "
                         style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
                     <option th:each="currency: ${currencyList}"
                             th:text="${currency.name}" th:value="${currency.id}"
@@ -59,7 +57,7 @@
                 </select>
             </div>
             <div class="col-6 mt-3">
-                <select name="warehouseId" required th:field="*{warehouseId}" class="form-control"
+                <select name="warehouseId" required class="form-control"
                         style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
                     <option th:each="warehouse: ${warehouseList}"
                             th:text="${warehouse.name}" th:value="${warehouse.id}"
@@ -67,7 +65,7 @@
                 </select>
             </div>
             <div class="col-6 mt-3">
-                <select name="supplierId" required th:field="*{supplierId}" class="form-control "
+                <select name="supplierId" required class="form-control "
                         style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
                     <option th:each="supplier: ${supplierList}"
                             th:text="${supplier.name+' '+supplier.phoneNumber}" th:value="${supplier.id}"
@@ -92,10 +90,10 @@
             <tfoot>
             <tr>
                 <td colspan="6" class="text-right add-bg p-0" >
-                    <div onmousemove="document.getElementsByClassName('add-bg')[0].classList.add('bg-success')"
-                         onmouseout="document.getElementsByClassName('add-bg')[0].classList.remove('bg-success')"
+                    <div onmousemove="this.parentElement.classList.add('bg-success')"
+                         onmouseout="this.parentElement.classList.remove('bg-success')"
                          onclick="addRow()"
-                         class="rounded-circle border p-1 d-flex justify-content-center align-items-center add-btn"
+                         class="rounded-circle border p-1 shadow d-flex justify-content-center align-items-center add-btn"
                          style="cursor: pointer"
                     >
                         <p style="font-size: 1.5rem;text-align: center"
@@ -134,14 +132,15 @@
                             <td><input class="form-control" required min="1"
                             style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"
                             placeholder="Amount" type="number" name="${startName}.amount"></td>
-                    <td><button type="button" ${rowId===0?"disabled=\"true\"":''}
-                                class="btn border-0 bg-transparent remove-btn"
-                                onmousemove="removeBtnMove(${rowId})"
-                                onmouseout="removeBtnOut(${rowId})"
-                                onclick="removeRow(${rowId})">
+                    <td><button type="button" ${rowId===0?"disabled=\"true\"":`
+                                onmousemove="this.parentElement.parentElement.classList.add('table-danger')"
+                                onmouseout="this.parentElement.parentElement.classList.remove('table-danger')"
+                                onclick="removeRow(${rowId})"`}
+                                class="btn border-0 bg-transparent remove-btn">
                             &times;
                         </button>
                     </td>`
+        // onmouseout="removeBtnOut(${rowId})"
         productSelect.setAttribute('hidden','')
         table.appendChild(row)
     }

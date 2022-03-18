@@ -1,9 +1,11 @@
 package com.project.warehouse.controller;
 
 import com.project.warehouse.dto.InputDto;
+import com.project.warehouse.dto.InputProductDto;
 import com.project.warehouse.entity.Input;
 import com.project.warehouse.entity.InputProduct;
 import com.project.warehouse.repository.*;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,28 +20,15 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/input")
+@RequiredArgsConstructor
 public class InputController {
-
-    @Autowired
-    InputRepository inputRepository;
-    
-    @Autowired
-    InputService inputService;
-
-    @Autowired
-    InputProductRepository inputProductRepository;
-
-    @Autowired
-    ProductRepository productRepository;
-
-    @Autowired
-    WarehouseRepository warehouseRepository;
-
-    @Autowired
-    SupplierRepository supplierRepository;
-
-    @Autowired
-    CurrencyRepository currencyRepository;
+    final InputRepository inputRepository;
+    final InputService inputService;
+    final InputProductRepository inputProductRepository;
+    final ProductRepository productRepository;
+    final WarehouseRepository warehouseRepository;
+    final SupplierRepository supplierRepository;
+    final CurrencyRepository currencyRepository;
 
     static Input input = new Input();
 
@@ -64,13 +53,12 @@ public class InputController {
     }
 
     @GetMapping("/addInput")
-    public String add(Model model, InputDto inputDto){
+    public String add(Model model){
         model.addAttribute("productList", productRepository.findAllByActiveTrue());
         model.addAttribute("supplierList", supplierRepository.findAllByActiveTrue());
         model.addAttribute("warehouseList", warehouseRepository.findAllByActiveTrue());
         model.addAttribute("currencyList", currencyRepository.findAllByActiveTrue());
         model.addAttribute("today", LocalDate.now().toString());
-        model.addAttribute("inputDto", inputDto);
         return "input/input-add";
     }
 
@@ -93,6 +81,9 @@ public class InputController {
     @GetMapping("/getInput/editInput/{id}")
     public String edit(Model model, @PathVariable Long id){
         model.addAttribute("replaceableInput", inputRepository.findById(id).get());
+        model.addAttribute("supplierList", supplierRepository.findAllByActiveTrue());
+        model.addAttribute("warehouseList", warehouseRepository.findAllByActiveTrue());
+        model.addAttribute("currencyList", currencyRepository.findAllByActiveTrue());
         return "edit";
     }
 
@@ -105,12 +96,17 @@ public class InputController {
     @GetMapping("/getInput/getInputProducts/editInputProducts/{id}")
     public String editInputProducts(@PathVariable Long id, Model model){
           model.addAttribute("products", inputProductRepository.findById(id).get());
+          model.addAttribute("productList", productRepository.findAllByActiveTrue());
           return "input/editInputProducts";
+    }
+    @PostMapping("/getInput/getInputProducts/editInputProducts/{id}")
+    public String saveEditInputProducts(@PathVariable Long id, @ModelAttribute InputProductDto inputProduct){
+        inputService.saveEditInputProducts(id, inputProduct);
+        return "redirect:/input/all";
     }
     @GetMapping("/getInput/getInputProducts/deleteInputProducts/{id}")
     public String deleteInputProducts(@PathVariable Long id){
         inputProductRepository.deleteById(id);
         return "/getInput/getInputProducts";
-
     }
 }
