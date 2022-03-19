@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -23,7 +24,8 @@ CurrencyService currencyService;
     CurrencyRepository currencyRepository;
     @GetMapping
     public String getCurrencyPage(Model model) {
-        model.addAttribute("list", currencyRepository.findAll());
+        List<Currency> all = currencyRepository.findAllByActiveTrue();
+        model.addAttribute("list", all);
         return "currency/currency";
     }
 
@@ -42,10 +44,13 @@ CurrencyService currencyService;
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
-        currencyRepository.deleteById(id);
+        Optional<Currency> byId = currencyRepository.findById(id);
+        if (byId.isEmpty()) return "404";
+        Currency currency = byId.get();
+        currency.setActive(false);
+        currencyRepository.save(currency);
         return "redirect:/currency";
     }
-
 
     @GetMapping("/edit/{id}")
     public String editPage(@PathVariable Long id, Model model) {

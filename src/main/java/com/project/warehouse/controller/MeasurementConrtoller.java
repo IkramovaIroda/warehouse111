@@ -2,6 +2,7 @@ package com.project.warehouse.controller;
 
 import com.project.warehouse.dto.ApiResponse;
 import com.project.warehouse.dto.MeasurementDto;
+import com.project.warehouse.entity.Currency;
 import com.project.warehouse.entity.Measurement;
 import com.project.warehouse.repository.MeasurementRepository;
 import com.project.warehouse.service.MeasurementService;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -22,7 +24,8 @@ public class MeasurementConrtoller {
     MeasurementRepository measurementRepository;
     @GetMapping
     public String getMeasurementPage(Model model) {
-        model.addAttribute("list", measurementRepository.findAll());
+        List<Measurement> all = measurementRepository.findAllByActiveTrue();
+        model.addAttribute("list", all);
         return "measurement/measurement";
     }
 
@@ -41,7 +44,11 @@ public class MeasurementConrtoller {
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
-        measurementRepository.deleteById(id);
+        Optional<Measurement> byId = measurementRepository.findById(id);
+        if (byId.isEmpty()) return "404";
+        Measurement measurement = byId.get();
+        measurement.setActive(false);
+        measurementRepository.save(measurement);
         return "redirect:/measurement";
     }
 //    @PostMapping("/edit/{id}")
