@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@ToString
 @Table(name = "measurement")
 public class Measurement {
     @Id
@@ -18,17 +19,8 @@ public class Measurement {
     private Long id;
 
     @Column(name = "active", nullable = false)
-    private Boolean active;
+    private Boolean active=true;
 
     @Column(name = "name", nullable = false)
     private String name;
-
-    @Override
-    public String toString() {
-        return "{" +
-                "id:" + id +
-                ", active:" + active +
-                ", name:\"" + name + '\"' +
-                '}';
-    }
 }

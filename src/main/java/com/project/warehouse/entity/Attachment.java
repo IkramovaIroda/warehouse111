@@ -10,17 +10,19 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Entity
-@Table(name = "warehouse")
-public class Warehouse {
+@Table(name = "attachment")
+public class Attachment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "active", nullable = false)
-    private Boolean active = true;
+    @Column(name = "size",nullable = false)
+    private Long size;
 
     @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "content_type", nullable = false)
+    private String content_type;
 
 }

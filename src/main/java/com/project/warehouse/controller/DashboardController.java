@@ -3,15 +3,16 @@ package com.project.warehouse.controller;
 import com.project.warehouse.repository.InputProductRepository;
 import com.project.warehouse.repository.OutputProductRepository;
 import com.project.warehouse.repository.ProductRepository;
+import com.project.warehouse.service.AuthService;
 import com.project.warehouse.service.NotificationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 
 @Controller
@@ -26,10 +27,14 @@ public class DashboardController {
     InputProductRepository inputProductRepository;
     final
     OutputProductRepository outputProductRepository;
-
+    final AuthService authService;
 
     @GetMapping(path = "/most-sold")
-    public String getMostSold(Model model, HttpServletRequest req){
+    public String getMostSold(Model model, HttpServletRequest req, HttpServletResponse res){
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
+
         String periods="week, month, year";
         LocalDate from = LocalDate.now();
         LocalDate to = LocalDate.now();
@@ -72,15 +77,12 @@ public class DashboardController {
         return "dashboard/most_sold";
     }
     @GetMapping(path = "/notifications")
-    public String getNotificationPage(Model model, HttpServletRequest req){
+    public String getNotificationPage(Model model, HttpServletRequest req, HttpServletResponse res){
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         model.addAttribute("expire_date", notificationService.getNotificationsCount(req));
         model.addAttribute("notifications_count",notificationService.getNotificationsCount(req));
         return "dashboard/notifications";
-    }
-
-    @GetMapping("/context")
-    public String context(Model model, HttpServletRequest req){
-        model.addAttribute("notifications_count",notificationService.getNotificationsCount(req));
-        return "context";
     }
 }
