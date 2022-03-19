@@ -47,14 +47,14 @@ public class CurrencyController {
         Currency currency = byId.get();
         currency.setActive(false);
         currencyRepository.save(currency);
-        return "redirect:/currency";
+        return "redirect:/data/currency";
     }
 
     @PostMapping("/edit/{id}")
     public String editCurrency(@PathVariable Long id, @ModelAttribute CurrencyDto currencyDto) {
         ApiResponse response = currencyService.edit(id, currencyDto);
         System.out.println(response);
-        return "redirect:/currency";
+        return "redirect:/data/currency";
     }
 }
 
