@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Secured page</title>
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}">
+    <link rel="shortcut icon" href="/assets/icons/lock.png" type="image/x-icon">
+</head>
+<body style="background-color: #f1f1f1;height: 100vh">
+<div class="d-flex flex-column h-100 align-items-center justify-content-center">
+    <div class="text-center">
+        <div class="">
+            <img src="/assets/icons/lock.png" alt="lock icon" width="150px">
+        </div>
+        <div class="mt-3">
+            <p class="w-75 text-center mx-auto">
+                This page secured. To see content of the page you must
+                <a class="px-0 nav-link" style="display: unset"
+                   th:href="${'/auth/login?return_url='+#httpServletRequest.getServletPath()}">login</a> to system.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

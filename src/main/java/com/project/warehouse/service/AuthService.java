@@ -19,17 +19,19 @@ import java.util.UUID;
 public class AuthService {
     final AuthTokenRepository authTokenRepository;
     final UserRepository userRepository;
-    final int expire_hours=2;
+    final int expire_seconds=3600;
 
     public Cookie generateToken(User user){
         AuthToken authToken=new AuthToken();
         authToken.setCreated(LocalDateTime.now());
-        authToken.setExpireTime(LocalDateTime.now().plusHours(2));
+        authToken.setExpireTime(LocalDateTime.now().plusSeconds(expire_seconds));
         authToken.setUser(user);
         AuthToken save = authTokenRepository.save(authToken);
         Cookie cookie=new Cookie("token", save.getId().toString());
-        cookie.setMaxAge(3600*expire_hours);
+        cookie.setMaxAge(expire_seconds);
         cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
         return cookie;
     }
     public User getUser(String phoneNumber, String password){
@@ -37,13 +39,14 @@ public class AuthService {
     }
     public boolean checkToken(String token){
         try {
-            Optional<AuthToken> byId = authTokenRepository.findById(UUID.fromString(token));
+            UUID uuid = UUID.fromString(token);
+            Optional<AuthToken> byId = authTokenRepository.findById(uuid);
             if(byId.isEmpty()){
                 return false;
             }
             AuthToken authToken = byId.get();
             if(LocalDateTime.now().isAfter(authToken.getExpireTime())){
-                authTokenRepository.deleteById(authToken.getId());
+                authTokenRepository.deleteById(uuid);
                 return false;
             }
             return true;
@@ -68,6 +71,7 @@ public class AuthService {
             Cookie cookie = new Cookie("token", null);
             cookie.setPath("/");
             cookie.setMaxAge(0);
+            cookie.setHttpOnly(true);
             res.addCookie(cookie);
             return true;
         }

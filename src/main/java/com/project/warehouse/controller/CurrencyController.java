@@ -4,63 +4,52 @@ import com.project.warehouse.dto.ApiResponse;
 import com.project.warehouse.dto.CurrencyDto;
 import com.project.warehouse.entity.Currency;
 import com.project.warehouse.repository.CurrencyRepository;
+import com.project.warehouse.service.AuthService;
 import com.project.warehouse.service.CurrencyService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @Controller
-@RequestMapping("/currency")
+@RequestMapping("/data/currency")
+@RequiredArgsConstructor
 public class CurrencyController {
 
-    @Autowired
-CurrencyService currencyService;
-    @Autowired
-    CurrencyRepository currencyRepository;
+    final CurrencyService currencyService;
+    final CurrencyRepository currencyRepository;
+    final AuthService authService;
+
     @GetMapping
-    public String getCurrencyPage(Model model) {
-        model.addAttribute("list", currencyRepository.findAll());
-        return "currency/currency";
+    public String getCurrencyPage(Model model, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+        model.addAttribute("list", currencyRepository.findAllByActiveTrue());
+        return "data/currency";
     }
 
-
-    @GetMapping("/add")
-    public String getSaveCurrency() {
-
-        return "currency/currency-add";
-    }
-
-    @PostMapping("/add")
-    public String saveCurrency(Model model, @ModelAttribute Currency currency) {
+    @PostMapping
+    public String saveCurrency(@ModelAttribute Currency currency, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
         currencyService.add(currency);
-        return "redirect:/currency";
+        return "redirect:/data/currency";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    public String delete(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
         currencyRepository.deleteById(id);
-        return "redirect:/currency";
-    }
-
-
-    @GetMapping("/edit/{id}")
-    public String editPage(@PathVariable Long id, Model model) {
-
-        Optional<Currency> optionalCurrency = currencyRepository.findById(id);
-        if (!optionalCurrency.isPresent()) return "Xatolik!";
-        model.addAttribute("edited", optionalCurrency.get());
-        return "currency/currency-edit";
+        return "redirect:/data/currency";
     }
 
     @PostMapping("/edit/{id}")
-    public String editcurrency(@PathVariable Long id, @ModelAttribute CurrencyDto currencyDto) {
-        ApiResponse response = currencyService.edit(id, currencyDto);
-        System.out.println(response);
-        return "redirect:/currency";
+    public String editCurrency(@PathVariable Long id, @ModelAttribute CurrencyDto currencyDto, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+        currencyService.edit(id, currencyDto);
+        return "redirect:/data/currency";
     }
 }
 

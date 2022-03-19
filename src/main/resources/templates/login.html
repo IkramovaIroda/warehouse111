@@ -33,7 +33,7 @@
             <div class="border border-danger text-center text-danger p-2"
                  style="border-radius: 12px"
                  th:if="${auth_error}" th:text="${error_msg}"></div>
-            <form action="/auth/login"
+            <form th:action="${'/auth/login?return_url='+return_url}"
                   method="post">
                 <div class="form-group">
                     <label for="login">Login</label>

@@ -32,7 +32,7 @@ public class DashboardController {
     @GetMapping(path = "/most-sold")
     public String getMostSold(Model model, HttpServletRequest req, HttpServletResponse res){
         if (authService.deleteTokenIf(req, res)) {
-            return "redirect:/auth/login";
+            return "secured-page";
         }
 
         String periods="week, month, year";
@@ -79,7 +79,7 @@ public class DashboardController {
     @GetMapping(path = "/notifications")
     public String getNotificationPage(Model model, HttpServletRequest req, HttpServletResponse res){
         if (authService.deleteTokenIf(req, res)) {
-            return "redirect:/auth/login";
+            return "secured-page";
         }
         model.addAttribute("expire_date", notificationService.getNotificationsCount(req));
         model.addAttribute("notifications_count",notificationService.getNotificationsCount(req));

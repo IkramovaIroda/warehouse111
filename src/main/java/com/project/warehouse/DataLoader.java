@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.DispatcherServlet;
 
 @Component
 @RequiredArgsConstructor
@@ -44,5 +45,7 @@ public class DataLoader implements CommandLineRunner {
             user.setCode(1L);
             userRepository.save(user);
         }
+
     }
+
 }
