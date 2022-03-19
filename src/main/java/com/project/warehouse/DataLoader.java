@@ -2,31 +2,27 @@ package com.project.warehouse;
 
 import com.project.warehouse.entity.*;
 import com.project.warehouse.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
 
     @Value("${spring.sql.init.mode}")
     private String initialMode;
 
-    @Autowired
-    CategoryRepository categoryRepository;
-    @Autowired
-    WarehouseRepository warehouseRepository;
-    @Autowired
-    MeasurementRepository measurementRepository;
-    @Autowired
-    ProductRepository productRepository;
-    @Autowired
-    CurrencyRepository currencyRepository;
-    @Autowired
-    SupplierRepository supplierRepository;
-    @Autowired
-    ClientRepository clientRepository;
+    final CategoryRepository categoryRepository;
+    final WarehouseRepository warehouseRepository;
+    final MeasurementRepository measurementRepository;
+    final ProductRepository productRepository;
+    final CurrencyRepository currencyRepository;
+    final SupplierRepository supplierRepository;
+    final ClientRepository clientRepository;
+    final UserRepository userRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -40,6 +36,13 @@ public class DataLoader implements CommandLineRunner {
             warehouseRepository.save(new Warehouse(1L, true, "Omborxona"));
             supplierRepository.save(new Supplier(1L, true, "Umidjon", "+998990472436"));
             clientRepository.save(new Client(1L, "Umidjon", "+998903723909"));
+            User user=new User();
+            user.setFirstName("Umidjon");
+            user.setLastName("Tojiboyev");
+            user.setPassword("911368169umid");
+            user.setPhoneNumber("+998990472436");
+            user.setCode(1L);
+            userRepository.save(user);
         }
     }
 }
