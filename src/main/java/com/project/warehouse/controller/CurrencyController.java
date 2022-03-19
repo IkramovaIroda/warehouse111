@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -39,17 +41,20 @@ public class CurrencyController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
-        currencyRepository.deleteById(id);
-        return "redirect:/data/currency";
+    public String delete(@PathVariable Long id) {
+        Optional<Currency> byId = currencyRepository.findById(id);
+        if (byId.isEmpty()) return "404";
+        Currency currency = byId.get();
+        currency.setActive(false);
+        currencyRepository.save(currency);
+        return "redirect:/currency";
     }
 
     @PostMapping("/edit/{id}")
-    public String editCurrency(@PathVariable Long id, @ModelAttribute CurrencyDto currencyDto, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
-        currencyService.edit(id, currencyDto);
-        return "redirect:/data/currency";
+    public String editCurrency(@PathVariable Long id, @ModelAttribute CurrencyDto currencyDto) {
+        ApiResponse response = currencyService.edit(id, currencyDto);
+        System.out.println(response);
+        return "redirect:/currency";
     }
 }
 

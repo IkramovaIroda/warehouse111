@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -34,7 +35,7 @@ public class MeasurementController {
         model.addAttribute("list", measurementRepository.findAllByActiveTrue());
         return "data/measurement";
     }
-    
+
     @PostMapping
     public String saveMeasurement(@ModelAttribute Measurement measurement) {
         measurementService.add(measurement);
@@ -43,19 +44,12 @@ public class MeasurementController {
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
-        measurementRepository.deleteById(id);
-        return "redirect:/data/measurement";
-    }
-
-    @GetMapping("/edit/{id}")
-    public String editPage(@PathVariable Long id, Model model) {
-
-        Optional<Measurement> optionalMeasurement = measurementRepository.findById(id);
-        if (!optionalMeasurement.isPresent()) return "Xatolik!";
-
-//        departmentRepository.getById()
-        model.addAttribute("edited", optionalMeasurement.get());
-        return "data/measurement";
+        Optional<Measurement> byId = measurementRepository.findById(id);
+        if (byId.isEmpty()) return "404";
+        Measurement measurement = byId.get();
+        measurement.setActive(false);
+        measurementRepository.save(measurement);
+        return "redirect:/measurement";
     }
 
     @PostMapping("/edit/{id}")
