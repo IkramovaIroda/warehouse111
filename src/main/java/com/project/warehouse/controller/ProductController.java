@@ -53,7 +53,7 @@ public class ProductController {
         model.addAttribute("categoryList", categoryRepository.findAllByActiveTrue());
         model.addAttribute("measurementList", measurementRepository.findAllByActiveTrue());
         model.addAttribute("attachmentList", attachmentRepository.findAllByActiveTrue());
-        model.addAttribute("productDto", productDto);
+        model.addAttribute("productdto", productDto);
         return "product/product-add";
     }
 
