@@ -1,7 +1,48 @@
 package com.project.warehouse.service;
 
+import com.project.warehouse.dto.ApiResponse;
+import com.project.warehouse.dto.WarehouseDto;
+import com.project.warehouse.entity.Warehouse;
+import com.project.warehouse.repository.WarehouseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class WarehouseService {
+    @Autowired
+    WarehouseRepository warehouseRepository;
+
+    public ApiResponse add(Warehouse warehouse) {
+        Warehouse save = warehouseRepository.save(warehouse);
+        return new ApiResponse("Saved", true, save);
+    }
+    public ApiResponse edit1(WarehouseDto dto , Long id){
+        Warehouse warehouse = new Warehouse();
+        warehouse.setName(dto.getName());
+        warehouse.setId(id);
+        Warehouse save = warehouseRepository.save(warehouse);
+        return new ApiResponse("Saved", true, save);
+
+    }
+    public ApiResponse edit(Long id, WarehouseDto warehouseDto) {
+        Optional<Warehouse> optionalWarehouse = warehouseRepository.findById(id);
+        Warehouse warehouse = optionalWarehouse.get();
+
+
+        warehouse.setName(warehouseDto.getName());
+
+        warehouseRepository.save(warehouse);
+        return new ApiResponse("Updated!", true);
+    }
+
+    public ApiResponse update(Long id, Warehouse warehouse) {
+        Optional<Warehouse> optionalWarehouse = warehouseRepository.findById(id);
+        Warehouse edited = optionalWarehouse.get();
+        edited.setName(warehouse.getName());
+        warehouseRepository.save(edited);
+        return new ApiResponse("Edited", true);
+    }
+
 }
