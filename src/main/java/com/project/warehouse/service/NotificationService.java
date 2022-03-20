@@ -3,11 +3,13 @@ package com.project.warehouse.service;
 import com.project.warehouse.entity.InputProduct;
 import com.project.warehouse.repository.InputProductRepository;
 import com.project.warehouse.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -17,10 +19,11 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class NotificationService {
-    @Autowired
+    final
     ProductRepository productRepository;
-    @Autowired
+    final
     InputProductRepository inputProductRepository;
 
     public int getExpirePeriod(HttpServletRequest req){
@@ -33,8 +36,14 @@ public class NotificationService {
                 }
             }
         }
-
         return 3;
+    }
+    public void setExpirePeriod(HttpServletResponse res, int period){
+        Cookie cookie=new Cookie("product_expire_date", String.valueOf(period));
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        res.addCookie(cookie);
     }
 
     public Integer getNotificationsCount(HttpServletRequest req){

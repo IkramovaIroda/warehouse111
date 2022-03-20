@@ -6,14 +6,18 @@ import com.project.warehouse.repository.ProductRepository;
 import com.project.warehouse.service.AuthService;
 import com.project.warehouse.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/dashboard")
@@ -81,8 +85,16 @@ public class DashboardController {
         if (authService.deleteTokenIf(req, res)) {
             return "secured-page";
         }
-        model.addAttribute("expire_date", notificationService.getNotificationsCount(req));
         model.addAttribute("notifications_count",notificationService.getNotificationsCount(req));
+        model.addAttribute("expire_date",notificationService.getExpirePeriod(req));
+        model.addAttribute("products",
+                inputProductRepository.findAllByExpireDateBefore(LocalDate.now().plusDays(3)));
         return "dashboard/notifications";
+    }
+
+    @PostMapping("/expire_date")
+    public String changeExpire(@RequestBody Map<String, Integer> values, HttpServletResponse res){
+        notificationService.setExpirePeriod(res, values.get("period"));
+        return "redirect:/dashboard/notifications";
     }
 }

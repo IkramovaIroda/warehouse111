@@ -189,7 +189,12 @@ const leftNavbar=createElement('div', 'h-100 shadow py-4',
     })
 
 if(activeParentNavbarName===''){
-    body.innerHTML='<div class="container text-center my-5"><h1>404</h1></div>'
+    body.innerHTML='<div class="d-flex align-items-center justify-content-center h-100 pb-5"> ' +
+        '    <div class="text-center"> ' +
+        '        <h1 style="font-size: 10rem">404</h1> ' +
+        '        <p>This page not found. Go to <a href="/" class="nav-link">home page.</a></p> ' +
+        '    </div> ' +
+        '</div>'
 }
 for(let obj of leftNavbarItems[activeParentNavbarName]){
     if(obj.name === "Notifications" && location.pathname!=='/dashboard/notifications' && notificationsCount!==null && notificationsCount>0){
