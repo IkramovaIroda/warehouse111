@@ -1,15 +1,18 @@
 package com.project.warehouse.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
-public class ProductDto implements Serializable {
-    private final Boolean active;
-    private final String name;
-    private final Long categoryId;
-    private final Long measurementId;
-    private final  Long photo_id;
-    private final  Long code;
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProductDto  {
+    private String name;
+    private Long categoryId;
+    private Long measurementId;
+//    private final  Long photo_id;
+//    private Long code;
 }

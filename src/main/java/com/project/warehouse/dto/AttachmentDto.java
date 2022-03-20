@@ -1,13 +1,17 @@
 package com.project.warehouse.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
-public class AttachmentDto  implements Serializable {
-    private final String name;
-    private  final  Long size;
-    private final String content_type;
+@AllArgsConstructor
+@NoArgsConstructor
+public class AttachmentDto {
+    private String name;
+    private Long size;
+    private String content_type;
 
 }
