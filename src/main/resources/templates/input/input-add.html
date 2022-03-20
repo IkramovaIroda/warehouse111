@@ -41,15 +41,18 @@
         </div>
         <div class="my-3 rounded row m-0 py-3 px-2 shadow">
             <div class="col-4">
-                <input type="date" required name="date" class="form-control"
+                <label for="date">Date</label>
+                <input type="date" id="date" required name="date" class="form-control"
                        th:max="${today}" style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
             </div>
             <div class="col-4">
-                <input type="number" min="1" placeholder="Facture number" required name="factureNumber"
+                <label for="factureNumber">Facture number</label>
+                <input type="number" id="factureNumber" min="1" placeholder="Facture number" required name="factureNumber"
                        class="form-control" style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
             </div>
             <div class="col-4">
-                <select name="currencyId" required class="form-control "
+                <label for="currencyId">Currency</label>
+                <select name="currencyId" id="currencyId" required class="form-control"
                         style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
                     <option th:each="currency: ${currencyList}"
                             th:text="${currency.name}" th:value="${currency.id}"
@@ -57,7 +60,8 @@
                 </select>
             </div>
             <div class="col-6 mt-3">
-                <select name="warehouseId" required class="form-control"
+                <label for="warehouseId">Warehouse</label>
+                <select name="warehouseId" id="warehouseId" required class="form-control"
                         style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
                     <option th:each="warehouse: ${warehouseList}"
                             th:text="${warehouse.name}" th:value="${warehouse.id}"
@@ -65,7 +69,8 @@
                 </select>
             </div>
             <div class="col-6 mt-3">
-                <select name="supplierId" required class="form-control "
+                <label for="supplierId">Supplier</label>
+                <select name="supplierId" id="supplierId" required class="form-control "
                         style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
                     <option th:each="supplier: ${supplierList}"
                             th:text="${supplier.name+' '+supplier.phoneNumber}" th:value="${supplier.id}"

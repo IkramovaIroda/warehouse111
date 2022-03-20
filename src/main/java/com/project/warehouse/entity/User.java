@@ -18,7 +18,7 @@ public class User {
     private Long id;
 
     @Column(name = "active", nullable = false)
-    private Boolean active = false;
+    private Boolean active = true;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "code", nullable = false)
@@ -33,7 +33,7 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
 
 }

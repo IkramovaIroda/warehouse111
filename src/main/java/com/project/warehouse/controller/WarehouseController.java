@@ -6,6 +6,7 @@ import com.project.warehouse.entity.Currency;
 import com.project.warehouse.entity.Warehouse;
 import com.project.warehouse.repository.WarehouseRepository;
 import com.project.warehouse.service.WarehouseService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,30 +17,24 @@ import java.util.Optional;
 
 
 @Controller
-@RequestMapping("/warehouse")
+@RequestMapping("/data/warehouse")
+@RequiredArgsConstructor
 public class WarehouseController {
-    @Autowired
+    final
     WarehouseService warehouseService;
-    @Autowired
+    final
     WarehouseRepository warehouseRepository;
     @GetMapping
     public String getWarehousePage(Model model) {
-        List<Warehouse> all = warehouseRepository.findAllByActiveTrue();
-        model.addAttribute("list",all);
-        return "warehouse/warehouse";
+
+        model.addAttribute("list", warehouseRepository.findAllByActiveTrue());
+        return "data/warehouse";
     }
 
-
-    @GetMapping("/add")
-    public String getSaveWarehouse() {
-
-        return "warehouse/warehouse-add";
-    }
-
-    @PostMapping("/add")
+    @PostMapping
     public String saveWarehouse(Model model, @ModelAttribute Warehouse warehouse) {
         warehouseService.add(warehouse);
-        return "redirect:/warehouse";
+        return "redirect:/data/warehouse";
     }
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
@@ -48,35 +43,14 @@ public class WarehouseController {
         Warehouse warehouse = byId.get();
         warehouse.setActive(false);
         warehouseRepository.save(warehouse);
-        return "redirect:/warehouse";
+        return "redirect:/data/warehouse";
     }
-//    @PostMapping("/edit/{id}")
-//    public String editSave(@ModelAttribute WarehouseDto dto, @PathVariable Long id){
-//        warehouseService.edit(dto, id);
-//        return "redirect:/warehouse";
-//    }
-
-//    @PostMapping("/edit/{id}")
-//    public ApiResponse edit(@PathVariable Long id, @RequestBody Warehouse warehouse) {
-//        ApiResponse response = warehouseService.update(id, warehouse);
-//        return response;
-//    }
-@GetMapping("/edit/{id}")
-public String editPage(@PathVariable Long id, Model model) {
-
-    Optional<Warehouse> optionalWarehouse = warehouseRepository.findById(id);
-    if (!optionalWarehouse.isPresent()) return "Xatolik!";
-
-//        departmentRepository.getById()
-    model.addAttribute("edited", optionalWarehouse.get());
-    return "warehouse/warehouse-edit";
-}
 
     @PostMapping("/edit/{id}")
     public String editDepartment(@PathVariable Long id, @ModelAttribute WarehouseDto warehouseDto) {
         ApiResponse response = warehouseService.edit(id, warehouseDto);
         System.out.println(response);
-        return "redirect:/warehouse";
+        return "redirect:/data/warehouse";
     }
 }
 
