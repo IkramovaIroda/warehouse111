@@ -1,5 +1,7 @@
 package com.project.warehouse.controller;
 
+import com.project.warehouse.dto.ApiResponse;
+import com.project.warehouse.dto.UserDto;
 import com.project.warehouse.entity.User;
 import com.project.warehouse.repository.UserRepository;
 import com.project.warehouse.repository.UserWarehouseRepository;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("data/users")
 public class UserController {
 
     @Autowired
@@ -68,13 +70,13 @@ public class UserController {
         return "user-edit";
     }
 
-//
-//        @PostMapping("/edit/{id}")
-//        public String editUser(@PathVariable Long id, @ModelAttribute UserDto userDto) {
-//        ApiResponse response = userService.edit(id, userDto);
-//        System.out.println(response);
-//        return "redirect:/user";
-//        }
+
+        @PostMapping("/edit/{id}")
+        public String editUser(@PathVariable Long id, @ModelAttribute UserDto userDto) {
+        ApiResponse response = userService.edit(id, userDto);
+        System.out.println(response);
+        return "redirect:/user";
+        }
 
 
 }
