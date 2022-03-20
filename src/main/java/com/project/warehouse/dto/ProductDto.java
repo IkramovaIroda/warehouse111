@@ -10,4 +10,6 @@ public class ProductDto implements Serializable {
     private final String name;
     private final Long categoryId;
     private final Long measurementId;
+    private final  Long photo_id;
+    private final  Long code;
 }

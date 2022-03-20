@@ -1,7 +1,6 @@
 package com.project.warehouse.entity;
 
 import lombok.*;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 
@@ -9,6 +8,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 @ToString
 @Table(name = "measurement")
@@ -19,7 +19,7 @@ public class Measurement {
     private Long id;
 
     @Column(name = "active", nullable = false)
-    private Boolean active=true;
+    private Boolean active = true;
 
     @Column(name = "name", nullable = false)
     private String name;
