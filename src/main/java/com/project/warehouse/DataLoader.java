@@ -3,11 +3,9 @@ package com.project.warehouse;
 import com.project.warehouse.entity.*;
 import com.project.warehouse.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.DispatcherServlet;
 
 @Component
 @RequiredArgsConstructor
@@ -32,7 +30,7 @@ public class DataLoader implements CommandLineRunner {
                     new Category(1L, true, "Products", null));
             Measurement measurement = measurementRepository.save(
                     new Measurement(1L, true, "ta"));
-            productRepository.save(new Product(1L, true, 2L, "Nimadir", category, measurement));
+//            productRepository.save(new Product(1L, true, 2L, "Nimadir", category, measurement));
             currencyRepository.save(new Currency(1L, true, "Dollar"));
             warehouseRepository.save(new Warehouse(1L, true, "Omborxona"));
             supplierRepository.save(new Supplier(1L, true, "Umidjon", "+998990472436"));

@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Entity
-@ToString
 @Table(name = "measurement")
 public class Measurement {
     @Id

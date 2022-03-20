@@ -30,21 +30,21 @@ public class ProductService {
         String name = productDto.getName();
         Long categoryId = productDto.getCategoryId();
         Long measurementId = productDto.getMeasurementId();
-        Long photo_id = productDto.getPhoto_id();
+//        Long photo_id = productDto.getPhoto_id();
         Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
 
         Category category = categoryOptional.get();
         Optional<Measurement> measurementOptional = measurementRepository.findById(measurementId);
         Measurement measurement = measurementOptional.get();
-        Optional<Attachment> attachmentOptional = attachmentRepository.findById(photo_id);
-        Attachment attachment = attachmentOptional.get();
+//        Optional<Attachment> attachmentOptional = attachmentRepository.findById(photo_id);
+//        Attachment attachment = attachmentOptional.get();
 
         Product product = new Product();
         product.setCategory(category);
         product.setMeasurement(measurement);
-        product.setAttachment(attachment);
+//        product.setAttachment(attachment);
         product.setName(productDto.getName());
-        product.setCode(productDto.getCode());
+//        product.setCode(productDto.getCode());
         Product save = productRepository.save(product);
 
     }
@@ -55,18 +55,18 @@ public class ProductService {
         Long categoryId = productDto.getCategoryId();
         Long measuremantId = productDto.getMeasurementId();
         String name=productDto.getName();
-        Long photo_id = productDto.getPhoto_id();
-        Long code = productDto.getCode();
+//        Long photo_id = productDto.getPhoto_id();
+//        Long code = productDto.getCode();
         Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
         Category category = categoryOptional.get();
         Optional<Measurement> measurementOptional = measurementRepository.findById(measuremantId);
         Measurement measurement = measurementOptional.get();
-        Optional<Attachment> attachmentOptional = attachmentRepository.findById(photo_id);
-        Attachment attachment = attachmentOptional.get();
+//        Optional<Attachment> attachmentOptional = attachmentRepository.findById(photo_id);
+//        Attachment attachment = attachmentOptional.get();
 
         product.setName(name);
-        product.setAttachment(attachment);
-        product.setCode(code);
+//        product.setAttachment(attachment);
+//        product.setCode(code);
         product.setCategory(category);
         product.setMeasurement(measurement);
         Product save = productRepository.save(product);
