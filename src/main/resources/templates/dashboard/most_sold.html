@@ -48,9 +48,11 @@
         </tr>
         </tbody>
     </table>
+<!--    <div th:text="${@authService.getUser(#httpServletRequest)}"></div>-->
 </div>
 <script th:inline="javascript">
-    let notificationsCount="[[${@notificationService.getNotificationsCount(#httpServletRequest)}]]"??0
+    let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0,
+        user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
 
     function getQuery(name) {
         return new URLSearchParams(location.search).get(name)

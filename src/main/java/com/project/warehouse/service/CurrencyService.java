@@ -7,14 +7,16 @@ import com.project.warehouse.entity.Currency;
 import com.project.warehouse.entity.Warehouse;
 import com.project.warehouse.repository.CurrencyRepository;
 import com.project.warehouse.repository.WarehouseRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CurrencyService {
-    @Autowired
+    final
     CurrencyRepository currencyRepository;
 
     public ApiResponse add(Currency currency) {

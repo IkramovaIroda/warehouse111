@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Input add</title>
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/main.css}">
+    <style>
+        .bg-danger .remove-btn{
+            color: white;
+        }
+        .add-btn{
+            width: 40px;
+            height: 40px;
+            line-height: 1;
+            position: absolute;
+            right: -20px;
+            top: -15px;
+            background: #f1f1f1;
+        }
+        .add-btn:hover{
+            background: var(--success);
+            color: #f1f1f1!important;
+        }
+        .add-bg{
+            position: relative;
+            height: 10px;
+        }
+        tr{
+            transition: background-color ease-in-out 2s;
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="py-4 " id="main">
+    <div class="my-3 rounded row m-0">
+        <button type="submit" class="btn shadow col-1" onclick="window.history.back()" style="background:#f1f1f1">< Return</button>
+    </div>
+    <div class="my-3 rounded row m-0 py-3 px-2 shadow">
+        <div class="col-4">
+            <label for="date">Date</label>
+            <input type="date" id="date" disabled name="date" class="form-control"
+                   style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)" th:value="${input.date}"
+            >
+        </div>
+        <div class="col-4">
+            <label for="factureNumber">Facture number</label>
+            <input type="number" id="factureNumber" placeholder="Facture number"
+                   name="factureNumber" disabled
+                   class="form-control" style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)" th:value="${input.factureNumber}"
+            >
+        </div>
+        <div class="col-4">
+            <label for="currencyId">Currency</label>
+            <input type="text" name="currencyId" id="currencyId" class="form-control"
+                   disabled style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)" th:value="${input.currency.name}"
+            />
+
+        </div>
+        <div class="col-6 mt-3">
+            <label for="warehouseId">Warehouse</label>
+            <input type="text" name="warehouseId" id="warehouseId" class="form-control"
+                   style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)" th:value="${input.warehouse.name}" disabled
+            />
+        </div>
+        <div class="col-6 mt-3">
+            <label for="supplierId">Supplier</label>
+            <input type="text" id="supplierId" class="form-control " disabled
+                   style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)" th:value="${input.supplier.name+' '+input.supplier.phoneNumber}"
+            />
+        </div>
+
+    </div>
+    <table class="table table-hover shadow rounded">
+        <thead>
+        <tr>
+            <th>№</th>
+            <th>Product</th>
+            <th>Expire date</th>
+            <th>Price</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody id="productList" data-spy="scroll" data-offset="1" data-target="main">
+        <tr th:each="inputProduct, i: ${inputProducts}" th:id="${'target'+inputProduct.id}">
+            <td th:text="${i.index+1}"></td>
+            <td>
+                <input type="text" th:value="${inputProduct.product.name}"
+                       disabled class="form-control"
+                       style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"
+                >
+            </td>
+            <td><input class="form-control" disabled
+                       style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)" required type="date" th:value="${inputProduct.expireDate}"></td>
+            <td><input class="form-control" required min="1"
+                       style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)" disabled
+                       placeholder="Price" type="number" th:value="${inputProduct.price}"></td>
+            <td><input class="form-control" required min="1" disabled
+                       style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"
+                       placeholder="Amount" type="number" th:value="${inputProduct.amount}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script th:inline="javascript">
+    let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0, user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
+    function getQuery(name) {
+        return new URLSearchParams(location.search).get(name)
+    }
+</script>
+<script th:src="@{/assets/js/context.js}"></script>
+<script th:inline="javascript">
+    window.onload=()=>{
+        if(getQuery('active')){
+            const target=document.getElementById('target'+getQuery('active'))
+            target.scrollIntoView({behavior: 'smooth', block: 'center'})
+            target.classList.add('table-primary')
+            setTimeout(()=>{
+                target.classList.remove('table-primary')
+            }, 2000)
+        }
+    }
+</script>
+</body>
+</html>

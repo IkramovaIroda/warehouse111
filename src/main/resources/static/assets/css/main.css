@@ -29,3 +29,9 @@
     font-weight: bold;
     font-size: 1.2rem!important;
 }
+.dropdown-menu{
+    background-color: #f1f1f1;
+}
+.popover-body{
+    background-color: #f1f1f1!important;
+}

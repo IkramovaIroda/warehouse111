@@ -50,4 +50,10 @@ public class AuthController {
         }
         return "redirect:/dashboard/most-sold";
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletResponse res){
+        authService.logout(res);
+        return "redirect:/auth/login";
+    }
 }

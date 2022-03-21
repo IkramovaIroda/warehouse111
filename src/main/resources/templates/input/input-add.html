@@ -29,8 +29,6 @@
     </style>
 </head>
 <body>
-
-
 <div class="px-5 " id="main">
     <select hidden required class="form-control" id="productSelect" style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)">
         <option th:value="${product.id}" th:each="product: ${productList}" th:text="${product.name}"></option>
@@ -114,8 +112,8 @@
 
 </div>
 
-<script>
-    let notificationsCount="[[${@notificationService.getNotificationsCount(#httpServletRequest)}]]"??0
+<script th:inline="javascript">
+    let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0, user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
     //element qoshish
     function addRow() {
         const table=document.querySelector('#productList')

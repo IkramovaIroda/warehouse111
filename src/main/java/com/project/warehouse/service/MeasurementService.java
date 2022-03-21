@@ -8,14 +8,16 @@ import com.project.warehouse.entity.Measurement;
 import com.project.warehouse.entity.Warehouse;
 import com.project.warehouse.repository.MeasurementRepository;
 import com.project.warehouse.repository.WarehouseRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MeasurementService {
-    @Autowired
+    final
     MeasurementRepository measurementRepository;
 
     public ApiResponse add(Measurement measurement) {

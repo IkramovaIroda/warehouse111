@@ -9,9 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface InputProductRepository extends JpaRepository<InputProduct, Long> {
-    List<InputProduct> findByInput(Input input);
-    List<InputProduct> findByInputActive(boolean active);
-    List<InputProduct> findByInput_Id(Long id);
+    List<InputProduct> findAllByInput_Id(Long id);
     List<InputProduct> findAllByExpireDateBefore(LocalDate expireDate);
     Integer countByExpireDateBefore(LocalDate expireDate);
     List<InputProduct> findByInput_Warehouse(Warehouse warehouse);

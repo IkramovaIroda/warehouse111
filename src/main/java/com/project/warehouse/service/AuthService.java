@@ -1,5 +1,6 @@
 package com.project.warehouse.service;
 
+import com.project.warehouse.dto.UserFrontDto;
 import com.project.warehouse.entity.AuthToken;
 import com.project.warehouse.entity.User;
 import com.project.warehouse.repository.AuthTokenRepository;
@@ -37,6 +38,20 @@ public class AuthService {
     public User getUser(String phoneNumber, String password){
         return userRepository.findByPhoneNumberAndPasswordAndActiveTrue(phoneNumber, password);
     }
+    public UserFrontDto getUser(HttpServletRequest req){
+        if(req.getCookies()==null){
+            return null;
+        }
+        String token1 = getToken(req.getCookies());
+        if(token1==null)return null;
+        UUID token=UUID.fromString(token1);
+        Optional<AuthToken> byId = authTokenRepository.findById(token);
+        if (byId.isEmpty()) {
+            return null;
+        }
+        User user = byId.get().getUser();
+        return new UserFrontDto(user.getFirstName(), user.getLastName(), user.getPhoneNumber());
+    }
     public boolean checkToken(String token){
         try {
             UUID uuid = UUID.fromString(token);
@@ -68,13 +83,16 @@ public class AuthService {
     }
     public boolean deleteTokenIf(HttpServletRequest req, HttpServletResponse res){
         if(req.getCookies()==null || !checkToken(getToken(req.getCookies()))){
-            Cookie cookie = new Cookie("token", null);
-            cookie.setPath("/");
-            cookie.setMaxAge(0);
-            cookie.setHttpOnly(true);
-            res.addCookie(cookie);
+            logout(res);
             return true;
         }
         return false;
+    }
+    public void logout(HttpServletResponse res){
+        Cookie cookie = new Cookie("token", null);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        cookie.setHttpOnly(true);
+        res.addCookie(cookie);
     }
 }

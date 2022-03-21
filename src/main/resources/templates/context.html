@@ -12,7 +12,7 @@
 </div>
 </body>
 <script th:inline="javascript">
-    let notificationsCount="[[${@notificationService.getNotificationsCount(#httpServletRequest)}]]"??0
+    let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0, user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
 </script>
 <script type="text/javascript" th:src="@{/assets/js/context.js}"></script>
 </html>

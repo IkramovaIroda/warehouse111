@@ -3,6 +3,7 @@ package com.project.warehouse.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 
@@ -13,6 +14,5 @@ public class ProductDto  {
     private String name;
     private Long categoryId;
     private Long measurementId;
-//    private final  Long photo_id;
-//    private Long code;
+    private MultipartFile photo;
 }

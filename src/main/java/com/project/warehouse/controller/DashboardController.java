@@ -1,15 +1,16 @@
 package com.project.warehouse.controller;
 
+import com.project.warehouse.dto.ExpiredPeriodDto;
 import com.project.warehouse.repository.InputProductRepository;
 import com.project.warehouse.repository.OutputProductRepository;
 import com.project.warehouse.repository.ProductRepository;
 import com.project.warehouse.service.AuthService;
 import com.project.warehouse.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -78,11 +79,19 @@ public class DashboardController {
     }
     @GetMapping(path = "/notifications")
     public String getNotificationPage(Model model, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {
-            return "secured-page";
-        }
-        model.addAttribute("expire_date", notificationService.getNotificationsCount(req));
-        model.addAttribute("notifications_count",notificationService.getNotificationsCount(req));
+        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+        model.addAttribute("notifications_count",notificationService.getNotificationsCount());
+        model.addAttribute("expire_date",notificationService.getExpire_period());
+        model.addAttribute("products",
+                inputProductRepository.findAllByExpireDateBefore(LocalDate.now().plusDays(notificationService.getExpire_period())));
         return "dashboard/notifications";
+    }
+
+    @SneakyThrows
+    @PostMapping("/expire_date")
+    public String changeExpire(@ModelAttribute ExpiredPeriodDto period, HttpServletResponse res, HttpServletRequest req){
+        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+        notificationService.setExpire_period(period.getPeriod());
+        return "redirect:/dashboard/notifications";
     }
 }

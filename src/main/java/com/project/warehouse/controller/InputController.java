@@ -32,8 +32,6 @@ public class InputController {
     final WarehouseRepository warehouseRepository;
     final SupplierRepository supplierRepository;
     final CurrencyRepository currencyRepository;
-
-    static Input input = new Input();
     final AuthService authService;
 
     @GetMapping("/all")
@@ -46,17 +44,12 @@ public class InputController {
     public String getOneInput(@PathVariable Long id, Model model, HttpServletRequest req, HttpServletResponse res){
         if (authService.deleteTokenIf(req, res)) {return "secured-page";}
         Optional<Input> byId = inputRepository.findById(id);
-         input = byId.get();
-        model.addAttribute("input", input);
-        return "input/input";
-    }
-
-    @GetMapping("/getInput/getInputProducts")
-    public String getInputProducts(Model model, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
-        List<InputProduct> byInput = inputProductRepository.findByInput(input);
+        if(byId.isEmpty())return "error/404";
+        Input input = byId.get();
+        List<InputProduct> byInput = inputProductRepository.findAllByInput_Id(id);
         model.addAttribute("inputProducts", byInput);
-        return "input/getProducts";
+        model.addAttribute("input", input);
+        return "input/products";
     }
 
     @GetMapping("/addInput")

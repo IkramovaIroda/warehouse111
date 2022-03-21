@@ -3,11 +3,14 @@ package com.project.warehouse.service;
 import com.project.warehouse.entity.InputProduct;
 import com.project.warehouse.repository.InputProductRepository;
 import com.project.warehouse.repository.ProductRepository;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -17,29 +20,17 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Data
 public class NotificationService {
-    @Autowired
+    final
     ProductRepository productRepository;
-    @Autowired
+    final
     InputProductRepository inputProductRepository;
+    private int expire_period=3;
 
-    public int getExpirePeriod(HttpServletRequest req){
-        if(req.getCookies()!=null){
-            for (Cookie cookie : req.getCookies()) {
-                if(cookie.getName().equals("product_expire_date")){
-                    try {
-                        return Integer.parseInt(cookie.getName());
-                    }catch (Exception ignore){}
-                }
-            }
-        }
-
-        return 3;
-    }
-
-    public Integer getNotificationsCount(HttpServletRequest req){
-        int finalExpire_period = getExpirePeriod(req);
-        LocalDate minDate=LocalDate.now().plusDays(finalExpire_period);
+    public Integer getNotificationsCount(){
+        LocalDate minDate=LocalDate.now().plusDays(expire_period);
         return inputProductRepository.countByExpireDateBefore(minDate);
     }
 
