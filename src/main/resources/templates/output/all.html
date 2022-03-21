@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Input list</title>
+    <title>Context</title>
     <link rel="stylesheet" th:href="@{/assets/css/bootstrap.css}">
     <link rel="stylesheet" th:href="@{/assets/css/main.css}">
 </head>
@@ -10,10 +10,10 @@
 <div id="main">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="">
-            <h1>Input</h1>
+            <h1>Output</h1>
         </div>
         <div>
-            <a class="btn shadow" style="background-color: #f1f1f1" th:href="@{/input/addInput}">Add</a>
+            <a class="btn shadow" style="background-color: #f1f1f1" th:href="@{/output/addOutput}">Add</a>
         </div>
     </div>
 
@@ -30,26 +30,26 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:if="${inputList.size==0}">
+        <tr th:if="${outputList.size==0}">
             <td colspan="6" class="text-center">Not data yet</td>
         </tr>
-        <tr th:each="input, i: ${inputList}">
+        <tr th:each="output, i: ${outputList}">
             <td th:text="${i.index+1}"></td>
-            <td th:text="${input.getFormattedDate()}"></td>
-            <td th:text="${input.warehouse.name}"></td>
-            <td th:text="${input.supplier.name}"></td>
-            <td th:text="${input.currency.name}"></td>
-            <td th:text="${input.factureNumber}"></td>
+            <td th:text="${output.getFormattedDate()}"></td>
+            <td th:text="${output.warehouse.name}"></td>
+            <td th:text="${output.supplier.name}"></td>
+            <td th:text="${output.currency.name}"></td>
+            <td th:text="${output.factureNumber}"></td>
             <th>
                 <div class="dropdown">
                     <button class="btn bg-transparent border-0 d-flex align-items-center" type="button"
-                            th:id="${'toolButton'+input.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            th:id="${'toolButton'+output.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img th:src="@{/assets/icons/three-points-icon-light.png}" width="20" alt="">
                     </button>
-                    <div class="dropdown-menu" th:aria-labelledby="${'toolButton'+input.id}">
-                        <a class="dropdown-item" th:href="${'/input/edit/'+input.id}">Edit</a>
-                        <a class="dropdown-item" th:href="${'/input/delete/'+input.id}">Delete</a>
-                        <a class="dropdown-item" th:href="${'/input/getInput/'+input.id}">View products</a>
+                    <div class="dropdown-menu" th:aria-labelledby="${'toolButton'+output.id}">
+                        <a class="dropdown-item" th:href="${'/output/edit/'+output.id}">Edit</a>
+                        <a class="dropdown-item" th:href="${'/output/delete/'+output.id}">Delete</a>
+                        <a class="dropdown-item" th:href="${'/output/getOutput/'+output.id}">View products</a>
                     </div>
                 </div>
             </th>

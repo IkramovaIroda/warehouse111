@@ -16,26 +16,39 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="/data/product/add" method="post" id="addEditForm">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name" class="col-form-label">Product name: </label>
-                        <input name="name" required minlength="3" maxlength="100"
-                               autocomplete="off"
-                               id="name" type="text" class="form-control" placeholder="Name">
-                    </div>
-                    <div class="form-group">
-                        <label for="categoryId" class="col-form-label">Category: </label>
-                        <select name="categoryId" id="categoryId" class="form-control">
-                            <option th:value="${category.id}" th:text="${category.name}" th:each="category: ${categories}"></option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="measurementId" class="col-form-label">Measurement: </label>
-                        <select name="measurementId" id="measurementId" class="form-control">
-                            <option th:value="${measurement.id}" th:text="${measurement.name}"
-                                    th:each="measurement: ${measurements}"></option>
-                        </select>
+            <form action="/data/product/add" method="post" id="addEditForm" class="" enctype="multipart/form-data">
+                <div class="modal-body ">
+                    <div class="row m-0">
+                        <div class="form-group col-12">
+                            <label for="name" class="col-form-label">Product name: </label>
+                            <input name="name" required minlength="2" maxlength="40"
+                                   autocomplete="off"
+                                   id="name" type="text" class="form-control" placeholder="Name">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="categoryId" class="col-form-label">Category: </label>
+                            <select name="categoryId" id="categoryId" class="form-control">
+                                <option th:value="${category.id}" th:text="${category.name}" th:each="category: ${categories}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="measurementId" class="col-form-label">Measurement: </label>
+                            <select name="measurementId" id="measurementId" class="form-control">
+                                <option th:value="${measurement.id}" th:text="${measurement.name}"
+                                        th:each="measurement: ${measurements}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-12">
+                            <label for="photo">Photo</label>
+                            <input type="file" accept=".png,.jpeg,.jpg,.ico"
+                                   name="photo" id="photo" class="form-control-file">
+                            <div hidden class="alert alert-danger mt-3 alert-dismissible fade show" id="fileError" role="alert">
+                                <strong>Photo size must be less than 10MB</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
@@ -68,6 +81,35 @@
     </div>
 </div>
 
+<div class="modal fade" id="viewModal" tabindex="4" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content border" style="background-color: #f1f1f1!important;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewModalLabel">Product view</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body d-flex">
+                <div class="col-4">
+                    <img src="/assets/icons/not-image.png" class="w-100" field="photo" alt="">
+                </div>
+                <div class="col-8">
+                    <div class="d-flex align-items-center"><b>Name: </b>
+                        <input type="text" disabled class="ml-3 bg-transparent border-0"
+                               field="name"/>
+                        <br></div>
+                    <div class="d-flex align-items-center"><b>Category: </b>
+                        <input type="text" disabled class="ml-3 bg-transparent border-0" field="category"/><br></div>
+                    <div class="d-flex align-items-center"><b>Measurement: </b>
+                        <input type="text" disabled class="ml-3 bg-transparent border-0" field="measurement"/><br></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <button hidden data-target="#deleteModal" data-toggle="modal" id="deleteModalBtn"></button>
 <button hidden data-target="#modal" data-toggle="modal" id="editModalBtn"></button>
 <div class="px-4 " id="main">
@@ -91,8 +133,12 @@
             <td colspan="5">Not data yet</td>
         </tr>
         <tr th:each="product, i: ${list}">
-            <td th:text="${i.index+1}"></td>
-            <td th:text="${product.name}"></td>
+            <td th:text="${i.index+1}">
+            </td>
+            <td data-toggle="popover" data-placement="top" style="cursor:pointer;"
+                th:id="${'productName'+product.id}">
+                <p class="" th:text="${product.name}"></p>
+            </td>
             <td th:text="${product.category.name}"></td>
             <td th:text="${product.measurement.name}"></td>
             <td>
@@ -110,6 +156,10 @@
                              style="cursor: pointer"
                              th:data="${i.index}"
                              onclick="deleteModal(this)">Delete</div>
+                        <div class="dropdown-item"
+                             style="cursor: pointer"
+                             th:data="${i.index}"
+                             onclick="viewModal(this)">View</div>
                     </div>
                 </div>
             </td>
@@ -123,7 +173,7 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script th:inline="javascript">
-    let notificationsCount="[[${@notificationService.getNotificationsCount(#httpServletRequest)}]]"??0
+    let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0, user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
     let products=/*[[${list}]]*/[], categories=/*[[${categories}]]*/[], measurements=/*[[${measurements}]]*/[]
     function deleteModal(button) {
         let product=products[parseInt(button.getAttribute('data'))]
@@ -146,7 +196,37 @@
 
         $('#modal').modal({show: true})
     }
+    function viewModal(button){
+        let product = products[parseInt(button.getAttribute('data'))]
+        $("[field=name]").val(product.name)
+        $("[field=category]").val(product.category.name)
+        $("[field=measurement]").val(product.measurement.name)
+
+        if(product.photo){
+            $("[field=photo]").attr("src",  `/data/product/${product.id}/photo`)
+        }else {
+            $("[field=photo]").attr('src', '/assets/icons/not-image.png')
+        }
+        $('#viewModal').modal({show: true})
+    }
     $(document).ready(function(){
+        let maxSize=10485760
+        $('#addEditForm').submit(function(e){
+            let fileInput = $('#photo');
+            if(fileInput.get(0).files.length){
+                let fileSize = fileInput.get(0).files[0].size;
+                if(fileSize>maxSize){
+                    document.querySelector("#fileError").removeAttribute('hidden')
+                    return false;
+                }else{
+                    document.querySelector("#fileError").setAttribute('hidden','')
+                    return true;
+                }
+            }else{
+                return true;
+            }
+
+        });
         $("#modal").on('hidden.bs.modal', function(){
             document.querySelector('#name').value = ""
             document.querySelector('#submitBtn').textContent = "Add"
@@ -154,8 +234,15 @@
             document.querySelector('#measurementId').value=measurements[0].id??''
             document.getElementById('addEditForm').setAttribute('action', '/data/product/add')
         });
+        $(function () {
+            $('[data-toggle="popover"]').popover({html: true, trigger: 'hover'})
+        })
+        let elements=document.querySelectorAll('[data-toggle=popover]')
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].setAttribute('data-content',
+                `<img width="100" src="${products[i].photo? `/data/product/${products[i].id}/photo`: "/assets/icons/not-image.png"}"/>`)
+        }
     });
-
 </script>
 <script type="text/javascript" th:src="@{/assets/js/context.js}"></script>
 </html>

@@ -4,17 +4,19 @@ import com.project.warehouse.dto.ApiResponse;
 import com.project.warehouse.entity.User;
 import com.project.warehouse.repository.UserRepository;
 import com.project.warehouse.repository.WarehouseRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-        @Autowired
+        final
         UserRepository userRepository;
 
-        @Autowired
-    WarehouseRepository warehouseRepository;
+        final
+        WarehouseRepository warehouseRepository;
 
         public ApiResponse add(User user) {
             User save = userRepository.save(user);

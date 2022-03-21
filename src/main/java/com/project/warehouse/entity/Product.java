@@ -38,7 +38,8 @@ public class Product {
     @ManyToOne()
     @JoinColumn(name = "measurement_id", nullable = false)
     private Measurement measurement;
-//    @ManyToOne()
-//    @JoinColumn(name = "photo_id", nullable = false)
-//    private Attachment attachment;
+
+    @OneToOne()
+    @JoinColumn(name = "photo_id")
+    private Attachment photo;
 }

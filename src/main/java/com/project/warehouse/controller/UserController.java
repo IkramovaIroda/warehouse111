@@ -4,6 +4,7 @@ import com.project.warehouse.entity.User;
 import com.project.warehouse.repository.UserRepository;
 import com.project.warehouse.repository.UserWarehouseRepository;
 import com.project.warehouse.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,16 +13,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/users/user")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
+    final
     UserService userService;
 
-    @Autowired
+    final
     UserRepository userRepository;
 
-    @Autowired
+    final
     UserWarehouseRepository userWarehouseRepository;
 
     @GetMapping
@@ -29,43 +31,19 @@ public class UserController {
 
         model.addAttribute("list", userRepository.findAll());
 
-        return "user";
-    }
-
-    @GetMapping("/add")
-    public String getSaveUser() {
-
-        return "user-add";
+        return "users/user";
     }
 
     @PostMapping("/add")
     public String saveUser(Model model, @ModelAttribute User user) {
         userService.add(user);
-        return "redirect:/users";
+        return "redirect:/users/user";
     }
-
-//    @PostMapping("/add")
-//    public String saveUser(Model model, @ModelAttribute UserWarehouseDto dto) {
-//        userService.add(dto);
-//        return "redirect:/user";
-//    }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         userRepository.deleteById(id);
-        return "redirect:/users";
-    }
-
-
-    @GetMapping("/edit/{id}")
-    public String editPage(@PathVariable Long id, Model model) {
-
-        Optional<User> userOptional = userRepository.findById(id);
-        if (!userOptional.isPresent()) return "Xatolik!";
-
-        model.addAttribute("edited", userOptional.get());
-        model.addAttribute("userWarehouseList", userWarehouseRepository.findAll());
-        return "user-edit";
+        return "redirect:/users/user";
     }
 
 //

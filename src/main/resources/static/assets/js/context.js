@@ -21,8 +21,7 @@ let navbarItems=[
 let leftNavbarItems={
     'Dashboard': [
         {url:'/dashboard/most-sold', name:'Most sold'},
-        {url:'/dashboard/notifications', name:'Notifications'},
-        {url:'/dashboard/context', name:'Context'}
+        {url:'/dashboard/notifications', name:'Notifications'}
     ],
     'Input': [
         {url: '/input/all', name: 'Input list'},
@@ -78,8 +77,10 @@ function createElement(tag='', classList='', styles={}, attributes={}) {
     return element;
 }
 
-function appendElement(element=new Node(), child=new Node()){
-    element.appendChild(child)
+function appendElement(element=new Node(), ...child){
+    for (let childElement of child) {
+        element.appendChild(childElement)
+    }
     return element
 }
 
@@ -120,11 +121,8 @@ function openLeftNavbar() {
 for (let classStyle of 'text-dark'.split(' ')) {
     body.classList.add(classStyle)
 }
-body.style.overflow='hidden'
 body.style.backgroundColor='#f1f1f1'
-body.style.width='100vw'
-body.style.height='100vh'
-const navbar=createElement('nav', 'w-100 shadow-lg d-flex justify-content-start pl-4', {
+const navbar=createElement('nav', 'w-100 shadow-lg d-flex justify-content-between align-items-center pl-4', {
     height: '80px',
     position: 'fixed',
     zIndex: 3,
@@ -171,7 +169,37 @@ for (let navbarItem of navbarItems) {
 
 }
 navbar.appendChild(navUl)
+navbar.appendChild(appendElement(
+    createElement('div', 'shadow mr-3 d-flex align-items-center justify-content-center',
+        {
+            width: '200px',
+            height: "50px"
+        }
+        ),
+    createElement("p", 'm-0', {}, {text: user.last_name+" "+user.first_name}),
+    appendElement(
+        createElement('a', '', {},{href: '/auth/logout'}),
+        createElement("img", "ml-3",
+            {},
+            {
+                src: "/assets/icons/logout-icon.png",
+                width: '20'
+            }
+        )
+    )
+
+))
 body.appendChild(navbar)
+
+if(activeParentNavbarName===''){
+    body.innerHTML='<div class="d-flex align-items-center justify-content-center h-100 pb-5"> ' +
+        '    <div class="text-center"> ' +
+        '        <h1 style="font-size: 10rem">404</h1> ' +
+        '        <p>This page not found. Go to <a href="/" class="nav-link">home page.</a></p> ' +
+        '    </div> ' +
+        '</div>'
+}
+
 const leftNavbar=createElement('div', 'h-100 shadow py-4',
     {
         'overflowY': 'hidden',
@@ -185,19 +213,16 @@ const leftNavbar=createElement('div', 'h-100 shadow py-4',
         zIndex: 1,
         backgroundColor: '#f1f1f1'
     }, {
-    id: 'leftNavbar'
+        id: 'leftNavbar'
     })
-
-if(activeParentNavbarName===''){
-    body.innerHTML='<div class="d-flex align-items-center justify-content-center h-100 pb-5"> ' +
-        '    <div class="text-center"> ' +
-        '        <h1 style="font-size: 10rem">404</h1> ' +
-        '        <p>This page not found. Go to <a href="/" class="nav-link">home page.</a></p> ' +
-        '    </div> ' +
-        '</div>'
-}
+let find=false
 for(let obj of leftNavbarItems[activeParentNavbarName]){
-    if(obj.name === "Notifications" && location.pathname!=='/dashboard/notifications' && notificationsCount!==null && notificationsCount>0){
+    if(location.pathname.includes(obj.url)){
+        find=true
+    }
+    if(obj.name === "Notifications" &&
+        location.pathname!=='/dashboard/notifications' &&
+        notificationsCount!==null && notificationsCount>0){
         leftNavbar.appendChild(appendElement(
             createElement('div', 'px-5'),
             appendElement(
@@ -212,7 +237,8 @@ for(let obj of leftNavbarItems[activeParentNavbarName]){
                 })
             )
         ))
-    }else {
+    }
+    else {
         leftNavbar.appendChild(appendElement(
             createElement('div', 'px-5'),
             createElement('a', 'nav-link text-dark link'+(location.pathname.includes(obj.url)?' active':''),
@@ -236,9 +262,10 @@ const hideLeftNavbarBtn=appendElement(
             cursor: 'pointer',
             zIndex: '2',
             transition: 'all linear 0.5s'
-        }, {
-        'id': 'toggleLeftNavbar',
-        'onclick': 'hideLeftNavbar()'
+        },
+        {
+            'id': 'toggleLeftNavbar',
+            'onclick': 'hideLeftNavbar()'
         }),
     createElement('span', 'font-weight-bold',  {},
         {
@@ -247,30 +274,53 @@ const hideLeftNavbarBtn=appendElement(
         }
     )
 )
-main.appendChild(hideLeftNavbarBtn)
-content.style.overflowY='auto'
-content.style.width='100%'
-content.style.height='calc(100vh - 100px)'
-content.classList.add('container')
+if(find){
+    main.appendChild(hideLeftNavbarBtn)
+    main.appendChild(leftNavbar)
+}else {
+    leftNavbar.remove()
+    hideLeftNavbarBtn.remove()
+}
 
-main.appendChild(leftNavbar)
-main.appendChild(appendElement(
-    createElement('div', 'h-100',
-        {
-            overflowY: 'hidden',
-            width: '80vw',
-            maxWidth: '80vw',
-            height: 'calc(100vh - 100px)',
-            transition: 'transform linear 0.5s, width ease-out 0.5s',
-            position: 'absolute',
-            top: '80px',
-            transform: 'translateX(20vw)',
-            bottom: 0
-        },
-        {id: 'contentContainer'}),
-    content
-))
-body.appendChild(main)
+body.style.width='100vw'
+body.style.height='100vh'
+content.classList.add('container')
+if(find){
+    body.style.overflow='hidden'
+    content.style.overflowY='auto'
+    content.style.width='100%'
+    content.style.height='calc(100vh - 100px)'
+    main.appendChild(appendElement(
+        createElement('div', 'h-100',
+            {
+                overflowY: 'hidden',
+                width: find?'80vw':'100vw',
+                maxWidth: find?'80vw':'100vw',
+                height: 'calc(100vh - 100px)',
+                transition: 'transform linear 0.5s, width ease-out 0.5s',
+                position: 'absolute',
+                top: '80px',
+                transform: find?'translateX(20vw)':'translateX(0)',
+                bottom: 0
+            },
+            {id: 'contentContainer'}),
+        content
+    ))
+    body.appendChild(main)
+}else {
+    main.remove()
+    body.appendChild(appendElement(
+        createElement("div", '', {
+            width: '100vw',
+            height: 'calc(100vh - 80px)',
+            overflowY: 'auto',
+            position: 'fixed',
+            top: '80px'
+        }),
+        content
+    ))
+}
+
 const scripts=document.querySelectorAll('script')
 for (let script of scripts) {
     body.appendChild(script)

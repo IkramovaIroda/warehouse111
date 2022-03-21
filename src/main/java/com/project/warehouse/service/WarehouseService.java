@@ -4,14 +4,16 @@ import com.project.warehouse.dto.ApiResponse;
 import com.project.warehouse.dto.WarehouseDto;
 import com.project.warehouse.entity.Warehouse;
 import com.project.warehouse.repository.WarehouseRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class WarehouseService {
-    @Autowired
+    final
     WarehouseRepository warehouseRepository;
 
     public ApiResponse add(Warehouse warehouse) {

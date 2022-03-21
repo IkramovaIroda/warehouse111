@@ -105,7 +105,7 @@ public class InputService {
         input.setDate(date);
         Input save = inputRepository.save(input);
 //        List<InputProduct> inputProducts = inputProductRepository.findByInput(save);
-        List<InputProduct> inputProducts = inputProductRepository.findByInput_Id(save.getId());
+        List<InputProduct> inputProducts = inputProductRepository.findAllByInput_Id(save.getId());
 
         for (InputProduct inputProduct : inputProducts) {
             inputProduct.setInput(save);
