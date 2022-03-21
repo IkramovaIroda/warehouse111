@@ -47,7 +47,7 @@ public class ClientController {
         if (byId.isEmpty()) return "404";
         Client client = byId.get();
         clientRepository.save(client);
-        return "redirect:/client";
+        return "redirect:data/client";
     }
 
     @PostMapping("/edit/{id}")

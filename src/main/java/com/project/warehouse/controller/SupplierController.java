@@ -49,12 +49,12 @@ import java.util.Optional;
             Supplier supplier = byId.get();
             supplier.setActive(false);
             supplierRepository.save(supplier);
-            return "redirect:/supplier";
+            return "redirect:data/supplier";
         }
 
         @PostMapping("/edit/{id}")
         public String editSupplier(@PathVariable Long id, @ModelAttribute SupplierDto supplierDto) {
-            ApiResponse response = supplierService.edit(id, supplierDto);
+            ApiResponse response = supplierService.edit(supplierDto,id);
             System.out.println(response);
             return "redirect:/data/supplier";
         }

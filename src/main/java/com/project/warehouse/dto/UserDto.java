@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserDto {
 
-    private boolean active;
-    private Long code;
     private String first_name;
     private String last_name;
     private String password;
