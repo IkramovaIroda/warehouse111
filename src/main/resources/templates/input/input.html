@@ -60,7 +60,8 @@
 </div>
 </body>
 <script th:inline="javascript">
-    let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0, user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
+    let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0,
+        user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
 </script>
 <script type="text/javascript" th:src="@{/assets/js/context.js}"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
