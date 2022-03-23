@@ -22,11 +22,8 @@ public class Input {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Type(type = "org.hibernate.type.PostgresUUIDType")
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "code", unique = true, updatable = false)
-    private UUID code;
+    private UUID code=UUID.randomUUID();
 
     @Column(name = "date", nullable = false)
     private LocalDate date;

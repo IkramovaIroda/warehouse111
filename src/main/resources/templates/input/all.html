@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Context</title>
+    <title>Input list</title>
     <link rel="stylesheet" th:href="@{/assets/css/bootstrap.css}">
     <link rel="stylesheet" th:href="@{/assets/css/main.css}">
 </head>
@@ -11,7 +11,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content border border-danger" style="background-color: #f1f1f1!important;">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Do you want to delete this output?</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Do you want to delete this input?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -29,10 +29,10 @@
 <div id="main">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="">
-            <h1>Output</h1>
+            <h1>Input</h1>
         </div>
         <div>
-            <a class="btn shadow" style="background-color: #f1f1f1" th:href="@{/output/addOutput}">Add</a>
+            <a class="btn shadow" style="background-color: #f1f1f1" th:href="@{/input/addInput}">Add</a>
         </div>
     </div>
 
@@ -42,32 +42,35 @@
             <th>№</th>
             <th>Date</th>
             <th>Warehouse</th>
-            <th>Client</th>
+            <th>Supplier</th>
             <th>Currency</th>
             <th>Facture number</th>
             <th style="width: 30px"></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:if="${outputList.size==0}">
+        <tr th:if="${inputList.size==0}">
             <td colspan="6" class="text-center">Not data yet</td>
         </tr>
-        <tr th:each="output, i: ${outputList}">
+        <tr th:each="input, i: ${inputList}">
             <td th:text="${i.index+1}"></td>
-            <td th:text="${output.getDate()}"></td>
-            <td th:text="${output.warehouse.name}"></td>
-            <td th:text="${output.client.name}"></td>
-            <td th:text="${output.currency.name}"></td>
-            <td th:text="${output.factureNumber}"></td>
+            <td th:text="${input.getFormattedDate()}"></td>
+            <td th:text="${input.warehouse.name}"></td>
+            <td th:text="${input.supplier.name}"></td>
+            <td th:text="${input.currency.name}"></td>
+            <td th:text="${input.factureNumber}"></td>
             <th>
                 <div class="dropdown">
                     <button class="btn bg-transparent border-0 d-flex align-items-center" type="button"
-                            th:id="${'toolButton'+output.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            th:id="${'toolButton'+input.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img th:src="@{/assets/icons/three-points-icon-light.png}" width="20" alt="">
                     </button>
-                    <div class="dropdown-menu" th:aria-labelledby="${'toolButton'+output.id}">
-                        <span class="dropdown-item" onclick="showDeleteModal(this)" th:data="${i.index}"> Delete</span>
-                        <a class="dropdown-item" th:href="${'/output/getOutput/'+output.id}">View products</a>
+                    <div class="dropdown-menu" th:aria-labelledby="${'toolButton'+input.id}">
+                        <a class="dropdown-item" th:href="${'/input/edit/'+input.id}">Edit</a>
+                        <span onclick="showDeleteModal(this)"
+                              th:data="${i.index}"
+                              class="dropdown-item">Delete</span>
+                        <a class="dropdown-item" th:href="${'/input/getInput/'+input.id}">View products</a>
                     </div>
                 </div>
             </th>
@@ -77,25 +80,28 @@
 
 </div>
 </body>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script th:inline="javascript">
     let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0,
         user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{},
-        outputList=/*[[${outputList}]]*/[]
+        inputList=/*[[${inputList}]]*/[]
     function showDeleteModal(e){
-        let index=parseInt(e.getAttribute("data")), output=outputList[index]
+        let index=parseInt(e.getAttribute("data")), input=inputList[index]
         document.querySelector("#modal-body").innerHTML=`
-            <p><strong>Date</strong> ${output.date}</p>
-            <p><strong>Warehouse</strong> ${output.warehouse.name}</p>
-            <p><strong>Currency</strong> ${output.currency.name}</p>
-            <p><strong>Client:</strong> ${output.client.name+" "+output.client.phone_number}</p>
-            <p><strong>Facture number</strong> ${output.factureNumber}</p>
+            <p><strong>Date</strong> ${input.date}</p>
+            <p><strong>Warehouse</strong> ${input.warehouse.name}</p>
+            <p><strong>Currency</strong> ${input.currency.name}</p>
+            <p><strong>Supplier</strong> ${input.supplier.name}</p>
+            <p><strong>Facture number</strong> ${input.factureNumber}</p>
         `
-        document.querySelector("#deleteUrl").setAttribute("href", '/output/delete/'+output.id)
+        document.querySelector("#deleteUrl").setAttribute("href", '/input/delete/'+input.id)
         $('#deleteModal').modal('show')
     }
 </script>
 <script type="text/javascript" th:src="@{/assets/js/context.js}"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
 </html>

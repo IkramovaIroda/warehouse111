@@ -31,7 +31,7 @@ public class NotificationService {
 
     public Integer getNotificationsCount(){
         LocalDate minDate=LocalDate.now().plusDays(expire_period);
-        return inputProductRepository.countByExpireDateBefore(minDate);
+        return inputProductRepository.countByExpireDateBeforeAndInput_ActiveTrue(minDate);
     }
 
     public boolean checkProduct(InputProduct inputProduct, int expire_period){

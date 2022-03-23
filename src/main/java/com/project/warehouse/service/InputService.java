@@ -16,7 +16,10 @@ import java.time.temporal.Temporal;
 import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -60,13 +63,8 @@ public class InputService {
         List<InputProduct> inputProducts = new ArrayList<>();
         for (InputProductDto dto : inputProductDtoList) {
             InputProduct inputProduct = new InputProduct();
-            Long inputId = dto.getInputId();// 1-variant date frontenddan
-            //2-variant date backendda beriladi
-//            inputProduct.setInput(saveInput);
             Double amount = dto.getAmount();
-            LocalDate expireDate = LocalDate.parse(dto.getExpireDate());//1-variant date frontenddan
-            //2-variant date backendda beriladi
-//            inputProduct.setExpireDate(LocalDate.now());
+            LocalDate expireDate = LocalDate.parse(dto.getExpireDate());
             Double price = dto.getPrice();
             Long productId = dto.getProductId();
             Optional<Product> productOptional = productRepository.findById(productId);
@@ -104,26 +102,21 @@ public class InputService {
         input.setWarehouse(warehouse);
         input.setDate(date);
         Input save = inputRepository.save(input);
-//        List<InputProduct> inputProducts = inputProductRepository.findByInput(save);
         List<InputProduct> inputProducts = inputProductRepository.findAllByInput_Id(save.getId());
-
+        List<InputProductDto> inputProductDtos = inputDto.getInputProducts();
         for (InputProduct inputProduct : inputProducts) {
+            List<InputProductDto> collect = inputProductDtos.stream().filter(inputProductDto ->
+                    Objects.equals(inputProductDto.getInputProductId(), inputProduct.getId())).toList();
+            if(collect.size()==0){
+                inputProductRepository.deleteById(inputProduct.getId());
+                continue;
+            }
             inputProduct.setInput(save);
+            inputProduct.setAmount(collect.get(0).getAmount());
+            inputProduct.setPrice(collect.get(0).getPrice());
+            inputProduct.setExpireDate(LocalDate.parse(collect.get(0).getExpireDate()));
+            inputProductRepository.save(inputProduct);
         }
-        inputProductRepository.saveAll(inputProducts);
-
     }
 
-    public void saveEditInputProducts(Long id, InputProductDto inputProductDto) {
-        InputProduct inputProduct = inputProductRepository.findById(id).get();
-        Long productId = inputProductDto.getProductId();
-        Double price = inputProductDto.getPrice();
-        Double amount = inputProductDto.getAmount();
-        LocalDate expireDate = LocalDate.parse(inputProductDto.getExpireDate());
-        inputProduct.setProduct(productRepository.findById(id).get());
-        inputProduct.setAmount(amount);
-        inputProduct.setPrice(price);
-        inputProduct.setExpireDate(expireDate);
-        inputProductRepository.save(inputProduct);
-    }
 }

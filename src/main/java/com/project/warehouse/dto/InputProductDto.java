@@ -15,5 +15,5 @@ public class InputProductDto {
     private Double amount;
     private Double price;
     private String expireDate;
-    private Long inputId;
+    private Long inputProductId;
 }
