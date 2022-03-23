@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,11 +23,8 @@ public class Product {
     @Column(name = "active", nullable = false)
     private Boolean active = true;
 
-    @Type(type = "org.hibernate.type.PostgresUUIDType")
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "code", unique = true, updatable = false)
-    private Long code;
+    private UUID code=UUID.randomUUID();
 
     @Column(name = "name", nullable = false)
     private String name;

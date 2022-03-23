@@ -7,15 +7,33 @@ const main=addClassList(document.createElement('main'), '', {
     overflowX: 'hidden'
 })
 
-try {
-    console.log(notificationsCount)
-}catch (e) {}
+if(!user){
+    document.querySelector("body").style.backgroundColor="#f1f1f1"
+    document.querySelector("body").style.height="100vh"
+    document.querySelector("body").innerHTML=`<div class="d-flex flex-column h-100 align-items-center justify-content-center">
+    <div class="text-center">
+        <div class="">
+            <img src="/assets/icons/lock.png" alt="lock icon" width="150px">
+        </div>
+        <div class="mt-3">
+            <p class="w-75 text-center mx-auto">
+                This page secured. To see content of the page you must
+                <a class="px-0 nav-link" style="display: unset"
+                   href="/auth/login?return_url=${location.pathname}">login</a> to system.
+            </p>
+        </div>
+
+    </div>
+
+</div>`
+    throw new Error("You are not allowed to access this page")
+}
 
 let navbarItems=[
     {url: '/dashboard/most-sold', path: '/dashboard',name: 'Dashboard'},
     {url: '/users/user', path: '/users',name: 'Users'},
     {url: '/input/all', path:'/input',name: 'Input'},
-    {url: '/output', path: '/output',name: 'Output'},
+    {url: '/output/all', path: '/output',name: 'Output'},
     {url: '/data/category', path: '/data',name: 'Data'},
 ]
 let leftNavbarItems={
@@ -29,7 +47,7 @@ let leftNavbarItems={
     ],
     'Output': [
         {url: '/output/all', name: 'Output list'},
-        {url: '/output/addInput', name: 'Output add'}
+        {url: '/output/addOutput', name: 'Output add'}
     ],
     'Data': [
         {url: '/data/category', name: 'Category'},
@@ -217,7 +235,7 @@ const leftNavbar=createElement('div', 'h-100 shadow py-4',
     })
 let find=false
 for(let obj of leftNavbarItems[activeParentNavbarName]){
-    if(location.pathname.includes(obj.url)){
+    if(location.pathname===obj.url){
         find=true
     }
     if(obj.name === "Notifications" &&

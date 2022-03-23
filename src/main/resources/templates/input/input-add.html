@@ -132,7 +132,7 @@
                     <td><input class="form-control" required min="1"
                             style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"
                             placeholder="Price" type="number" name="${startName}.price"></td>
-                            <td><input class="form-control" required min="1"
+                            <td><input class="form-control" required min="0"
                             style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"
                             placeholder="Amount" type="number" name="${startName}.amount"></td>
                     <td><button type="button" ${rowId===0?"disabled=\"true\"":`
@@ -163,22 +163,12 @@
                 tr.children.item(4).children.item(0).setAttribute('name', startName+".amount")
                 const removeBtn=tr.children.item(5).children.item(0)
                 removeBtn.setAttribute('onclick', `removeRow(${i})`)
-                removeBtn.setAttribute('onmousemove', `removeBtnMove(${i})`)
-                removeBtn.setAttribute('onmouseout', `removeBtnOut(${i})`)
                 if(i===0){
                     tr.children.item(4).children.item(0).setAttribute('disabled', `true`)
                 }
             }
         }
 
-    }
-    function removeBtnMove(rowId){
-        const tr=document.querySelector('#productList').children.item(rowId)
-        tr.classList.add('table-danger')
-    }
-    function removeBtnOut(rowId){
-        const tr=document.querySelector('#productList').children.item(rowId)
-        tr.classList.remove('table-danger')
     }
     window.onload=() => {addRow()}
 </script>

@@ -1,9 +1,12 @@
 package com.project.warehouse.entity;
 
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,11 +21,9 @@ public class Output {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "code", nullable = false)
-    private Long code;
+    @Column(name = "code", unique = true, nullable = false)
+    private UUID code=UUID.randomUUID();
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @ManyToOne()
     @JoinColumn(name = "currency_id", nullable = false)
     @ToString.Exclude

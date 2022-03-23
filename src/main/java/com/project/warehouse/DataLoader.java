@@ -34,13 +34,12 @@ public class DataLoader implements CommandLineRunner {
             currencyRepository.save(new Currency(1L, true, "Dollar"));
             warehouseRepository.save(new Warehouse(1L, true, "Omborxona"));
             supplierRepository.save(new Supplier(1L, true, "Umidjon", "+998990472436"));
-            clientRepository.save(new Client(1L, "Umidjon", "+998903723909"));
+            clientRepository.save(new Client(1L, "Umidjon", "+998903723909", true));
             User user=new User();
             user.setFirstName("Umidjon");
             user.setLastName("Tojiboyev");
             user.setPassword("911368169umid");
             user.setPhoneNumber("+998990472436");
-            user.setCode(1L);
             userRepository.save(user);
         }
 

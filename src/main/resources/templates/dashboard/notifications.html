@@ -10,9 +10,12 @@
 <div class="px-5 py-3" id="main">
     <div class="d-flex justify-content-between align-items-center my-3 shadow px-4 py-3 my-3">
         <h1>Notifications</h1>
-        <form action="/dashboard/expire_date" method="post" class="d-flex justify-content-between col-4">
-            <input type="number" min="0" max="365" name="period"
-                   required class="form-control col-8" th:value="${expire_date}">
+        <form action="/dashboard/expire_date" method="post" class="d-flex align-items-center justify-content-between col-5">
+            <label for="period">Period: </label>
+            <input type="number" id="period" min="0" max="365" name="period"
+                   placeholder="Period"
+                   style="background-color: #f1f1f1; box-shadow: var(--inner-shadow)"
+                   required class="form-control col-7" th:value="${expire_date}">
             <button type="submit" class="btn btn-success">Submit</button>
         </form>
     </div>

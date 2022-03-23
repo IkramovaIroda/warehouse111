@@ -1,18 +1,25 @@
 package com.project.warehouse.controller;
 
-import com.project.warehouse.entity.InputProduct;
-import com.project.warehouse.entity.Output;
-import com.project.warehouse.entity.OutputProduct;
-import com.project.warehouse.entity.Product;
+import com.project.warehouse.dto.ChosenProductsDto;
+import com.project.warehouse.entity.*;
 import com.project.warehouse.repository.*;
+import com.project.warehouse.service.AuthService;
 import com.project.warehouse.service.OutputService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.project.warehouse.dto.OutputDto;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/output")
@@ -29,91 +36,103 @@ public class OutputController {
     ClientRepository clientRepository;
     final
     OutputService outputService;
-    static Output output;
     final
     OutputProductRepository outputProductRepository;
     final
     ProductRepository productRepository;
+    final AuthService authService;
+    final InputProductRepository inputProductRepository;
+//    , HttpServletRequest req, HttpServletResponse res
+//    if (authService.deleteTokenIf(req, res)) {return "secured-page";}
 
     @GetMapping("/all")
-    public String getAll(Model model){
+    public String getAll(Model model, HttpServletRequest req, HttpServletResponse res){
+        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
         model.addAttribute("outputList", outputRepository.findByActiveTrue());
-        return "output/getAllOutput";
+        return "output/all";
     }
 
     @GetMapping("/addOutput")
-    public String addOutput(Model model){
-        model.addAttribute("wareHouseList",warehouseRepository.findAllByActiveTrue());
+    public String addOutput(Model model, HttpServletRequest req, HttpServletResponse res){
+        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+        model.addAttribute("warehouseList",warehouseRepository.findAllByActiveTrue());
         model.addAttribute("currencyList", currencyRepository.findAllByActiveTrue());
         model.addAttribute("clientList", clientRepository.findAll());
-        return "output/addOutput";
+        model.addAttribute("today", LocalDate.now().toString());
+        return "output/output-add";
     }
 
-    @PostMapping("/addOutput")
-    public String add (@ModelAttribute OutputDto dto){
-         output = outputService.saveOutput(dto);
-        return "redirect:/addOutputProduct";
+    @PostMapping("/addOutput/choose-products")
+    public String add (@ModelAttribute OutputDto dto, Model model, HttpServletRequest req, HttpServletResponse res){
+        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+        model.addAttribute("output", dto);
+        List<Warehouse> warehouses = warehouseRepository.findAllByActiveTrue();
+        List<Currency> currencies = currencyRepository.findAllByActiveTrue();
+        warehouses.removeIf(warehouse -> !Objects.equals(warehouse.getId(), dto.getWarehouseId()));
+        currencies.removeIf(currency -> !Objects.equals(currency.getId(), dto.getCurrencyId()));
+        if(warehouses.size()==0 || currencies.size()==0)return "error/404";
+        model.addAttribute("warehouse",warehouses.get(0));
+        model.addAttribute("currency", currencies.get(0));
+        model.addAttribute("client",dto.getClientId());
+        model.addAttribute("clientList", clientRepository.findAll());
+        model.addAttribute("today", LocalDate.now().toString());
+        model.addAttribute("products", inputProductRepository
+                .findAllByInput_ActiveTrueAndInput_Warehouse_idAndInput_Currency_idAndAmountNot(
+                        dto.getWarehouseId(), dto.getCurrencyId(), 0));
+        return "output/output-choose-product";
     }
 
-    @GetMapping("/addOutputProduct")
-    public String addOutputProduct(Model model){
-        List<InputProduct> inputProducts = outputService.addOutput(output);
-        model.addAttribute("output", output);
-        model.addAttribute("inputProductList", inputProducts);
-        return "output/outputProduct-add";
+    @PostMapping("/addOutput/products")
+    public String chosenProducts(@ModelAttribute ChosenProductsDto chosenProductsDto, Model model, HttpServletRequest req, HttpServletResponse res){
+        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+        chosenProductsDto.getProductList().remove(null);
+        model.addAttribute("inputProducts",
+                inputProductRepository.findAllById(chosenProductsDto.getProductList()));
+        List<Warehouse> warehouses = warehouseRepository.findAllByActiveTrue();
+        List<Currency> currencies = currencyRepository.findAllByActiveTrue();
+        warehouses.removeIf(warehouse -> !Objects.equals(warehouse.getId(), chosenProductsDto.getWarehouseId()));
+        currencies.removeIf(currency -> !Objects.equals(currency.getId(),chosenProductsDto.getCurrencyId()));
+        if(warehouses.size()==0 || currencies.size()==0)return "error/404";
+        model.addAttribute("date", chosenProductsDto.getDate());
+        model.addAttribute("factureNumber", chosenProductsDto.getFactureNumber());
+        model.addAttribute("warehouse",warehouses.get(0));
+        model.addAttribute("currency", currencies.get(0));
+        model.addAttribute("client",chosenProductsDto.getClientId());
+        model.addAttribute("clientList", clientRepository.findAllByActiveTrue());
+        model.addAttribute("today", LocalDate.now().toString());
+        return "output/output-product";
     }
+
     @PostMapping("/addOutputProduct")
-    public String saveOutputProduct(OutputDto dto){
-        outputService.saveOutputProducts(dto, output);
-        return "redirect:/all";
-    }
-    
-    @GetMapping("/edit/{id}")
-    public String editOutput(@PathVariable Long id, Model model){
-        model.addAttribute("currencyList", currencyRepository.findAllByActiveTrue());
-        model.addAttribute("warehoseList", warehouseRepository.findAllByActiveTrue());
-        model.addAttribute("clientList", clientRepository.findAll());
-        return null;
+    public String saveOutputProduct(OutputDto dto, HttpServletRequest req, HttpServletResponse res){
+        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+        outputService.saveOutput(dto);
+        return "redirect:/output/all";
     }
 
-    @PostMapping("/edit/{id}")
-    public String saveEditOutput(@PathVariable Long id, @ModelAttribute OutputDto outputDto){
-        outputService.saveEditOutput(id, outputDto);
-        return "redirect:/all";
-    }
-    @GetMapping("/getOutputProducts/editOutputProducts/{id}")
-    public String editOutputproducts(@PathVariable Long id, Model model){
-        Output output1 = outputRepository.findById(id).get();
-        List<OutputProduct> outputProductList = outputProductRepository.findAllByOutput_Id(id);
-        List <Product> products = productRepository.findAllByActiveTrue();
-        model.addAttribute("outputProductList", outputProductList);
-        model.addAttribute("output", output1);
-        model.addAttribute("productList", products);
-        return "output/outputProducts-add";
-    }
-    @PostMapping("/getOutputProducts/editOutputProducts/{id}")
-    public String saveEditOutputProducts(@PathVariable Long id, @ModelAttribute OutputDto outputDto){
-        outputService.saveEditOutputProducts(id, outputDto);
-        return "redirect:/getOutputProducts/"+id;
-    }
-
-    @GetMapping("/getOutputProducts/{id}")
+    @GetMapping("/getOutput/{id}")
     public String getOutputProducts(@PathVariable Long id, Model model){
-        List<OutputProduct> outputProducts = outputProductRepository.findAllByOutput_Id(id);
-        model.addAttribute("outputProductsList", outputProducts);
-        return "output/getOutputProducts";
+        Optional<Output> byId = outputRepository.findById(id);
+        if (byId.isEmpty()) {
+            return "error/404";
+        }
+        model.addAttribute("output", byId.get());
+        List<OutputProduct> outputProducts =
+                outputProductRepository.findAllByOutput_IdAndOutputActiveTrue(id);
+        model.addAttribute("outputProducts", outputProducts);
+        return "output/products";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteOutput(@PathVariable Long id){
-        Output output = outputRepository.findById(id).get();
+    public String deleteOutput(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res){
+        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+        Optional<Output> byId = outputRepository.findById(id);
+        if(byId.isEmpty())return "error/404";
+        Output output =byId.get();
         output.setActive(false);
         outputRepository.save(output);
         return "redirect:/output/all";
     }
-
-
-
 
 
 
