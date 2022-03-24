@@ -4,21 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class InputDto  {
-    @NotEmpty
     private String date;
-    @NotNull
     private Long warehouseId;
-    @NotNull
     private Long supplierId;
     private Long currencyId;
     private Integer factureNumber;

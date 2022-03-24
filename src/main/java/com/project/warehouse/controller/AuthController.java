@@ -38,11 +38,7 @@ public class AuthController {
         String return_url = req.getParameter("return_url");
         User user = authService.getUser(loginDto.getLogin(), loginDto.getPassword());
         if(user==null){
-            model.addAttribute("auth_error", true);
-            model.addAttribute("error_msg", "Login or password is incorrect");
-            model.addAttribute("return_url",
-                    return_url!=null?return_url:"/dashboard/most-sold");
-            return "login";
+            return "redirect:/auth/login?error&return_url="+ (return_url!=null?return_url:"/dashboard/most-sold");
         }
         res.addCookie(authService.generateToken(user));
         if(return_url!=null && return_url.startsWith("/")){

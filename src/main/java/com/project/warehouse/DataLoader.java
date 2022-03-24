@@ -5,6 +5,7 @@ import com.project.warehouse.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -36,9 +37,11 @@ public class DataLoader implements CommandLineRunner {
             supplierRepository.save(new Supplier(1L, true, "Umidjon", "+998990472436"));
             clientRepository.save(new Client(1L, "Umidjon", "+998903723909", true));
             User user=new User();
+            BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+
             user.setFirstName("Umidjon");
             user.setLastName("Tojiboyev");
-            user.setPassword("911368169umid");
+            user.setPassword(passwordEncoder.encode("911368169umid"));
             user.setPhoneNumber("+998990472436");
             userRepository.save(user);
         }
