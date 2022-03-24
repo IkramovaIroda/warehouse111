@@ -7,6 +7,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.util.UUID;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

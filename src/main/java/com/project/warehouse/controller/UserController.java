@@ -1,8 +1,8 @@
 package com.project.warehouse.controller;
 
+import com.project.warehouse.dto.UserDto;
 import com.project.warehouse.entity.User;
-import com.project.warehouse.repository.UserRepository;
-import com.project.warehouse.repository.UserWarehouseRepository;
+import com.project.warehouse.repository.*;
 import com.project.warehouse.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -26,34 +27,55 @@ public class UserController {
     final
     UserWarehouseRepository userWarehouseRepository;
 
-    @GetMapping
-    public String getUserPage(Model model) {
+        @GetMapping
+        public String getUser(Model model) {
+            List<User> all = userRepository.findAllByActiveTrue();
+            model.addAttribute("list", all);
+            return "data/users";
+        }
 
-        model.addAttribute("list", userRepository.findAll());
+        @GetMapping("/addUser")
+        public String add(Model model, UserDto userDto){
+            model.addAttribute("userlist",userRepository.findAllByActiveTrue());
+            model.addAttribute("userdto", userDto);
+            return "data/users";
+        }
 
-        return "users/user";
-    }
+        @PostMapping("/addUser")
+        public String saveUser(@ModelAttribute UserDto userDto){
+            userService.save(userDto);
+            return "redirect:data/users";
+        }
 
-    @PostMapping("/add")
-    public String saveUser(Model model, @ModelAttribute User user) {
-        userService.add(user);
-        return "redirect:/users/user";
-    }
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
-        userRepository.deleteById(id);
-        return "redirect:/users/user";
-    }
+        @DeleteMapping("/delete/{id}")
+        public String delete(@PathVariable Long id) {
+            Optional<User> byId = userRepository.findById(id);
+            if (byId.isEmpty()) return "404";
+            User user = byId.get();
+            user.setActive(false);
+            userRepository.save(user);
+            return "redirect:data/users";
+        }
 
-//
-//        @PostMapping("/edit/{id}")
-//        public String editUser(@PathVariable Long id, @ModelAttribute UserDto userDto) {
-//        ApiResponse response = userService.edit(id, userDto);
-//        System.out.println(response);
-//        return "redirect:/user";
-//        }
 
+
+        @GetMapping("/editProduct/{id}")
+        public String edit(Model model, @PathVariable Long id){
+
+            Optional<User> userOptional = userRepository.findById(id);
+            if (userOptional.isEmpty()) return "Xatolik!";
+
+            model.addAttribute("edited", userRepository.findById(id));
+            model.addAttribute("userList", userRepository.findAllByActiveTrue());
+            return "data/users/user-edit";
+        }
+
+        @PostMapping("/editProduct/{id}")
+        public String editSave(@PathVariable Long id, @ModelAttribute UserDto userDto){
+            userService.edit(id, userDto);
+            return "redirect:/data/users";
+        }
 
 }
 
