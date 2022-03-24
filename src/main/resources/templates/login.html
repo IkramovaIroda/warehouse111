@@ -30,17 +30,13 @@
 <div class="container" style="width: 100vw;height: 100vh">
     <div class="row">
         <div style="margin-top: 100px;border-radius: 14px" class="col-4 shadow p-3 offset-4">
-            <div class="border border-danger text-center text-danger p-2"
-                 style="border-radius: 12px"
-                 th:if="${auth_error}" th:text="${error_msg}">
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong th:text="${error_msg}"></strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+            <div th:if="${param.error}" class="alert alert-danger">
+                Invalid username and password.
             </div>
-            <form th:action="${'/auth/login?return_url='+return_url}"
+            <div th:if="${param.logout}" class="alert alert-success">
+                You have been logged out.
+            </div>
+            <form th:action="${'/auth/login?return_url='+param.return_url}"
                   method="post">
                 <div class="form-group">
                     <label for="login">Login</label>

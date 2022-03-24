@@ -6,6 +6,7 @@ import com.project.warehouse.entity.User;
 import com.project.warehouse.repository.AuthTokenRepository;
 import com.project.warehouse.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -36,14 +37,18 @@ public class AuthService {
         return cookie;
     }
     public User getUser(String phoneNumber, String password){
-        return userRepository.findByPhoneNumberAndPasswordAndActiveTrue(phoneNumber, password);
+        User user = userRepository.findByPhoneNumberAndActiveTrue(phoneNumber);
+        if(user!=null && checkPassword(user.getPassword(), password)){
+            return user;
+        }
+        return null;
     }
     public UserFrontDto getUser(HttpServletRequest req){
         if(req.getCookies()==null){
             return null;
         }
         String token1 = getToken(req.getCookies());
-        if(token1==null)return null;
+        if(token1==null || token1.equals(""))return null;
         UUID token=UUID.fromString(token1);
         Optional<AuthToken> byId = authTokenRepository.findById(token);
         if (byId.isEmpty()) {
@@ -94,5 +99,13 @@ public class AuthService {
         cookie.setMaxAge(0);
         cookie.setHttpOnly(true);
         res.addCookie(cookie);
+    }
+    public String encryptPassword(String password){
+        BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+        return passwordEncoder.encode(password);
+    }
+    public boolean checkPassword(String encodePassword, String password){
+        BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+        return passwordEncoder.matches(password, encodePassword);
     }
 }

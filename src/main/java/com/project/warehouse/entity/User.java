@@ -7,6 +7,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.util.UUID;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -35,7 +36,7 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "phone_number", nullable = false, unique = true)
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
 }

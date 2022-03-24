@@ -56,7 +56,7 @@ let leftNavbarItems={
         {url: '/data/warehouse', name: 'Warehouse'},
         {url: '/data/measurement', name: 'Measurement'}
     ],
-    'User': [
+    'Users': [
         {url: '/users/user', name: 'User'},
         {url: '/users/client', name: 'Client'},
         {url: '/users/supplier', name: 'Supplier'},
