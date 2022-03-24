@@ -5,21 +5,13 @@ import com.project.warehouse.dto.InputProductDto;
 import com.project.warehouse.entity.*;
 import com.project.warehouse.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -78,7 +70,7 @@ public class InputService {
 //            inputProduct.setExpireDate(LocalDate.now());
             inputProducts.add(inputProduct);
         }
-          inputProductRepository.saveAll(inputProducts);
+        inputProductRepository.saveAll(inputProducts);
     }
 
     public void edit(Long id, InputDto inputDto) {
@@ -107,7 +99,7 @@ public class InputService {
         for (InputProduct inputProduct : inputProducts) {
             List<InputProductDto> collect = inputProductDtos.stream().filter(inputProductDto ->
                     Objects.equals(inputProductDto.getInputProductId(), inputProduct.getId())).toList();
-            if(collect.size()==0){
+            if (collect.size() == 0) {
                 inputProductRepository.deleteById(inputProduct.getId());
                 continue;
             }

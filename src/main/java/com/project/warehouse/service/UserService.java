@@ -9,8 +9,6 @@ import com.project.warehouse.repository.UserRepository;
 import com.project.warehouse.repository.UserWarehouseRepository;
 import com.project.warehouse.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,6 +38,22 @@ public class UserService {
         user.setLastName(userDto.getLast_name());
         user.setPhoneNumber(userDto.getPhone_number());
         User save = userRepository.save(user);
+        return new ApiResponse("Saved", true, save);
+    }
+
+    public ApiResponse add(UserDto userDto) {
+        User user=new User();
+        user.setPassword(authService.encryptPassword(userDto.getPassword()));
+        user.setLastName(userDto.getLast_name());
+        user.setFirstName(userDto.getFirst_name());
+        user.setPhoneNumber(userDto.getPhone_number());
+        User saved = userRepository.save(user);
+        return new ApiResponse("saved",true,saved);
+    }
+    public void saveWarehouses(Long id, UserDto userDto){
+        System.out.println(userDto.getWarehouses());
+        Optional<User> saved = userRepository.findById(id);
+        if(saved.isEmpty())return;
         List<UserWarehouse> allByUser_id = userWarehouseRepository.findAllByUser_Id(id);
         for (UserWarehouse userWarehouse : allByUser_id) {
             List<Long> longs = userDto.getWarehouses().stream()
@@ -53,30 +67,11 @@ public class UserService {
 
         for (Long warehouseId : userDto.getWarehouses()) {
             Optional<Warehouse> byId = warehouseRepository.findById(warehouseId);
-            if(byId.isEmpty() || byId.get().getActive())continue;
+            if(byId.isEmpty() || !byId.get().getActive())continue;
             UserWarehouse userWarehouse=new UserWarehouse();
-            userWarehouse.setUser(save);
+            userWarehouse.setUser(saved.get());
             userWarehouse.setWarehouse(byId.get());
             userWarehouseRepository.save(userWarehouse);
         }
-        return new ApiResponse("Saved", true, save);
-    }
-
-    public ApiResponse add(UserDto userDto) {
-        User user=new User();
-        user.setPassword(authService.encryptPassword(userDto.getPassword()));
-        user.setLastName(userDto.getLast_name());
-        user.setFirstName(userDto.getFirst_name());
-        user.setPhoneNumber(userDto.getPhone_number());
-        User saved = userRepository.save(user);
-        for (Long warehouseId : userDto.getWarehouses()) {
-            Optional<Warehouse> byId = warehouseRepository.findById(warehouseId);
-            if(byId.isEmpty() || byId.get().getActive())continue;
-            UserWarehouse userWarehouse=new UserWarehouse();
-            userWarehouse.setUser(saved);
-            userWarehouse.setWarehouse(byId.get());
-            userWarehouseRepository.save(userWarehouse);
-        }
-        return new ApiResponse("saved",true,saved);
     }
 }

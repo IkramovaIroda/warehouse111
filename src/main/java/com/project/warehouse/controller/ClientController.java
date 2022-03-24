@@ -1,10 +1,9 @@
 package com.project.warehouse.controller;
 
-import com.project.warehouse.dto.ApiResponse;
 import com.project.warehouse.dto.ClientDto;
 import com.project.warehouse.entity.Client;
 import com.project.warehouse.repository.ClientRepository;
-//import com.project.warehouse.service.AuthService;
+import com.project.warehouse.service.AuthService;
 import com.project.warehouse.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,43 +16,42 @@ import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/data/client")
+@RequestMapping("/users/client")
 public class ClientController {
 
     final
     ClientService clientService;
     final
     ClientRepository clientRepository;
-//    final AuthService authService;
+    final AuthService authService;
 
     @GetMapping
     public String getClientPage(Model model, HttpServletRequest req, HttpServletResponse res) {
-//        if (authService.deleteTokenIf(req, res)) {
-//            return "redirect:/auth/login?return_url="+req.getServletPath();
-//        }
+        if (authService.deleteTokenIf(req, res)){return "secured-page";}
         model.addAttribute("list", clientRepository.findAllByActiveTrue());
-        return "data/client";
+        return "users/client";
     }
 
     @PostMapping
-    public String saveClient(@ModelAttribute Client client) {
-        clientService.add(client);
-        return "redirect:/data/client";
+    public String saveClient(@ModelAttribute ClientDto clientDto, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+        clientService.add(clientDto);
+        return "redirect:/users/client";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    public String delete(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)){return "secured-page";}
         Optional<Client> byId = clientRepository.findById(id);
-        if (byId.isEmpty()) return "404";
-        Client client = byId.get();
-        clientRepository.save(client);
-        return "redirect:data/client";
+        if (byId.isEmpty()) return "error/404";
+        clientService.delete(id);
+        return "redirect:/users/client";
     }
 
     @PostMapping("/edit/{id}")
-    public String editClient(@PathVariable Long id, @ModelAttribute ClientDto clientDto) {
-        ApiResponse response = clientService.edit(clientDto,id);
-        System.out.println(response);
-        return "redirect:/data/client";
+    public String editClient(@PathVariable Long id, @ModelAttribute ClientDto clientDto, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+        clientService.edit(clientDto,id);
+        return "redirect:/users/client";
     }
 }

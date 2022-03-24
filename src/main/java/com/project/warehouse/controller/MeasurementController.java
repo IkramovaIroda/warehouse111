@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -29,23 +28,23 @@ public class MeasurementController {
 
     @GetMapping
     public String getMeasurementPage(Model model, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)) {
-            return "redirect:/auth/login?return_url="+req.getServletPath();
-        }
+        if (authService.deleteTokenIf(req, res)){return "secured-page";}
         model.addAttribute("list", measurementRepository.findAllByActiveTrue());
         return "data/measurement";
     }
 
     @PostMapping
-    public String saveMeasurement(@ModelAttribute Measurement measurement) {
+    public String saveMeasurement(@ModelAttribute Measurement measurement, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)){return "secured-page";}
         measurementService.add(measurement);
         return "redirect:/data/measurement";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    public String delete(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)){return "secured-page";}
         Optional<Measurement> byId = measurementRepository.findById(id);
-        if (byId.isEmpty()) return "404";
+        if (byId.isEmpty()) return "error/404";
         Measurement measurement = byId.get();
         measurement.setActive(false);
         measurementRepository.save(measurement);
@@ -53,7 +52,8 @@ public class MeasurementController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editMeasurement(@PathVariable Long id, @ModelAttribute MeasurementDto measurementDto) {
+    public String editMeasurement(@PathVariable Long id, @ModelAttribute MeasurementDto measurementDto, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)){return "secured-page";}
         ApiResponse response = measurementService.edit(id, measurementDto);
         System.out.println(response);
         return "redirect:/data/measurement";

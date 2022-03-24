@@ -18,7 +18,7 @@ public class Supplier {
     private Long id;
 
     @Column(name = "active", nullable = false)
-    private Boolean active = false;
+    private Boolean active = true;
 
     @Column(name = "name", nullable = false)
     private String name;

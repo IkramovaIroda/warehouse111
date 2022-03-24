@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -14,5 +15,5 @@ public class UserDto {
     private String last_name;
     private String password, password_repeat;
     private String phone_number;
-    private List<Long> warehouses;
+    private List<Long> warehouses=new ArrayList<>();
 }

@@ -83,11 +83,8 @@ public class DashboardController {
         model.addAttribute("notifications_count",notificationService.getNotificationsCount());
         model.addAttribute("expire_date",notificationService.getExpire_period());
         model.addAttribute("products",
-                inputProductRepository.findAllByInput_ActiveTrueAndExpireDateBefore(
-                        LocalDate.now().plusDays(notificationService.getExpire_period())));
-        System.out.println(inputProductRepository.findAllByInput_ActiveTrueAndExpireDateBefore(
-                LocalDate.now().plusDays(notificationService.getExpire_period())));
-        System.out.println("salom");
+                inputProductRepository.findAllByInput_ActiveTrueAndExpireDateBeforeAndAmountNot(
+                        LocalDate.now().plusDays(notificationService.getExpire_period()), 0D));
         return "dashboard/notifications";
     }
 
