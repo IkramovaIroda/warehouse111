@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class SupplierDto {
-    private Long id;
-
     private String name;
-
     private String phoneNumber;
-
 }
+

@@ -17,12 +17,12 @@ public class UserWarehouse {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne()
     @JoinColumn(name = "user_id", nullable = false)
     @ToString.Exclude
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne()
     @JoinColumn(name = "warehouse_id", nullable = false)
     @ToString.Exclude
     private Warehouse warehouse;

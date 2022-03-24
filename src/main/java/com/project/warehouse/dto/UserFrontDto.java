@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserFrontDto {
     private String first_name, last_name, phone_number;
+    private Long id;
 }

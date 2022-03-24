@@ -55,7 +55,7 @@ public class AuthService {
             return null;
         }
         User user = byId.get().getUser();
-        return new UserFrontDto(user.getFirstName(), user.getLastName(), user.getPhoneNumber());
+        return new UserFrontDto(user.getFirstName(), user.getLastName(), user.getPhoneNumber(), user.getId());
     }
     public boolean checkToken(String token){
         try {

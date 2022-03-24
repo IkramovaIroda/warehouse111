@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -57,5 +57,22 @@ public class OutputService {
             inputProductRepository.save(inputProduct);
         }
 
+    }
+
+    public void delete(Long id) {
+        Optional<Output> byId = outputRepository.findById(id);
+        if(byId.isEmpty())return;
+        Output output =byId.get();
+        output.setActive(false);
+        outputRepository.save(output);
+        List<OutputProduct> allByOutput_id = outputProductRepository.findAllByOutput_Id(id);
+        for (OutputProduct outputProduct : allByOutput_id) {
+            List<InputProduct> inputProducts = inputProductRepository.findByProduct_idAndPriceAndAmount(
+                    outputProduct.getProduct().getId(), outputProduct.getPrice(), outputProduct.getAmount());
+            if(inputProducts.size()==0)continue;
+            InputProduct inputProduct = inputProducts.get(0);
+            inputProduct.setAmount(inputProduct.getAmount()+outputProduct.getAmount());
+            inputProductRepository.save(inputProduct);
+        }
     }
 }

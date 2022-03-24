@@ -1,7 +1,11 @@
 package com.project.warehouse.controller;
 
 import com.project.warehouse.dto.ChosenProductsDto;
-import com.project.warehouse.entity.*;
+import com.project.warehouse.dto.OutputDto;
+import com.project.warehouse.entity.Currency;
+import com.project.warehouse.entity.Output;
+import com.project.warehouse.entity.OutputProduct;
+import com.project.warehouse.entity.Warehouse;
 import com.project.warehouse.repository.*;
 import com.project.warehouse.service.AuthService;
 import com.project.warehouse.service.OutputService;
@@ -9,9 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import com.project.warehouse.dto.OutputDto;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/output")
@@ -57,7 +57,7 @@ public class OutputController {
         if (authService.deleteTokenIf(req, res)) {return "secured-page";}
         model.addAttribute("warehouseList",warehouseRepository.findAllByActiveTrue());
         model.addAttribute("currencyList", currencyRepository.findAllByActiveTrue());
-        model.addAttribute("clientList", clientRepository.findAll());
+        model.addAttribute("clientList", clientRepository.findAllByActiveTrue());
         model.addAttribute("today", LocalDate.now().toString());
         return "output/output-add";
     }
@@ -74,7 +74,7 @@ public class OutputController {
         model.addAttribute("warehouse",warehouses.get(0));
         model.addAttribute("currency", currencies.get(0));
         model.addAttribute("client",dto.getClientId());
-        model.addAttribute("clientList", clientRepository.findAll());
+        model.addAttribute("clientList", clientRepository.findAllByActiveTrue());
         model.addAttribute("today", LocalDate.now().toString());
         model.addAttribute("products", inputProductRepository
                 .findAllByInput_ActiveTrueAndInput_Warehouse_idAndInput_Currency_idAndAmountNot(
@@ -128,9 +128,7 @@ public class OutputController {
         if (authService.deleteTokenIf(req, res)) {return "secured-page";}
         Optional<Output> byId = outputRepository.findById(id);
         if(byId.isEmpty())return "error/404";
-        Output output =byId.get();
-        output.setActive(false);
-        outputRepository.save(output);
+        outputService.delete(id);
         return "redirect:/output/all";
     }
 

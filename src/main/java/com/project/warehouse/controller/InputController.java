@@ -1,17 +1,16 @@
 package com.project.warehouse.controller;
 
 import com.project.warehouse.dto.InputDto;
-import com.project.warehouse.dto.InputProductDto;
 import com.project.warehouse.entity.Input;
 import com.project.warehouse.entity.InputProduct;
 import com.project.warehouse.repository.*;
 import com.project.warehouse.service.AuthService;
+import com.project.warehouse.service.InputService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import com.project.warehouse.service.InputService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -97,13 +96,5 @@ public class InputController {
         if (authService.deleteTokenIf(req, res)) {return "secured-page";}
         inputService.edit(id, inputDto);
         return "redirect:/input/all";
-    }
-
-    @GetMapping("/getInput/getInputProducts/editInputProducts/{id}")
-    public String editInputProducts(@PathVariable Long id, Model model, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
-          model.addAttribute("products", inputProductRepository.findById(id).get());
-          model.addAttribute("productList", productRepository.findAllByActiveTrue());
-          return "input/editInputProducts";
     }
 }

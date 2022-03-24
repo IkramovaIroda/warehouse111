@@ -1,7 +1,6 @@
 package com.project.warehouse.controller;
 
 import com.project.warehouse.dto.CategoryDto;
-import com.project.warehouse.entity.Category;
 import com.project.warehouse.repository.CategoryRepository;
 import com.project.warehouse.service.AuthService;
 import com.project.warehouse.service.CategoryService;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/data/category")
