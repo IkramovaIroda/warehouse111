@@ -36,7 +36,7 @@
             <div th:if="${param.logout}" class="alert alert-success">
                 You have been logged out.
             </div>
-            <form th:action="${'/auth/login?return_url='+(param.return_url?param.return_url:'/dashboard/most-sold')}"
+            <form th:action="${'/auth/login?return_url='+(param.return_url==null?'/dashboard/most-sold':param.return_url)}"
                   method="post">
                 <div class="form-group">
                     <label for="login">Login</label>
