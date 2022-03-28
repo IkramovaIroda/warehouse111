@@ -43,6 +43,7 @@ public class DataLoader implements CommandLineRunner {
             user.setPassword(passwordEncoder.encode("911368169umid"));
             user.setPhoneNumber("+998990472436");
             userRepository.save(user);
+            user=new User();
             user.setLastName("To'rayev");
             user.setFirstName("Jafarbek");
             user.setPhoneNumber("+998912455897");
