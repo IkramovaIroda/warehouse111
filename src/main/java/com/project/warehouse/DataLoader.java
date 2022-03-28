@@ -38,11 +38,15 @@ public class DataLoader implements CommandLineRunner {
             clientRepository.save(new Client(1L, "Umidjon", "+998903723909", true));
             User user=new User();
             BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
-
             user.setFirstName("Umidjon");
             user.setLastName("Tojiboyev");
             user.setPassword(passwordEncoder.encode("911368169umid"));
             user.setPhoneNumber("+998990472436");
+            userRepository.save(user);
+            user.setLastName("To'rayev");
+            user.setFirstName("Jafarbek");
+            user.setPhoneNumber("+998912455897");
+            user.setPassword(passwordEncoder.encode("fVPHS9Chre7YCBp"));
             userRepository.save(user);
         }
 
