@@ -47,8 +47,12 @@ public class UserService {
         user.setLastName(userDto.getLast_name());
         user.setFirstName(userDto.getFirst_name());
         user.setPhoneNumber(userDto.getPhone_number());
-        User saved = userRepository.save(user);
-        return new ApiResponse("saved",true,saved);
+        User user1 = userRepository.findByPhoneNumberAndActiveTrue(userDto.getPhone_number());
+        if(user1==null){
+           userRepository.save(user);
+        }
+
+        return new ApiResponse("saved",true);
     }
     public void saveWarehouses(Long id, UserDto userDto){
         System.out.println(userDto.getWarehouses());
