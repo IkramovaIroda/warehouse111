@@ -21,35 +21,35 @@ public class AuthController {
     final AuthService authService;
 
     @GetMapping("/login")
-    public String loginPage(HttpServletRequest req, Model model){
+    public String loginPage(HttpServletRequest req, Model model) {
         String return_url = req.getParameter("return_url");
         if (authService.checkToken(authService.getToken(req.getCookies()))) {
-            if(return_url!=null && return_url.startsWith("/")){
-                return "redirect:"+return_url;
+            if (return_url != null && return_url.startsWith("/")) {
+                return "redirect:" + return_url;
             }
             return "redirect:/dashboard/most-sold";
         }
         model.addAttribute("return_url",
-                return_url!=null?return_url:"/dashboard/most-sold");
+                return_url != null ? return_url : "/dashboard/most-sold");
         return "login";
     }
 
     @PostMapping("/login")
-    public String login(HttpServletRequest req,HttpServletResponse res, @ModelAttribute LoginDto loginDto, Model model){
+    public String login(HttpServletRequest req, HttpServletResponse res, @ModelAttribute LoginDto loginDto, Model model) {
         String return_url = req.getParameter("return_url");
         User user = authService.getUser(loginDto.getLogin(), loginDto.getPassword());
-        if(user==null){
-            return "redirect:/auth/login?error&return_url="+ (return_url!=null?return_url:"/dashboard/most-sold");
+        if (user == null) {
+            return "redirect:/auth/login?error&return_url=" + (return_url != null ? return_url : "/dashboard/most-sold");
         }
         res.addCookie(authService.generateToken(user));
-        if(return_url!=null && return_url.startsWith("/")){
-            return "redirect:"+req.getParameter("return_url");
+        if (return_url != null && return_url.startsWith("/")) {
+            return "redirect:" + req.getParameter("return_url");
         }
         return "redirect:/dashboard/most-sold";
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletResponse res){
+    public String logout(HttpServletResponse res) {
         authService.logout(res);
         return "redirect:/auth/login";
     }

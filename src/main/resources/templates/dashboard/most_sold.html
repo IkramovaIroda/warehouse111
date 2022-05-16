@@ -18,7 +18,8 @@
                 <option value="year">Year</option>
             </select>
             <label for="limit" class="ml-3 col-form-label">Limit: </label>
-            <input type="number" name="limit" id="limit" min="1" max="200" required class="form-control ml-3 col-2" placeholder="Limit">
+            <input type="number" name="limit" id="limit" min="1" max="200" required class="form-control ml-3 col-2"
+                   placeholder="Limit">
             <div class="col-2">
                 <button type="submit" class="btn btn-success">Submit</button>
             </div>
@@ -48,34 +49,37 @@
         </tr>
         </tbody>
     </table>
-<!--    <div th:text="${@authService.getUser(#httpServletRequest)}"></div>-->
+    <!--    <div th:text="${@authService.getUser(#httpServletRequest)}"></div>-->
 </div>
 <script th:inline="javascript">
-    let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0,
-        user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
+    let notificationsCount =/*[[${@notificationService.getNotificationsCount()}]]*/0,
+        user =/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
 
     function getQuery(name) {
         return new URLSearchParams(location.search).get(name)
     }
+
     function changePeriod(e) {
-        let current_period=getQuery('period')
-        if(current_period!==e.value){
-            window.location='/dashboard/most-sold?period='+e.value+(getQuery('limit')!==null?'&limit='+getQuery('limit'):'')
+        let current_period = getQuery('period')
+        if (current_period !== e.value) {
+            window.location = '/dashboard/most-sold?period=' + e.value + (getQuery('limit') !== null ? '&limit=' + getQuery('limit') : '')
         }
     }
+
     function changeLimit(e) {
-        let limit=getQuery('limit')
-        if(limit!==e.value && parseInt(e.value)>=1){
-            window.location='/dashboard/most-sold?limit='+Math.round(parseInt(e.value))
-                +(getQuery('period')!==null?'&period='+getQuery('period'):'')
+        let limit = getQuery('limit')
+        if (limit !== e.value && parseInt(e.value) >= 1) {
+            window.location = '/dashboard/most-sold?limit=' + Math.round(parseInt(e.value))
+                + (getQuery('period') !== null ? '&period=' + getQuery('period') : '')
         }
     }
-    window.onload=()=>{
-        if(getQuery('period')){
-            document.getElementById('period').value=getQuery('period')
+
+    window.onload = () => {
+        if (getQuery('period')) {
+            document.getElementById('period').value = getQuery('period')
         }
 
-        document.getElementById('limit').value=getQuery('limit')??5
+        document.getElementById('limit').value = getQuery('limit') ?? 5
     }
 </script>
 <script th:src="@{/assets/js/context.js}"></script>

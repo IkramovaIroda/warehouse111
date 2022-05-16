@@ -28,20 +28,27 @@ public class WarehouseController {
 
     @GetMapping
     public String getWarehousePage(Model model, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         model.addAttribute("list", warehouseRepository.findAllByActiveTrue());
         return "data/warehouse";
     }
 
     @PostMapping
     public String saveWarehouse(Model model, @ModelAttribute Warehouse warehouse, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         warehouseService.add(warehouse);
         return "redirect:/data/warehouse";
     }
+
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         Optional<Warehouse> byId = warehouseRepository.findById(id);
         if (byId.isEmpty()) return "error/404";
         Warehouse warehouse = byId.get();
@@ -52,7 +59,9 @@ public class WarehouseController {
 
     @PostMapping("/edit/{id}")
     public String editDepartment(@PathVariable Long id, @ModelAttribute WarehouseDto warehouseDto, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         ApiResponse response = warehouseService.edit(id, warehouseDto);
         return "redirect:/data/warehouse";
     }

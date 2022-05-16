@@ -18,7 +18,7 @@ public class Category {
     private Long id;
 
     @Column(name = "active", nullable = false)
-    private Boolean active=true;
+    private Boolean active = true;
 
     @Column(name = "name", nullable = false)
     private String name;

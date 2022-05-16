@@ -25,7 +25,7 @@ public class User {
     private Boolean active = true;
 
     @Column(name = "code", unique = true, nullable = false)
-    private UUID code=UUID.randomUUID();
+    private UUID code = UUID.randomUUID();
 
     @Column(name = "first_name", nullable = false)
     private String firstName;

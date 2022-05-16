@@ -16,10 +16,10 @@ public class NotificationService {
     ProductRepository productRepository;
     final
     InputProductRepository inputProductRepository;
-    private int expire_period=3;
+    private int expire_period = 3;
 
-    public Integer getNotificationsCount(){
-        LocalDate minDate=LocalDate.now().plusDays(expire_period);
+    public Integer getNotificationsCount() {
+        LocalDate minDate = LocalDate.now().plusDays(expire_period);
         return inputProductRepository.countByExpireDateBeforeAndInput_ActiveTrueAndAmountNot(minDate, 0D);
     }
 }

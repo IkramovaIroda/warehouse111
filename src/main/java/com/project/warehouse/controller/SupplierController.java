@@ -27,21 +27,27 @@ public class SupplierController {
 
     @GetMapping
     public String getSupplierPage(Model model, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         model.addAttribute("list", supplierRepository.findAllByActiveTrue());
         return "users/supplier";
     }
 
     @PostMapping
     public String saveSupplier(@ModelAttribute SupplierDto supplierDto, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         supplierService.add(supplierDto);
         return "redirect:/users/supplier";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         Optional<Supplier> byId = supplierRepository.findById(id);
         if (byId.isEmpty()) return "error/404";
         supplierService.delete(id);
@@ -50,8 +56,10 @@ public class SupplierController {
 
     @PostMapping("/edit/{id}")
     public String editSupplier(@PathVariable Long id, @ModelAttribute SupplierDto supplierDto, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
-        supplierService.edit(supplierDto,id);
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
+        supplierService.edit(supplierDto, id);
         return "redirect:/users/supplier";
     }
 }

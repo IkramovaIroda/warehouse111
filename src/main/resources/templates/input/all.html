@@ -7,7 +7,8 @@
     <link rel="stylesheet" th:href="@{/assets/css/main.css}">
 </head>
 <body>
-<div class="modal fade" id="deleteModal" tabindex="4" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="4" role="dialog" aria-labelledby="deleteModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content border border-danger" style="background-color: #f1f1f1!important;">
             <div class="modal-header">
@@ -62,7 +63,8 @@
             <th>
                 <div class="dropdown">
                     <button class="btn bg-transparent border-0 d-flex align-items-center" type="button"
-                            th:id="${'toolButton'+input.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            th:id="${'toolButton'+input.id}" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
                         <img th:src="@{/assets/icons/three-points-icon-light.png}" width="20" alt="">
                     </button>
                     <div class="dropdown-menu" th:aria-labelledby="${'toolButton'+input.id}">
@@ -83,21 +85,22 @@
 
 <script src="/assets/js/jquery-3.3.1.slim.min.js"></script>
 <script src="/assets/js/popper.min.js"></script>
-<script src="/assets/js/bootstrap.min.js" ></script>
+<script src="/assets/js/bootstrap.min.js"></script>
 <script th:inline="javascript">
-    let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0,
-        user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{},
-        inputList=/*[[${inputList}]]*/[]
-    function showDeleteModal(e){
-        let index=parseInt(e.getAttribute("data")), input=inputList[index]
-        document.querySelector("#modal-body").innerHTML=`
+    let notificationsCount =/*[[${@notificationService.getNotificationsCount()}]]*/0,
+        user =/*[[${@authService.getUser(#httpServletRequest)}]]*/{},
+        inputList =/*[[${inputList}]]*/[]
+
+    function showDeleteModal(e) {
+        let index = parseInt(e.getAttribute("data")), input = inputList[index]
+        document.querySelector("#modal-body").innerHTML = `
             <p><strong>Date</strong> ${input.date}</p>
             <p><strong>Warehouse</strong> ${input.warehouse.name}</p>
             <p><strong>Currency</strong> ${input.currency.name}</p>
             <p><strong>Supplier</strong> ${input.supplier.name}</p>
             <p><strong>Facture number</strong> ${input.factureNumber}</p>
         `
-        document.querySelector("#deleteUrl").setAttribute("href", '/input/delete/'+input.id)
+        document.querySelector("#deleteUrl").setAttribute("href", '/input/delete/' + input.id)
         $('#deleteModal').modal('show')
     }
 </script>

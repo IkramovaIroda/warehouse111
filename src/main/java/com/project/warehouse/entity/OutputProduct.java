@@ -18,7 +18,7 @@ public class OutputProduct {
     @Column(name = "id", nullable = false)
     private Long id;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @ManyToOne()
     @JoinColumn(name = "product_id", nullable = false)
     @ToString.Exclude
@@ -30,7 +30,7 @@ public class OutputProduct {
     @Column(name = "price", nullable = false, precision = 131089)
     private Double price;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @ManyToOne()
     @JoinColumn(name = "output_id", nullable = false)
     @ToString.Exclude

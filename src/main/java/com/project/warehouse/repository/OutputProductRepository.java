@@ -18,6 +18,8 @@ public interface OutputProductRepository extends JpaRepository<OutputProduct, Lo
             nativeQuery = true
     )
     List<OutputProduct> getOutputProductWithLimit(LocalDate from, LocalDate to, int limit);
+
     List<OutputProduct> findAllByOutput_Id(Long id);
+
     List<OutputProduct> findAllByOutput_IdAndOutputActiveTrue(Long id);
 }

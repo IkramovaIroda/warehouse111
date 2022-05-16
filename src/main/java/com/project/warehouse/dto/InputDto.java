@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InputDto  {
+public class InputDto {
     private String date;
     private Long warehouseId;
     private Long supplierId;

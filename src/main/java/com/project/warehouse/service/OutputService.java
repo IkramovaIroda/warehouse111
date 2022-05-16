@@ -30,7 +30,7 @@ public class OutputService {
     OutputProductRepository outputProductRepository;
 
     public void saveOutput(OutputDto dto) {
-        Output output=new Output();
+        Output output = new Output();
         Warehouse warehouse = warehouseRepository.findById(dto.getWarehouseId()).get();
         Currency currency = currencyRepository.findById(dto.getCurrencyId()).get();
         Client client = clientRepository.findById(dto.getClientId()).get();
@@ -42,7 +42,7 @@ public class OutputService {
         Output save = outputRepository.save(output);
         List<OutputProductDto> outputProductDtoList = dto.getProductList();
         for (OutputProductDto outputProductDto : outputProductDtoList) {
-            InputProduct inputProduct=inputProductRepository.findById(outputProductDto.getInputId()).get();
+            InputProduct inputProduct = inputProductRepository.findById(outputProductDto.getInputId()).get();
             Long productId = inputProduct.getProduct().getId();
             Double amount = outputProductDto.getAmount();
             Double price = inputProduct.getPrice();
@@ -53,7 +53,7 @@ public class OutputService {
             outputProduct.setAmount(amount);
             outputProduct.setPrice(price);
             outputProductRepository.save(outputProduct);
-            inputProduct.setAmount(inputProduct.getAmount()-outputProduct.getAmount());
+            inputProduct.setAmount(inputProduct.getAmount() - outputProduct.getAmount());
             inputProductRepository.save(inputProduct);
         }
 
@@ -61,17 +61,17 @@ public class OutputService {
 
     public void delete(Long id) {
         Optional<Output> byId = outputRepository.findById(id);
-        if(byId.isEmpty())return;
-        Output output =byId.get();
+        if (byId.isEmpty()) return;
+        Output output = byId.get();
         output.setActive(false);
         outputRepository.save(output);
         List<OutputProduct> allByOutput_id = outputProductRepository.findAllByOutput_Id(id);
         for (OutputProduct outputProduct : allByOutput_id) {
             List<InputProduct> inputProducts = inputProductRepository.findByProduct_idAndPriceAndAmount(
                     outputProduct.getProduct().getId(), outputProduct.getPrice(), outputProduct.getAmount());
-            if(inputProducts.size()==0)continue;
+            if (inputProducts.size() == 0) continue;
             InputProduct inputProduct = inputProducts.get(0);
-            inputProduct.setAmount(inputProduct.getAmount()+outputProduct.getAmount());
+            inputProduct.setAmount(inputProduct.getAmount() + outputProduct.getAmount());
             inputProductRepository.save(inputProduct);
         }
     }

@@ -1,37 +1,43 @@
-:root{
-    --inner-shadow: inset 3px 3px 3px #d0d0d0,inset -3px -3px 3px #f8f8f8;
-    --outer-shadow-0: 0 0 0 #d0d0d0,0 0 0 #f8f8f8;
-    --outer-shadow: 3px 3px 3px #d0d0d0,-3px -3px 3px #f8f8f8;
+:root {
+    --inner-shadow: inset 3px 3px 3px #d0d0d0, inset -3px -3px 3px #f8f8f8;
+    --outer-shadow-0: 0 0 0 #d0d0d0, 0 0 0 #f8f8f8;
+    --outer-shadow: 3px 3px 3px #d0d0d0, -3px -3px 3px #f8f8f8;
 }
 
 
-.link{
+.link {
     font-weight: lighter;
-    font-size: 0.8rem!important;
+    font-size: 0.8rem !important;
     transition: all linear 0.5s;
     height: 40px;
 }
-.link.active{
+
+.link.active {
     font-weight: bold;
-    font-size: 1.5rem!important;
+    font-size: 1.5rem !important;
     height: 52px;
 }
-.link:hover{
+
+.link:hover {
     font-weight: bold;
-    font-size: 1rem!important;
+    font-size: 1rem !important;
 }
-.link.active:hover{
+
+.link.active:hover {
     font-weight: bold;
-    font-size: 1.5rem!important;
+    font-size: 1.5rem !important;
 }
-.nav-item .active{
+
+.nav-item .active {
     color: var(--dark);
     font-weight: bold;
-    font-size: 1.2rem!important;
+    font-size: 1.2rem !important;
 }
-.dropdown-menu{
+
+.dropdown-menu {
     background-color: #f1f1f1;
 }
-.popover-body{
-    background-color: #f1f1f1!important;
+
+.popover-body {
+    background-color: #f1f1f1 !important;
 }

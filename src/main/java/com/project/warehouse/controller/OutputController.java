@@ -46,16 +46,20 @@ public class OutputController {
 //    if (authService.deleteTokenIf(req, res)) {return "secured-page";}
 
     @GetMapping("/all")
-    public String getAll(Model model, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String getAll(Model model, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         model.addAttribute("outputList", outputRepository.findByActiveTrue());
         return "output/all";
     }
 
     @GetMapping("/addOutput")
-    public String addOutput(Model model, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
-        model.addAttribute("warehouseList",warehouseRepository.findAllByActiveTrue());
+    public String addOutput(Model model, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
+        model.addAttribute("warehouseList", warehouseRepository.findAllByActiveTrue());
         model.addAttribute("currencyList", currencyRepository.findAllByActiveTrue());
         model.addAttribute("clientList", clientRepository.findAllByActiveTrue());
         model.addAttribute("today", LocalDate.now().toString());
@@ -63,17 +67,19 @@ public class OutputController {
     }
 
     @PostMapping("/addOutput/choose-products")
-    public String add (@ModelAttribute OutputDto dto, Model model, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String add(@ModelAttribute OutputDto dto, Model model, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         model.addAttribute("output", dto);
         List<Warehouse> warehouses = warehouseRepository.findAllByActiveTrue();
         List<Currency> currencies = currencyRepository.findAllByActiveTrue();
         warehouses.removeIf(warehouse -> !Objects.equals(warehouse.getId(), dto.getWarehouseId()));
         currencies.removeIf(currency -> !Objects.equals(currency.getId(), dto.getCurrencyId()));
-        if(warehouses.size()==0 || currencies.size()==0)return "error/404";
-        model.addAttribute("warehouse",warehouses.get(0));
+        if (warehouses.size() == 0 || currencies.size() == 0) return "error/404";
+        model.addAttribute("warehouse", warehouses.get(0));
         model.addAttribute("currency", currencies.get(0));
-        model.addAttribute("client",dto.getClientId());
+        model.addAttribute("client", dto.getClientId());
         model.addAttribute("clientList", clientRepository.findAllByActiveTrue());
         model.addAttribute("today", LocalDate.now().toString());
         model.addAttribute("products", inputProductRepository
@@ -83,35 +89,39 @@ public class OutputController {
     }
 
     @PostMapping("/addOutput/products")
-    public String chosenProducts(@ModelAttribute ChosenProductsDto chosenProductsDto, Model model, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String chosenProducts(@ModelAttribute ChosenProductsDto chosenProductsDto, Model model, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         chosenProductsDto.getProductList().remove(null);
         model.addAttribute("inputProducts",
                 inputProductRepository.findAllById(chosenProductsDto.getProductList()));
         List<Warehouse> warehouses = warehouseRepository.findAllByActiveTrue();
         List<Currency> currencies = currencyRepository.findAllByActiveTrue();
         warehouses.removeIf(warehouse -> !Objects.equals(warehouse.getId(), chosenProductsDto.getWarehouseId()));
-        currencies.removeIf(currency -> !Objects.equals(currency.getId(),chosenProductsDto.getCurrencyId()));
-        if(warehouses.size()==0 || currencies.size()==0)return "error/404";
+        currencies.removeIf(currency -> !Objects.equals(currency.getId(), chosenProductsDto.getCurrencyId()));
+        if (warehouses.size() == 0 || currencies.size() == 0) return "error/404";
         model.addAttribute("date", chosenProductsDto.getDate());
         model.addAttribute("factureNumber", chosenProductsDto.getFactureNumber());
-        model.addAttribute("warehouse",warehouses.get(0));
+        model.addAttribute("warehouse", warehouses.get(0));
         model.addAttribute("currency", currencies.get(0));
-        model.addAttribute("client",chosenProductsDto.getClientId());
+        model.addAttribute("client", chosenProductsDto.getClientId());
         model.addAttribute("clientList", clientRepository.findAllByActiveTrue());
         model.addAttribute("today", LocalDate.now().toString());
         return "output/output-product";
     }
 
     @PostMapping("/addOutputProduct")
-    public String saveOutputProduct(OutputDto dto, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String saveOutputProduct(OutputDto dto, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         outputService.saveOutput(dto);
         return "redirect:/output/all";
     }
 
     @GetMapping("/getOutput/{id}")
-    public String getOutputProducts(@PathVariable Long id, Model model){
+    public String getOutputProducts(@PathVariable Long id, Model model) {
         Optional<Output> byId = outputRepository.findById(id);
         if (byId.isEmpty()) {
             return "error/404";
@@ -124,18 +134,15 @@ public class OutputController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteOutput(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String deleteOutput(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         Optional<Output> byId = outputRepository.findById(id);
-        if(byId.isEmpty())return "error/404";
+        if (byId.isEmpty()) return "error/404";
         outputService.delete(id);
         return "redirect:/output/all";
     }
-
-
-
-
-
 
 
 }

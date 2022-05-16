@@ -46,14 +46,17 @@
                         <label for="currencyIdRead">Currency</label>
                         <input type="text" readonly th:value="${currency.name}" id="currencyIdRead" class="form-control"
                                style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"/>
-                        <input type="hidden" th:value="${currency.id}" name="currencyId" id="currencyId" required class="form-control"
-                                style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"/>
+                        <input type="hidden" th:value="${currency.id}" name="currencyId" id="currencyId" required
+                               class="form-control"
+                               style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"/>
                     </div>
                     <div class="col-6 mt-3">
                         <label for="warehouseIdRead">Warehouse</label>
-                        <input type="text" id="warehouseIdRead" th:value="${warehouse.name}" readonly class="form-control"
-                                style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"/>
-                        <input type="hidden" th:value="${warehouse.id}" name="warehouseId" id="warehouseId" required class="form-control"
+                        <input type="text" id="warehouseIdRead" th:value="${warehouse.name}" readonly
+                               class="form-control"
+                               style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"/>
+                        <input type="hidden" th:value="${warehouse.id}" name="warehouseId" id="warehouseId" required
+                               class="form-control"
                                style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"/>
                     </div>
                     <div class="col-6 mt-3">
@@ -74,7 +77,8 @@
                     <div class="form-check w-100" th:each="inputProduct, i: ${products}">
                         <input th:value="${inputProduct.id}" class="form-check-input"
                                th:disabled="${inputProduct.amount==0}"
-                               th:id="${'checkbox'+inputProduct.id}" type="checkbox" th:name="${'productList['+i.index+']'}">
+                               th:id="${'checkbox'+inputProduct.id}" type="checkbox"
+                               th:name="${'productList['+i.index+']'}">
 
                         <label data-toggle="popover" data-placement="top" style="cursor:pointer;"
                                class="form-check-label" th:for="${'checkbox'+inputProduct.id}"
@@ -90,35 +94,35 @@
 
 <script src="/assets/js/jquery-3.3.1.slim.min.js"></script>
 <script src="/assets/js/popper.min.js"></script>
-<script src="/assets/js/bootstrap.min.js" ></script>
+<script src="/assets/js/bootstrap.min.js"></script>
 <script th:inline="javascript">
-    let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0,
-        user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{},
-        inputProducts=/*[[${products}]]*/[],
-        clients=/*[[${clientList}]]*/[]
-    window.onload=() => {
-        if(inputProducts.length===0){
+    let notificationsCount =/*[[${@notificationService.getNotificationsCount()}]]*/0,
+        user =/*[[${@authService.getUser(#httpServletRequest)}]]*/{},
+        inputProducts =/*[[${products}]]*/[],
+        clients =/*[[${clientList}]]*/[]
+    window.onload = () => {
+        if (inputProducts.length === 0) {
             $("#noProducts").modal('show')
         }
     }
-    $("form").submit(function (){
-        const checkbox=$("input:checked")
-        if(checkbox.length<1){
+    $("form").submit(function () {
+        const checkbox = $("input:checked")
+        if (checkbox.length < 1) {
             alert("Choose minimum 1 product")
             return false;
         }
         return true
     })
-    document.querySelector("#clientId").value=/*[[${client}]]*/clients[0].id
-    $(document).ready(function (){
+    document.querySelector("#clientId").value =/*[[${client}]]*/clients[0].id
+    $(document).ready(function () {
         $(function () {
             $('[data-toggle="popover"]').popover({html: true, trigger: 'hover'})
         })
-        let elements=document.querySelectorAll('[data-toggle=popover]')
+        let elements = document.querySelectorAll('[data-toggle=popover]')
         for (let i = 0; i < elements.length; i++) {
             elements[i].setAttribute('data-content',
-                `<img width="100" src="${inputProducts[i].product.photo?
-                    `/data/product/${inputProducts[i].product.id}/photo`: "/assets/icons/not-image.png"}"/>`)
+                `<img width="100" src="${inputProducts[i].product.photo ?
+                    `/data/product/${inputProducts[i].product.id}/photo` : "/assets/icons/not-image.png"}"/>`)
         }
     })
 

@@ -28,13 +28,15 @@
                         <label for="parentCategoryId" class="col-form-label">Parent category: </label>
                         <select name="parentCategoryId" id="parentCategoryId" class="form-control">
                             <option value="#null">--None--</option>
-                            <option th:value="${category.id}" th:text="${category.name}" th:each="category: ${list}"></option>
+                            <option th:value="${category.id}" th:text="${category.name}"
+                                    th:each="category: ${list}"></option>
                         </select>
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" id="submitBtn" class="btn shadow" style="background-color: #f1f1f1">Submit</button>
+                    <button type="submit" id="submitBtn" class="btn shadow" style="background-color: #f1f1f1">Submit
+                    </button>
                 </div>
             </form>
 
@@ -42,7 +44,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="deleteModal" tabindex="4" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="4" role="dialog" aria-labelledby="deleteModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content border border-danger" style="background-color: #f1f1f1!important;">
             <div class="modal-header">
@@ -90,18 +93,21 @@
             <td>
                 <div class="dropdown">
                     <button class="btn bg-transparent border-0 d-flex align-items-center" type="button"
-                            th:id="${'toolButton'+category.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            th:id="${'toolButton'+category.id}" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
                         <img th:src="@{/assets/icons/three-points-icon-light.png}" width="20" alt="" src="">
                     </button>
                     <div class="dropdown-menu" th:aria-labelledby="${'toolButton'+category.id}">
                         <div class="dropdown-item"
                              style="cursor: pointer"
                              th:data="${i.index}"
-                             onclick="editModal(this)">Edit</div>
+                             onclick="editModal(this)">Edit
+                        </div>
                         <div class="dropdown-item"
                              style="cursor: pointer"
                              th:data="${i.index}"
-                             onclick="deleteModal(this)">Delete</div>
+                             onclick="deleteModal(this)">Delete
+                        </div>
                     </div>
                 </div>
             </td>
@@ -113,30 +119,32 @@
 
 <script src="/assets/js/jquery-3.3.1.slim.min.js"></script>
 <script src="/assets/js/popper.min.js"></script>
-<script src="/assets/js/bootstrap.min.js" ></script>
+<script src="/assets/js/bootstrap.min.js"></script>
 <script th:inline="javascript">
-    let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0
-    let user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
-    let categories=/*[[${list}]]*/[]
+    let notificationsCount =/*[[${@notificationService.getNotificationsCount()}]]*/0
+    let user =/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
+    let categories =/*[[${list}]]*/[]
     console.log(categories);
+
     function deleteModal(button) {
-        let category=categories[parseInt(button.getAttribute('data'))]
+        let category = categories[parseInt(button.getAttribute('data'))]
         console.log(category);
-        const modal=document.querySelector("#deleteModal")
-        modal.getElementsByClassName('modal-body')[0].innerHTML=
-            `<b>Category:</b> ${category.name}<br/><b>Parent:</b> ${category.parentCategory?category.parentCategory.name:"-"}`
-        modal.getElementsByTagName('a')[0].setAttribute('href', '/data/category/delete/'+category.id)
+        const modal = document.querySelector("#deleteModal")
+        modal.getElementsByClassName('modal-body')[0].innerHTML =
+            `<b>Category:</b> ${category.name}<br/><b>Parent:</b> ${category.parentCategory ? category.parentCategory.name : "-"}`
+        modal.getElementsByTagName('a')[0].setAttribute('href', '/data/category/delete/' + category.id)
         $('#deleteModal').modal({show: true})
     }
+
     function editModal(button) {
         let category = categories[parseInt(button.getAttribute('data'))]
         console.log(category)
         document.getElementById('addEditForm').setAttribute('action', '/data/category/edit/' + category.id)
         document.querySelector('#name').value = category.name
-        const select=document.querySelector('#parentCategoryId')
-        select.value = category.parentCategory!==null ? category.parentCategory.id : "#null"
+        const select = document.querySelector('#parentCategoryId')
+        select.value = category.parentCategory !== null ? category.parentCategory.id : "#null"
         for (let child of select.children) {
-            if(child.getAttribute('value')===category.id.toString()){
+            if (child.getAttribute('value') === category.id.toString()) {
                 child.remove()
             }
         }
@@ -144,22 +152,23 @@
 
         $('#modal').modal({show: true})
     }
-    $(document).ready(function(){
-        $("#modal").on('hidden.bs.modal', function(){
+
+    $(document).ready(function () {
+        $("#modal").on('hidden.bs.modal', function () {
             document.querySelector('#name').value = ""
             document.querySelector('#submitBtn').textContent = "Add"
-            const select=document.querySelector('#parentCategoryId')
+            const select = document.querySelector('#parentCategoryId')
             select.value = "#null"
-            let arrayId=[]
+            let arrayId = []
             for (let i = 0; i < select.children.length; i++) {
-                if(select.children.item(i).getAttribute('value')==='#null')continue
+                if (select.children.item(i).getAttribute('value') === '#null') continue
                 arrayId.push(parseInt(select.children.item(i).getAttribute('value')))
             }
             for (let category of categories) {
-                if(!arrayId.includes(category.id)){
-                    const option=document.createElement('option')
+                if (!arrayId.includes(category.id)) {
+                    const option = document.createElement('option')
                     option.setAttribute('value', category.id)
-                    option.textContent=category.name
+                    option.textContent = category.name
                     select.append(option)
                     break;
                 }

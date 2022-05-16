@@ -24,7 +24,7 @@ public class Product {
     private Boolean active = true;
 
     @Column(name = "code", unique = true, updatable = false)
-    private UUID code=UUID.randomUUID();
+    private UUID code = UUID.randomUUID();
 
     @Column(name = "name", nullable = false)
     private String name;

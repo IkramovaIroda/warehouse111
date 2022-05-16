@@ -44,16 +44,17 @@
                         <label for="new_repeat_password" class="col-form-label">Repeat password: </label>
                         <input name="password_repeat" required maxlength="50"
                                autocomplete="new-password"
-                               id="new_repeat_password" type="password" class="form-control" placeholder="Repeat password">
+                               id="new_repeat_password" type="password" class="form-control"
+                               placeholder="Repeat password">
                     </div>
                     <input type="hidden" name="warehouses[0]" value="1">
-
 
 
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" id="submitBtn" class="btn shadow" style="background-color: #f1f1f1">Submit</button>
+                    <button type="submit" id="submitBtn" class="btn shadow" style="background-color: #f1f1f1">Submit
+                    </button>
                 </div>
             </form>
 
@@ -61,7 +62,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="deleteModal" tabindex="4" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="4" role="dialog" aria-labelledby="deleteModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content border border-danger" style="background-color: #f1f1f1!important;">
             <div class="modal-header">
@@ -106,22 +108,25 @@
             <td>
                 <div class="dropdown">
                     <button class="btn bg-transparent border-0 d-flex align-items-center" type="button"
-                            th:id="${'toolButton'+user?.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            th:id="${'toolButton'+user?.id}" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
                         <img th:src="@{/assets/icons/three-points-icon-light.png}" width="20" alt="" src="">
                     </button>
                     <div class="dropdown-menu" th:aria-labelledby="${'toolButton'+user?.id}">
                         <div class="dropdown-item"
                              style="cursor: pointer"
                              th:data="${i.index}"
-                             onclick="editModal(this)">Edit</div>
+                             onclick="editModal(this)">Edit
+                        </div>
                         <div class="dropdown-item"
                              style="cursor: pointer"
                              th:data="${i.index}"
                              th:if="${user.id!=@authService.getUser(#httpServletRequest).id}"
-                             onclick="deleteModal(this)">Delete</div>
-                        <a   class="dropdown-item"
-                             style="cursor: pointer"
-                             th:href="${'/users/user/'+user.id+'/warehouse'}"
+                             onclick="deleteModal(this)">Delete
+                        </div>
+                        <a class="dropdown-item"
+                           style="cursor: pointer"
+                           th:href="${'/users/user/'+user.id+'/warehouse'}"
                         >Warehouses</a>
                     </div>
                 </div>
@@ -134,56 +139,60 @@
 
 <script src="/assets/js/jquery-3.3.1.slim.min.js"></script>
 <script src="/assets/js/popper.min.js"></script>
-<script src="/assets/js/bootstrap.min.js" ></script>
+<script src="/assets/js/bootstrap.min.js"></script>
 <script th:inline="javascript">
-    let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0, user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
-    let users=/*[[${list}]]*/[]
+    let notificationsCount =/*[[${@notificationService.getNotificationsCount()}]]*/0,
+        user =/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
+    let users =/*[[${list}]]*/[]
+
     function deleteModal(button) {
-        let user=users[parseInt(button.getAttribute('data'))]
-        const modal=document.querySelector("#deleteModal")
-        modal.getElementsByClassName('modal-body')[0].innerHTML=
-            `<b>Full name:</b> ${user.lastName+' '+user.firstName}<br/><b>Phone number:</b> ${user.phoneNumber}`
-        modal.getElementsByTagName('a')[0].setAttribute('href', '/users/user/delete/'+user.id)
+        let user = users[parseInt(button.getAttribute('data'))]
+        const modal = document.querySelector("#deleteModal")
+        modal.getElementsByClassName('modal-body')[0].innerHTML =
+            `<b>Full name:</b> ${user.lastName + ' ' + user.firstName}<br/><b>Phone number:</b> ${user.phoneNumber}`
+        modal.getElementsByTagName('a')[0].setAttribute('href', '/users/user/delete/' + user.id)
         $('#deleteModal').modal({show: true})
     }
+
     function editModal(button) {
         let user = users[parseInt(button.getAttribute('data'))]
         document.getElementById('addEditForm').setAttribute('action', '/users/user/edit/' + user.id)
         document.querySelector('#first_name').value = user.firstName
         document.querySelector('#last_name').value = user.lastName
         document.querySelector('#new_phone_number').value = user.phoneNumber
-        let new_password=document.querySelector('#new_password')
-        new_password.setAttribute('hidden','')
+        let new_password = document.querySelector('#new_password')
+        new_password.setAttribute('hidden', '')
         new_password.removeAttribute('required')
-        document.querySelector("[for=new_password]").setAttribute('hidden','')
-        document.querySelector("[for=new_repeat_password]").setAttribute('hidden','')
-        let repeatPassword=document.querySelector('#new_repeat_password')
-        repeatPassword.setAttribute('hidden','')
+        document.querySelector("[for=new_password]").setAttribute('hidden', '')
+        document.querySelector("[for=new_repeat_password]").setAttribute('hidden', '')
+        let repeatPassword = document.querySelector('#new_repeat_password')
+        repeatPassword.setAttribute('hidden', '')
         repeatPassword.removeAttribute('required')
         document.querySelector('#submitBtn').textContent = "Edit"
         $('#modal').modal({show: true})
     }
-    $(document).ready(function(){
-        $("#modal").on('hidden.bs.modal', function(){
+
+    $(document).ready(function () {
+        $("#modal").on('hidden.bs.modal', function () {
             document.querySelector('#first_name').value = ""
             document.querySelector('#last_name').value = ""
             document.querySelector('#new_phone_number').value = ""
             document.querySelector('#submitBtn').textContent = "Add"
             document.querySelector('#new_password').removeAttribute('hidden')
-            document.querySelector('#new_password').setAttribute('required','')
+            document.querySelector('#new_password').setAttribute('required', '')
             document.querySelector('#new_repeat_password').removeAttribute('hidden')
-            document.querySelector('#new_repeat_password').setAttribute('required','')
+            document.querySelector('#new_repeat_password').setAttribute('required', '')
             document.querySelector("[for=new_password]").removeAttribute('hidden')
             document.querySelector("[for=new_repeat_password]").removeAttribute('hidden')
             document.getElementById('addEditForm').setAttribute('action', '/users/user/addUser')
         });
-        $('#addEditForm').submit(function (e){
-            let action=document.querySelector("#addEditForm").getAttribute("action")
-            if(!action.startsWith('/users/user/edit')){
+        $('#addEditForm').submit(function (e) {
+            let action = document.querySelector("#addEditForm").getAttribute("action")
+            if (!action.startsWith('/users/user/edit')) {
                 if (e.target.new_repeat_password.value !== e.target.new_password.value) {
                     return false;
                 }
-                e.target.new_repeat_password.setAttribute('disabled','')
+                e.target.new_repeat_password.setAttribute('disabled', '')
             }
 
             return true

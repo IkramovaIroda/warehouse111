@@ -13,12 +13,12 @@ import java.util.Optional;
 public class CategoryService {
     final CategoryRepository categoryRepository;
 
-    public void add(CategoryDto categoryDto){
-        if(categoryDto.getName().equalsIgnoreCase("#NULL"))return ;
-        Category category=new Category();
-        if(!categoryDto.getParentCategoryId().equalsIgnoreCase("#null")){
+    public void add(CategoryDto categoryDto) {
+        if (categoryDto.getName().equalsIgnoreCase("#NULL")) return;
+        Category category = new Category();
+        if (!categoryDto.getParentCategoryId().equalsIgnoreCase("#null")) {
             Optional<Category> byId = categoryRepository.findById(Long.parseLong(categoryDto.getParentCategoryId()));
-            if(byId.isEmpty()){
+            if (byId.isEmpty()) {
                 return;
             }
             category.setParentCategory(byId.get());
@@ -27,7 +27,7 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
-    public void edit(CategoryDto categoryDto, Long id){
+    public void edit(CategoryDto categoryDto, Long id) {
         Optional<Category> byId = categoryRepository.findById(id);
         if (byId.isEmpty()) {
             return;
@@ -35,7 +35,7 @@ public class CategoryService {
         Category category = byId.get();
         if (categoryDto.getParentCategoryId().equals("#null")) {
             category.setParentCategory(null);
-        }else {
+        } else {
             Optional<Category> byId1 = categoryRepository.findById(Long.parseLong(categoryDto.getParentCategoryId()));
             if (byId1.isEmpty()) {
                 return;

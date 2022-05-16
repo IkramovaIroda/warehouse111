@@ -15,5 +15,5 @@ public class UserDto {
     private String last_name;
     private String password, password_repeat;
     private String phone_number;
-    private List<Long> warehouses=new ArrayList<>();
+    private List<Long> warehouses = new ArrayList<>();
 }

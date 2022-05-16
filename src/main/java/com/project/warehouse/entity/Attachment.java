@@ -17,7 +17,7 @@ public class Attachment {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "size",nullable = false)
+    @Column(name = "size", nullable = false)
     private Long size;
 
     @Column(name = "name", nullable = false)

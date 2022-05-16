@@ -44,14 +44,16 @@
                 <label for="currencyIdRead">Currency</label>
                 <input type="text" readonly th:value="${currency.name}" id="currencyIdRead" class="form-control"
                        style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"/>
-                <input type="hidden" th:value="${currency.id}" name="currencyId" id="currencyId" required class="form-control"
+                <input type="hidden" th:value="${currency.id}" name="currencyId" id="currencyId" required
+                       class="form-control"
                        style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"/>
             </div>
             <div class="col-6 mt-3">
                 <label for="warehouseIdRead">Warehouse</label>
                 <input type="text" id="warehouseIdRead" th:value="${warehouse.name}" readonly class="form-control"
                        style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"/>
-                <input type="hidden" th:value="${warehouse.id}" name="warehouseId" id="warehouseId" required class="form-control"
+                <input type="hidden" th:value="${warehouse.id}" name="warehouseId" id="warehouseId" required
+                       class="form-control"
                        style="background-color: #f1f1f1;box-shadow: var(--inner-shadow)"/>
             </div>
             <div class="col-6 mt-3">
@@ -110,21 +112,24 @@
 
 <script src="/assets/js/jquery-3.3.1.slim.min.js"></script>
 <script src="/assets/js/popper.min.js"></script>
-<script src="/assets/js/bootstrap.min.js" ></script><script th:inline="javascript">
-    let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0,
-        user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{},
-        inputProducts=/*[[${inputProducts}]]*/[],
-        clients=/*[[${clientList}]]*/[]
-        window.onload=() => {
-            if(inputProducts.length===0){ $("#btnModal").click()}
-            document.querySelector('#clientId').value=/*[[${client}]]*/clients[0].id
+<script src="/assets/js/bootstrap.min.js"></script>
+<script th:inline="javascript">
+    let notificationsCount =/*[[${@notificationService.getNotificationsCount()}]]*/0,
+        user =/*[[${@authService.getUser(#httpServletRequest)}]]*/{},
+        inputProducts =/*[[${inputProducts}]]*/[],
+        clients =/*[[${clientList}]]*/[]
+    window.onload = () => {
+        if (inputProducts.length === 0) {
+            $("#btnModal").click()
         }
-        function changePrice(input) {
-            let index=parseInt(input.getAttribute("data"))
-            let inputProduct=inputProducts[index]
-            document.querySelector("#price"+index).value=inputProduct.price*parseFloat(input.value)
-        }
+        document.querySelector('#clientId').value =/*[[${client}]]*/clients[0].id
+    }
 
+    function changePrice(input) {
+        let index = parseInt(input.getAttribute("data"))
+        let inputProduct = inputProducts[index]
+        document.querySelector("#price" + index).value = inputProduct.price * parseFloat(input.value)
+    }
 
 
 </script>

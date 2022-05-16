@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDto  {
+public class ProductDto {
     private String name;
     private Long categoryId;
     private Long measurementId;

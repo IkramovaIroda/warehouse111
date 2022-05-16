@@ -19,6 +19,7 @@ public class CurrencyService {
         Currency save = currencyRepository.save(currency);
         return new ApiResponse("Saved", true, save);
     }
+
     public ApiResponse edit(Long id, CurrencyDto currencyDto) {
         Optional<Currency> optionalCurrency = currencyRepository.findById(id);
         Currency currency = optionalCurrency.get();

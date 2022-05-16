@@ -28,7 +28,7 @@ public class HomeController {
     final AuthService authService;
 
     @GetMapping
-    public String homePage(HttpServletRequest req){
+    public String homePage(HttpServletRequest req) {
         if (authService.checkToken(authService.getToken(req.getCookies()))) {
             return "redirect:/dashboard/most-sold";
         }
@@ -36,7 +36,7 @@ public class HomeController {
     }
 
     @GetMapping(path = "/favicon.ico")
-    public void favicon(HttpServletResponse response){
+    public void favicon(HttpServletResponse response) {
         response.setStatus(302);
         response.setHeader("Location", "/assets/favicon.ico");
     }

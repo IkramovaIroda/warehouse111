@@ -7,7 +7,8 @@
     <link rel="stylesheet" th:href="@{/assets/css/main.css}">
 </head>
 <body>
-<div class="modal fade" id="deleteModal" tabindex="4" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="4" role="dialog" aria-labelledby="deleteModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content border border-danger" style="background-color: #f1f1f1!important;">
             <div class="modal-header">
@@ -62,7 +63,8 @@
             <th>
                 <div class="dropdown">
                     <button class="btn bg-transparent border-0 d-flex align-items-center" type="button"
-                            th:id="${'toolButton'+output.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            th:id="${'toolButton'+output.id}" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
                         <img th:src="@{/assets/icons/three-points-icon-light.png}" width="20" alt="">
                     </button>
                     <div class="dropdown-menu" th:aria-labelledby="${'toolButton'+output.id}">
@@ -78,23 +80,25 @@
 </div>
 </body>
 <script th:inline="javascript">
-    let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0,
-        user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{},
-        outputList=/*[[${outputList}]]*/[]
-    function showDeleteModal(e){
-        let index=parseInt(e.getAttribute("data")), output=outputList[index]
-        document.querySelector("#modal-body").innerHTML=`
+    let notificationsCount =/*[[${@notificationService.getNotificationsCount()}]]*/0,
+        user =/*[[${@authService.getUser(#httpServletRequest)}]]*/{},
+        outputList =/*[[${outputList}]]*/[]
+
+    function showDeleteModal(e) {
+        let index = parseInt(e.getAttribute("data")), output = outputList[index]
+        document.querySelector("#modal-body").innerHTML = `
             <p><strong>Date</strong> ${output.date}</p>
             <p><strong>Warehouse</strong> ${output.warehouse.name}</p>
             <p><strong>Currency</strong> ${output.currency.name}</p>
-            <p><strong>Client:</strong> ${output.client.name+" "+output.client.phoneNumber}</p>
+            <p><strong>Client:</strong> ${output.client.name + " " + output.client.phoneNumber}</p>
             <p><strong>Facture number</strong> ${output.factureNumber}</p>
         `
-        document.querySelector("#deleteUrl").setAttribute("href", '/output/delete/'+output.id)
+        document.querySelector("#deleteUrl").setAttribute("href", '/output/delete/' + output.id)
         $('#deleteModal').modal('show')
     }
 </script>
 <script type="text/javascript" th:src="@{/assets/js/context.js}"></script>
 <script src="/assets/js/jquery-3.3.1.slim.min.js"></script>
 <script src="/assets/js/popper.min.js"></script>
-<script src="/assets/js/bootstrap.min.js" ></script></html>
+<script src="/assets/js/bootstrap.min.js"></script>
+</html>

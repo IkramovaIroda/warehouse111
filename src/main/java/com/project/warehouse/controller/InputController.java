@@ -32,16 +32,21 @@ public class InputController {
     final AuthService authService;
 
     @GetMapping("/all")
-    public String getInputs(Model model, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String getInputs(Model model, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         model.addAttribute("inputList", inputRepository.findAllByActiveTrue());
         return "input/all";
     }
+
     @GetMapping("/getInput/{id}")
-    public String getOneInput(@PathVariable Long id, Model model, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String getOneInput(@PathVariable Long id, Model model, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         Optional<Input> byId = inputRepository.findById(id);
-        if(byId.isEmpty())return "error/404";
+        if (byId.isEmpty()) return "error/404";
         Input input = byId.get();
         List<InputProduct> byInput = inputProductRepository.findAllByInput_Id(id);
         model.addAttribute("inputProducts", byInput);
@@ -50,8 +55,10 @@ public class InputController {
     }
 
     @GetMapping("/addInput")
-    public String add(Model model, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String add(Model model, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         model.addAttribute("productList", productRepository.findAllByActiveTrue());
         model.addAttribute("supplierList", supplierRepository.findAllByActiveTrue());
         model.addAttribute("warehouseList", warehouseRepository.findAllByActiveTrue());
@@ -62,17 +69,21 @@ public class InputController {
 
     @SneakyThrows
     @PostMapping("/addInput")
-    public String saveInput(@ModelAttribute InputDto inputDto, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String saveInput(@ModelAttribute InputDto inputDto, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         inputService.save(inputDto);
         return "redirect:/input/all";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String delete(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         Optional<Input> byId = inputRepository.findById(id);
-        if(byId.isEmpty())return "error/404";
+        if (byId.isEmpty()) return "error/404";
         Input input = byId.get();
         input.setActive(false);
         inputRepository.save(input);
@@ -80,8 +91,10 @@ public class InputController {
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(Model model, @PathVariable Long id, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String edit(Model model, @PathVariable Long id, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         model.addAttribute("input", inputRepository.findById(id).get());
         model.addAttribute("inputProducts", inputProductRepository.findAllByInput_Id(id));
         model.addAttribute("supplierList", supplierRepository.findAllByActiveTrue());
@@ -92,8 +105,10 @@ public class InputController {
     }
 
     @PostMapping("/editInputSave/{id}")
-    public String editSave(@PathVariable Long id, @ModelAttribute InputDto inputDto, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String editSave(@PathVariable Long id, @ModelAttribute InputDto inputDto, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         inputService.edit(id, inputDto);
         return "redirect:/input/all";
     }

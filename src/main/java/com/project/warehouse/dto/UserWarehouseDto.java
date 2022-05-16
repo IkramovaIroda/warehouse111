@@ -4,7 +4,7 @@ import lombok.Data;
 
 
 @Data
-public class UserWarehouseDto  {
+public class UserWarehouseDto {
     private Long userId;
     private Long warehouseId;
 }

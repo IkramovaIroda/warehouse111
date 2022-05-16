@@ -22,7 +22,7 @@ public class Output {
     private Long id;
 
     @Column(name = "code", unique = true, nullable = false)
-    private UUID code=UUID.randomUUID();
+    private UUID code = UUID.randomUUID();
 
     @ManyToOne()
     @JoinColumn(name = "currency_id", nullable = false)
@@ -35,19 +35,19 @@ public class Output {
     @Column(name = "facture_number", nullable = false)
     private Integer factureNumber;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @ManyToOne()
     @JoinColumn(name = "warehouse_id", nullable = false)
     @ToString.Exclude
     private Warehouse warehouse;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @ManyToOne()
     @JoinColumn(name = "client_id", nullable = false)
     @ToString.Exclude
     private Client client;
 
     @Column(name = "active", nullable = false)
-    private boolean active=true;
+    private boolean active = true;
 
 }

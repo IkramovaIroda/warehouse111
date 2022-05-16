@@ -21,27 +21,37 @@ public class CategoryController {
     final CategoryService categoryService;
 
     @GetMapping
-    public String get(Model model, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String get(Model model, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         model.addAttribute("list", categoryRepository.findAllByActiveTrue());
         return "data/category";
     }
 
     @PostMapping
-    public String add(@ModelAttribute CategoryDto categoryDto, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String add(@ModelAttribute CategoryDto categoryDto, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         categoryService.add(categoryDto);
         return "redirect:/data/category";
     }
+
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String delete(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         categoryService.delete(id);
         return "redirect:/data/category";
     }
+
     @PostMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, @ModelAttribute CategoryDto categoryDto, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+    public String edit(@PathVariable Long id, @ModelAttribute CategoryDto categoryDto, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         categoryService.edit(categoryDto, id);
         return "redirect:/data/category";
     }

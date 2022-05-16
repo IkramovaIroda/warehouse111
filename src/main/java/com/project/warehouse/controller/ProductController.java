@@ -32,7 +32,9 @@ public class ProductController {
 
     @GetMapping
     public String getProductPage(Model model, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         List<Product> all = productRepository.findAllByActiveTrue();
         model.addAttribute("list", all);
         model.addAttribute("categories", categoryRepository.findAllByActiveTrue());
@@ -42,8 +44,10 @@ public class ProductController {
 
     @SneakyThrows
     @PostMapping("/add")
-    public String saveProduct(@ModelAttribute ProductDto productDto, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+    public String saveProduct(@ModelAttribute ProductDto productDto, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         productService.save(productDto);
         return "redirect:/data/product";
     }
@@ -51,7 +55,9 @@ public class ProductController {
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         Optional<Product> byId = productRepository.findById(id);
         if (byId.isEmpty()) return "error/404";
         Product product = byId.get();
@@ -62,16 +68,20 @@ public class ProductController {
 
     @PostMapping("/edit/{id}")
     public String editSave(@PathVariable Long id, @ModelAttribute ProductDto productDto,
-                           HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+                           HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         productService.edit(id, productDto);
         return "redirect:/data/product";
     }
 
     @ResponseBody
     @GetMapping("/{id}/photo")
-    public HttpEntity<?> getPhoto(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)){return ResponseEntity.notFound().build();}
+    public HttpEntity<?> getPhoto(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return ResponseEntity.notFound().build();
+        }
         return productService.getPhoto(id);
     }
 

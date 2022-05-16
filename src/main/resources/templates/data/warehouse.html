@@ -27,7 +27,8 @@
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" id="submitBtn" class="btn shadow" style="background-color: #f1f1f1">Submit</button>
+                    <button type="submit" id="submitBtn" class="btn shadow" style="background-color: #f1f1f1">Submit
+                    </button>
                 </div>
             </form>
 
@@ -35,7 +36,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="deleteModal" tabindex="4" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="4" role="dialog" aria-labelledby="deleteModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content border border-danger" style="background-color: #f1f1f1!important;">
             <div class="modal-header">
@@ -80,18 +82,21 @@
             <td>
                 <div class="dropdown">
                     <button class="btn bg-transparent border-0 d-flex align-items-center" type="button"
-                            th:id="${'toolButton'+warehouse.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            th:id="${'toolButton'+warehouse.id}" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
                         <img th:src="@{/assets/icons/three-points-icon-light.png}" width="20" alt="" src="">
                     </button>
                     <div class="dropdown-menu" th:aria-labelledby="${'toolButton'+warehouse.id}">
                         <div class="dropdown-item"
                              style="cursor: pointer"
                              th:data="${i.index}"
-                             onclick="editModal(this)">Edit</div>
+                             onclick="editModal(this)">Edit
+                        </div>
                         <div class="dropdown-item"
                              style="cursor: pointer"
                              th:data="${i.index}"
-                             onclick="deleteModal(this)">Delete</div>
+                             onclick="deleteModal(this)">Delete
+                        </div>
                     </div>
                 </div>
             </td>
@@ -103,19 +108,22 @@
 
 <script src="/assets/js/jquery-3.3.1.slim.min.js"></script>
 <script src="/assets/js/popper.min.js"></script>
-<script src="/assets/js/bootstrap.min.js" ></script><script th:inline="javascript">
-    let notificationsCount=/*[[${@notificationService.getNotificationsCount()}]]*/0,
-        user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
-    let warehouses=/*[[${list}]]*/[]
+<script src="/assets/js/bootstrap.min.js"></script>
+<script th:inline="javascript">
+    let notificationsCount =/*[[${@notificationService.getNotificationsCount()}]]*/0,
+        user =/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
+    let warehouses =/*[[${list}]]*/[]
+
     function deleteModal(button) {
-        let warehouse=warehouses[parseInt(button.getAttribute('data'))]
+        let warehouse = warehouses[parseInt(button.getAttribute('data'))]
         console.log(warehouse);
-        const modal=document.querySelector("#deleteModal")
-        modal.getElementsByClassName('modal-body')[0].innerHTML=
+        const modal = document.querySelector("#deleteModal")
+        modal.getElementsByClassName('modal-body')[0].innerHTML =
             `<b>Warehouse:</b> ${warehouse.name}`
-        modal.getElementsByTagName('a')[0].setAttribute('href', '/data/warehouse/delete/'+warehouse.id)
+        modal.getElementsByTagName('a')[0].setAttribute('href', '/data/warehouse/delete/' + warehouse.id)
         $('#deleteModal').modal({show: true})
     }
+
     function editModal(button) {
         let warehouse = warehouses[parseInt(button.getAttribute('data'))]
         console.log(warehouse)
@@ -125,8 +133,9 @@
 
         $('#modal').modal({show: true})
     }
-    $(document).ready(function(){
-        $("#modal").on('hidden.bs.modal', function(){
+
+    $(document).ready(function () {
+        $("#modal").on('hidden.bs.modal', function () {
             document.querySelector('#name').value = ""
             document.querySelector('#submitBtn').textContent = "Add"
             document.getElementById('addEditForm').setAttribute('action', '/data/warehouse')

@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChosenProductsDto{
+public class ChosenProductsDto {
     private Long currencyId;
     private String date;
     private Integer factureNumber;

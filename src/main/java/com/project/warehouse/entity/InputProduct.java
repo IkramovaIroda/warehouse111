@@ -18,7 +18,7 @@ public class InputProduct {
     @Column(name = "id", nullable = false)
     private Long id;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @ManyToOne()
     @JoinColumn(name = "product_id", nullable = false)
     @ToString.Exclude
@@ -34,7 +34,7 @@ public class InputProduct {
     @Column(name = "expire_date", nullable = false)
     private LocalDate expireDate;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @ManyToOne()
     @JoinColumn(name = "input_id", nullable = false)
     @ToString.Exclude

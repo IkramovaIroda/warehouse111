@@ -10,7 +10,8 @@
 <div class="px-5 py-3" id="main">
     <div class="d-flex justify-content-between align-items-center my-3 shadow px-4 py-3 my-3">
         <h1>Notifications</h1>
-        <form action="/dashboard/expire_date" method="post" class="d-flex align-items-center justify-content-between col-5">
+        <form action="/dashboard/expire_date" method="post"
+              class="d-flex align-items-center justify-content-between col-5">
             <label for="period">Period: </label>
             <input type="number" id="period" min="0" max="365" name="period"
                    placeholder="Period"
@@ -52,8 +53,8 @@
     </table>
 </div>
 <script th:inline="javascript">
-    let notificationsCount=/*[[${notifications_count}]]*/0
-    let user=/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
+    let notificationsCount =/*[[${notifications_count}]]*/0
+    let user =/*[[${@authService.getUser(#httpServletRequest)}]]*/{}
 </script>
 <script th:src="@{/assets/js/context.js}"></script>
 </body>

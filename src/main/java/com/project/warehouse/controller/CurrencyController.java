@@ -27,21 +27,27 @@ public class CurrencyController {
 
     @GetMapping
     public String getCurrencyPage(Model model, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         model.addAttribute("list", currencyRepository.findAllByActiveTrue());
         return "data/currency";
     }
 
     @PostMapping
     public String saveCurrency(@ModelAttribute Currency currency, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)) {return "secured-page";}
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         currencyService.add(currency);
         return "redirect:/data/currency";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         Optional<Currency> byId = currencyRepository.findById(id);
         if (byId.isEmpty()) return "404";
         Currency currency = byId.get();
@@ -52,7 +58,9 @@ public class CurrencyController {
 
     @PostMapping("/edit/{id}")
     public String editCurrency(@PathVariable Long id, @ModelAttribute CurrencyDto currencyDto, HttpServletRequest req, HttpServletResponse res) {
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         ApiResponse response = currencyService.edit(id, currencyDto);
         System.out.println(response);
         return "redirect:/data/currency";

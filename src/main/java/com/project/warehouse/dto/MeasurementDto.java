@@ -4,6 +4,6 @@ import lombok.Data;
 
 
 @Data
-public class MeasurementDto  {
+public class MeasurementDto {
     private String name;
 }

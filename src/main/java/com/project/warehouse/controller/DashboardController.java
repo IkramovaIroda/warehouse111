@@ -31,41 +31,41 @@ public class DashboardController {
     final AuthService authService;
 
     @GetMapping(path = "/most-sold")
-    public String getMostSold(Model model, HttpServletRequest req, HttpServletResponse res){
+    public String getMostSold(Model model, HttpServletRequest req, HttpServletResponse res) {
         if (authService.deleteTokenIf(req, res)) {
             return "secured-page";
         }
 
-        String periods="week, month, year";
+        String periods = "week, month, year";
         LocalDate from = LocalDate.now();
         LocalDate to = LocalDate.now();
         String limit = req.getParameter("limit");
-        if(req.getParameter("period")==null
+        if (req.getParameter("period") == null
                 || req.getParameter("period").equals("today")
-                || !periods.contains(req.getParameter("period"))){
-            from=LocalDate.now().minusDays(1);
-        }else{
-            switch (req.getParameter("period")){
-                case "week"->{
-                    from=LocalDate.now().minusWeeks(1);
+                || !periods.contains(req.getParameter("period"))) {
+            from = LocalDate.now().minusDays(1);
+        } else {
+            switch (req.getParameter("period")) {
+                case "week" -> {
+                    from = LocalDate.now().minusWeeks(1);
                 }
-                case "month"->{
-                    from=LocalDate.now().minusMonths(1);
+                case "month" -> {
+                    from = LocalDate.now().minusMonths(1);
                 }
-                case "year"->{
-                    from=from.minusYears(1);
+                case "year" -> {
+                    from = from.minusYears(1);
                 }
             }
         }
 
-        if(limit==null){
+        if (limit == null) {
             model.addAttribute("outputProductList",
                     outputProductRepository.getOutputProductWithLimit(from, to, 5));
-        }else{
-            if(Integer.parseInt(limit)>0){
+        } else {
+            if (Integer.parseInt(limit) > 0) {
                 model.addAttribute("outputProductList",
                         outputProductRepository.getOutputProductWithLimit(from, to, Integer.parseInt(limit)));
-            }else {
+            } else {
                 model.addAttribute("outputProductList",
                         outputProductRepository.getOutputProductWithLimit(from, to, 5));
             }
@@ -77,11 +77,14 @@ public class DashboardController {
 
         return "dashboard/most_sold";
     }
+
     @GetMapping(path = "/notifications")
-    public String getNotificationPage(Model model, HttpServletRequest req, HttpServletResponse res){
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
-        model.addAttribute("notifications_count",notificationService.getNotificationsCount());
-        model.addAttribute("expire_date",notificationService.getExpire_period());
+    public String getNotificationPage(Model model, HttpServletRequest req, HttpServletResponse res) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
+        model.addAttribute("notifications_count", notificationService.getNotificationsCount());
+        model.addAttribute("expire_date", notificationService.getExpire_period());
         model.addAttribute("products",
                 inputProductRepository.findAllByInput_ActiveTrueAndExpireDateBeforeAndAmountNot(
                         LocalDate.now().plusDays(notificationService.getExpire_period()), 0D));
@@ -90,8 +93,10 @@ public class DashboardController {
 
     @SneakyThrows
     @PostMapping("/expire_date")
-    public String changeExpire(@ModelAttribute ExpiredPeriodDto period, HttpServletResponse res, HttpServletRequest req){
-        if (authService.deleteTokenIf(req, res)){return "secured-page";}
+    public String changeExpire(@ModelAttribute ExpiredPeriodDto period, HttpServletResponse res, HttpServletRequest req) {
+        if (authService.deleteTokenIf(req, res)) {
+            return "secured-page";
+        }
         notificationService.setExpire_period(period.getPeriod());
         return "redirect:/dashboard/notifications";
     }

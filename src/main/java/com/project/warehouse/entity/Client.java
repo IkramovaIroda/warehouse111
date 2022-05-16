@@ -23,6 +23,6 @@ public class Client {
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
     @Column(name = "active", nullable = false)
-    private boolean active=true;
+    private boolean active = true;
 
 }

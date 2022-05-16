@@ -31,22 +31,22 @@ public class ProductService {
         Long measurementId = productDto.getMeasurementId();
 //        Long photo_id = productDto.getPhoto_id();
         Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
-        if(categoryOptional.isEmpty())return;
+        if (categoryOptional.isEmpty()) return;
         Category category = categoryOptional.get();
         Optional<Measurement> measurementOptional = measurementRepository.findById(measurementId);
-        if(measurementOptional.isEmpty())return;
+        if (measurementOptional.isEmpty()) return;
         Measurement measurement = measurementOptional.get();
         Product product = new Product();
         product.setCategory(category);
         product.setMeasurement(measurement);
         product.setName(productDto.getName());
-        if(!productDto.getPhoto().isEmpty()){
-            Attachment attachment=new Attachment();
+        if (!productDto.getPhoto().isEmpty()) {
+            Attachment attachment = new Attachment();
             attachment.setName(productDto.getPhoto().getOriginalFilename());
             attachment.setSize(productDto.getPhoto().getSize());
             attachment.setContent_type(productDto.getPhoto().getContentType());
             Attachment save = attachmentRepository.save(attachment);
-            AttachmentContent attachmentContent=new AttachmentContent();
+            AttachmentContent attachmentContent = new AttachmentContent();
             attachmentContent.setAttachment(save);
             attachmentContent.setBytes(productDto.getPhoto().getBytes());
             attachmentContentRepository.save(attachmentContent);
@@ -59,33 +59,34 @@ public class ProductService {
     @SneakyThrows
     public void edit(Long id, ProductDto productDto) {
         Optional<Product> byId = productRepository.findById(id);
-        if(byId.isEmpty())return;
+        if (byId.isEmpty()) return;
         Product product = byId.get();
         Long categoryId = productDto.getCategoryId();
         Long measurementId = productDto.getMeasurementId();
-        String name=productDto.getName();
+        String name = productDto.getName();
         Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
-        if(categoryOptional.isEmpty())return;
+        if (categoryOptional.isEmpty()) return;
         Category category = categoryOptional.get();
         Optional<Measurement> measurementOptional = measurementRepository.findById(measurementId);
-        if(measurementOptional.isEmpty())return;;
+        if (measurementOptional.isEmpty()) return;
+        ;
         Measurement measurement = measurementOptional.get();
         product.setName(name);
-        if(productDto.getPhoto().isEmpty()){
+        if (productDto.getPhoto().isEmpty()) {
             product.setPhoto(null);
-        }else {
-            if(product.getPhoto()==null){
-                Attachment attachment=new Attachment();
+        } else {
+            if (product.getPhoto() == null) {
+                Attachment attachment = new Attachment();
                 attachment.setName(productDto.getPhoto().getOriginalFilename());
                 attachment.setSize(productDto.getPhoto().getSize());
                 attachment.setContent_type(productDto.getPhoto().getContentType());
                 Attachment save = attachmentRepository.save(attachment);
-                AttachmentContent attachmentContent=new AttachmentContent();
+                AttachmentContent attachmentContent = new AttachmentContent();
                 attachmentContent.setAttachment(save);
                 attachmentContent.setBytes(productDto.getPhoto().getBytes());
                 attachmentContentRepository.save(attachmentContent);
                 product.setPhoto(attachment);
-            }else {
+            } else {
                 Optional<Attachment> optionalAttachment = attachmentRepository.findById(product.getPhoto().getId());
                 if (optionalAttachment.isEmpty()) return;
                 Attachment attachment = optionalAttachment.get();
@@ -112,13 +113,13 @@ public class ProductService {
 
     }
 
-    public HttpEntity<?> getPhoto(Long id){
+    public HttpEntity<?> getPhoto(Long id) {
         Optional<Product> optionalProduct = productRepository.findById(id);
         if (optionalProduct.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         Product product = optionalProduct.get();
-        if(product.getPhoto()==null){
+        if (product.getPhoto() == null) {
             return ResponseEntity.status(302)
                     .header("Location", "/assets/icons/not-image.png")
                     .build();
@@ -126,11 +127,11 @@ public class ProductService {
         Attachment attachment = product.getPhoto();
         Optional<AttachmentContent> optionalAttachmentContent =
                 attachmentContentRepository.findByAttachment_id(attachment.getId());
-        if(optionalAttachmentContent.isEmpty()){
+        if (optionalAttachmentContent.isEmpty()) {
             return ResponseEntity.status(302)
                     .header("Location", "/assets/icons/not-image.png").build();
         }
-        return ResponseEntity.ok().header("Content-Type",attachment.getContent_type())
+        return ResponseEntity.ok().header("Content-Type", attachment.getContent_type())
                 .body(optionalAttachmentContent.get().getBytes());
     }
 

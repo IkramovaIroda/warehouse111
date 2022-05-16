@@ -19,6 +19,7 @@ public class WarehouseService {
         Warehouse save = warehouseRepository.save(warehouse);
         return new ApiResponse("Saved", true, save);
     }
+
     public ApiResponse edit(Long id, WarehouseDto warehouseDto) {
         Optional<Warehouse> optionalWarehouse = warehouseRepository.findById(id);
         Warehouse warehouse = optionalWarehouse.get();
